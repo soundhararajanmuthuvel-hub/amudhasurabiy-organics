@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Mail, Phone, MapPin, ArrowRight, ShieldCheck, Lock, Award, Heart } from "lucide-react";
+import Image from "next/image";
+import { Mail, Phone, MapPin, ArrowRight, ShieldCheck, Lock, Award, Heart, Sparkles } from "lucide-react";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -25,19 +26,19 @@ export default function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
               <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest block mb-2">
-                Join the Blovit Circle
+                Join the Amudhasurabiy Circle
               </span>
               <h3 className="font-heading text-2xl md:text-3xl font-bold tracking-tight text-white mb-2">
-                Pure Health Tips & Exclusive Offers
+                Pure Nutrition Insights & Seasonal Harvests
               </h3>
               <p className="font-body text-xs md:text-sm text-cream-dark/80 max-w-md">
-                Subscribe to receive organic living insights, healthy drink recipes, and early access to seasonal harvests.
+                Subscribe to receive traditional wellness knowledge, health drink recipes, and early access to pure organic harvests.
               </p>
             </div>
             <div>
               {subscribed ? (
                 <div className="p-4 rounded-xl bg-moss-green/20 border border-moss-green/30 text-white font-medium text-xs flex items-center gap-2">
-                  <span>✓</span> Thank you! You have joined the Blovit Circle.
+                  <span>✓</span> Thank you for subscribing to the Amudhasurabiy Organics Circle!
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="flex gap-2 max-w-md w-full relative">
@@ -91,18 +92,27 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           
-          {/* Brand Info */}
+          {/* Parent Corporate Brand Info */}
           <div className="flex flex-col gap-4">
-            <div className="flex flex-col">
-              <span className="font-heading text-2xl font-bold text-white tracking-tight">
-                Blovit
-              </span>
-              <span className="text-[10px] font-body uppercase tracking-widest text-cream-dark/60">
-                Amudhasurabiy Organics
-              </span>
+            <div className="flex items-center gap-3">
+              <Image
+                src="/images/logo.svg"
+                alt="Amudhasurabiy Organics Logo"
+                width={36}
+                height={36}
+                className="h-9 w-9 object-contain"
+              />
+              <div className="flex flex-col">
+                <span className="font-heading text-lg font-bold text-white tracking-tight uppercase">
+                  AMUDHASURABIY ORGANICS
+                </span>
+                <span className="text-[9px] font-body uppercase tracking-widest text-cream-dark/60">
+                  Pure Nutrition. Naturally Crafted.
+                </span>
+              </div>
             </div>
             <p className="font-body text-xs text-cream-dark/70 leading-relaxed">
-              Manufacturers of 100% quality organic malt health drink mixes. Rooted in traditional wellness and local farms, delivering pure nutrition straight to families nationwide.
+              Manufacturers of 100% quality organic natural food & nutrition products. Parent company behind Blovit natural malt drinks. Rooted in traditional wisdom and farm-fresh purity.
             </p>
             <div className="text-[11px] font-body text-cream-dark/50 space-y-1">
               <p>FSSAI Lic. No: <strong>22421543000120</strong></p>
@@ -110,46 +120,85 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Corporate Navigation */}
           <div>
             <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-white mb-5">
-              Brand Journey
+              Corporate & Brands
             </h4>
             <ul className="flex flex-col gap-3 font-body text-xs text-cream-dark/70">
               <li>
                 <Link href="/" className="hover:text-white transition-colors duration-300">
-                  Home Story
+                  Home Headquarters
+                </Link>
+              </li>
+              <li>
+                <Link href="/our-brands/" className="hover:text-white transition-colors duration-300">
+                  Our Brands Portfolio
+                </Link>
+              </li>
+              <li>
+                <Link href="/brands/blovit/" className="hover:text-white transition-colors duration-300">
+                  Blovit Flagship Brand
                 </Link>
               </li>
               <li>
                 <Link href="/shop/" className="hover:text-white transition-colors duration-300">
-                  Shop All Malts
+                  Shop All Products
                 </Link>
               </li>
+              <li>
+                <Link href="/about/" className="hover:text-white transition-colors duration-300">
+                  About Parent Company
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Educational & Quality Hub */}
+          <div>
+            <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-white mb-5">
+              Education & Quality
+            </h4>
+            <ul className="flex flex-col gap-3 font-body text-xs text-cream-dark/70">
               <li>
                 <Link href="/recipes/" className="hover:text-white transition-colors duration-300">
                   Health Drink Recipes
                 </Link>
               </li>
               <li>
-                <Link href="/trust/" className="hover:text-white transition-colors duration-300">
-                  Trust & Quality Center
+                <Link href="/health-library/" className="hover:text-white transition-colors duration-300">
+                  Health Library & Blogs
                 </Link>
               </li>
               <li>
-                <Link href="/about-us/" className="hover:text-white transition-colors duration-300">
-                  About Amudhasurabiy
+                <Link href="/quality-and-trust/" className="hover:text-white transition-colors duration-300">
+                  Quality & Trust Hub
+                </Link>
+              </li>
+              <li>
+                <Link href="/our-process/" className="hover:text-white transition-colors duration-300">
+                  Manufacturing Process
+                </Link>
+              </li>
+              <li>
+                <Link href="/ingredients/" className="hover:text-white transition-colors duration-300">
+                  Ingredient Philosophy
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Customer Care & Policies */}
+          {/* Support & Contact */}
           <div>
             <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-white mb-5">
-              Policies & Support
+              Customer Support & Contact
             </h4>
             <ul className="flex flex-col gap-3 font-body text-xs text-cream-dark/70">
+              <li>
+                <Link href="/contact/" className="hover:text-white transition-colors duration-300">
+                  Contact Us & Wholesale
+                </Link>
+              </li>
               <li>
                 <Link href="/privacy-policy-2/" className="hover:text-white transition-colors duration-300">
                   Privacy Policy
@@ -162,7 +211,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/return-refund-policy/" className="hover:text-white transition-colors duration-300">
-                  Return & Refund
+                  Return & Refund Policy
                 </Link>
               </li>
               <li>
@@ -173,43 +222,16 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact Details */}
-          <div>
-            <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-white mb-5">
-              Contact Us
-            </h4>
-            <ul className="flex flex-col gap-4 font-body text-xs text-cream-dark/70">
-              <li className="flex items-start gap-3">
-                <MapPin className="h-4 w-4 text-moss-green shrink-0 mt-0.5" />
-                <span>
-                  Amudhasurabiy Organics,<br />
-                  Kumbakonam, Thanjavur District,<br />
-                  Tamil Nadu - 612001, India
-                </span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone className="h-4 w-4 text-moss-green shrink-0" />
-                <a href="tel:+917010602115" className="hover:text-white transition-colors">
-                  +91 70106 02115
-                </a>
-              </li>
-              <li className="flex items-center gap-3">
-                <Mail className="h-4 w-4 text-moss-green shrink-0" />
-                <a href="mailto:info@amudhasurabiy.com" className="hover:text-white transition-colors">
-                  info@amudhasurabiy.com
-                </a>
-              </li>
-            </ul>
-          </div>
-
         </div>
 
-        {/* Bottom Copyright Bar */}
-        <div className="border-t border-cream-dark/10 mt-16 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-cream-dark/50 font-body">
-          <p>© {new Date().getFullYear()} Amudhasurabiy Organics. All rights reserved.</p>
-          <p>
-            Crafted with natural care in Kumbakonam, Tamil Nadu.
-          </p>
+        {/* 4. Bottom Legal Footer */}
+        <div className="border-t border-cream-dark/10 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-cream-dark/50 gap-4 font-body">
+          <p>© {new Date().getFullYear()} Amudhasurabiy Organics. All rights reserved. Blovit is a registered consumer brand of Amudhasurabiy Organics.</p>
+          <div className="flex items-center gap-6">
+            <span>Kumbakonam, Tamil Nadu, India</span>
+            <span>•</span>
+            <Link href="/quality-and-trust/" className="hover:text-white transition-colors">FSSAI Certified</Link>
+          </div>
         </div>
       </div>
     </footer>

@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { ShoppingBag, User as UserIcon, Menu, X, Heart, Search, ShieldCheck } from "lucide-react";
+import { ShoppingBag, User as UserIcon, Menu, X, Heart, Search, ShieldCheck, Sparkles } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 import SearchModal from "./SearchModal";
 
@@ -27,62 +28,61 @@ export default function Header() {
 
   const navLinks = [
     { name: "Home", href: "/" },
+    { name: "Our Brands", href: "/our-brands/" },
     { name: "Shop", href: "/shop/" },
     { name: "Recipes", href: "/recipes/" },
-    { name: "Trust Center", href: "/trust/" },
-    { name: "About Us", href: "/about-us/" },
-    { name: "Contact", href: "/contact-us/" },
+    { name: "Health Library", href: "/health-library/" },
+    { name: "About Us", href: "/about/" },
+    { name: "Quality & Trust", href: "/quality-and-trust/" },
+    { name: "Contact", href: "/contact/" },
   ];
 
   return (
     <>
       {/* Top Banner Notice */}
       <div className="bg-moss-green text-cream py-2 px-4 text-center text-xs font-body tracking-wider flex justify-center items-center gap-2">
-        <ShieldCheck className="h-3.5 w-3.5" />
-        <span>100% Natural Organic Malts | Direct Sourcing From Kumbakonam | Free Shipping Above ₹499 (TN)</span>
+        <ShieldCheck className="h-3.5 w-3.5 text-cream/90" />
+        <span>Official Digital Headquarters of Amudhasurabiy Organics | Direct Sourcing From Kumbakonam | Free Shipping Above ₹499</span>
       </div>
 
       <header className="sticky top-0 z-40 w-full border-b border-walnut-brown/10 glass-nav transition-all duration-300">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-20 items-center justify-between">
+          <div className="flex h-20 items-center justify-between gap-4">
             
-            {/* Logo */}
+            {/* Corporate Logo: Amudhasurabiy Organics */}
             <div className="flex items-center">
-              <Link href="/" className="group flex items-center gap-2">
-                <svg
-                  className="h-8 w-8 text-moss-green transition-transform duration-500 group-hover:rotate-12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M12 19V5M12 5L7 10M12 5L17 10M5 19h14" />
-                  <circle cx="12" cy="5" r="1" className="fill-moss-green" />
-                  <path d="M12 14c2.5-1 4-2.5 4-4.5s-1.5-3.5-4-3.5-4 1.5-4 3.5 1.5 3.5 4 4.5z" />
-                </svg>
+              <Link href="/" className="group flex items-center gap-3">
+                <div className="relative h-10 w-10 shrink-0 transition-transform duration-500 group-hover:scale-105">
+                  <Image
+                    src="/images/logo.svg"
+                    alt="Amudhasurabiy Organics Logo"
+                    width={40}
+                    height={40}
+                    className="h-10 w-10 object-contain"
+                    priority
+                  />
+                </div>
                 <div className="flex flex-col">
-                  <span className="font-heading text-2xl font-bold tracking-tight text-walnut-brown transition-colors duration-300 group-hover:text-moss-green">
-                    Blovit
+                  <span className="font-heading text-lg sm:text-xl font-bold tracking-tight text-walnut-brown transition-colors duration-300 group-hover:text-moss-green uppercase leading-tight">
+                    AMUDHASURABIY ORGANICS
                   </span>
-                  <span className="text-[9px] font-body uppercase tracking-widest text-walnut-brown/50 -mt-1">
-                    Amudhasurabiy Organics
+                  <span className="text-[9px] font-body tracking-widest text-walnut-brown/60 uppercase">
+                    Premium Natural Food & Nutrition Company
                   </span>
                 </div>
               </Link>
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-8">
+            <nav className="hidden xl:flex items-center gap-6">
               {navLinks.map((link) => {
-                const isActive = pathname === link.href;
+                const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
                 return (
                   <Link
                     key={link.name}
                     href={link.href}
-                    className={`relative font-heading font-semibold text-xs uppercase tracking-wider transition-colors duration-300 hover:text-moss-green py-2 ${
-                      isActive ? "text-moss-green" : "text-walnut-brown/80"
+                    className={`relative font-heading font-semibold text-[11px] uppercase tracking-wider transition-colors duration-300 hover:text-moss-green py-2 ${
+                      isActive ? "text-moss-green" : "text-walnut-brown/85"
                     }`}
                   >
                     {link.name}
@@ -94,22 +94,50 @@ export default function Header() {
               })}
             </nav>
 
-            {/* Utilities (Search, Wishlist, Cart, User) */}
-            <div className="flex items-center gap-3 sm:gap-4">
+            {/* Utilities (Search, Wishlist, Cart, User, Mobile Drawer Button) */}
+            <div className="flex items-center gap-2 sm:gap-3">
               
               {/* Search Trigger */}
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="p-2 text-walnut-brown transition-colors hover:text-moss-green"
+                className="p-2 text-walnut-brown transition-colors hover:text-moss-green rounded-full hover:bg-walnut-brown/5"
                 aria-label="Search"
               >
                 <Search className="h-5 w-5" />
               </button>
 
+              {/* Wishlist Link */}
+              <Link
+                href="/my-account/"
+                className="relative p-2 text-walnut-brown transition-colors hover:text-moss-green rounded-full hover:bg-walnut-brown/5 hidden sm:flex"
+                aria-label="Wishlist"
+              >
+                <Heart className="h-5 w-5" />
+                {isHydrated && wishlistCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-moss-green text-[9px] font-bold text-white">
+                    {wishlistCount}
+                  </span>
+                )}
+              </Link>
+
+              {/* Cart Drawer Link */}
+              <Link
+                href="/cart/"
+                className="relative p-2 text-walnut-brown transition-colors hover:text-moss-green rounded-full hover:bg-walnut-brown/5"
+                aria-label="Cart"
+              >
+                <ShoppingBag className="h-5 w-5" />
+                {isHydrated && cartCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-moss-green text-[9px] font-bold text-white">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
+
               {/* Account Link */}
               <Link
                 href="/my-account/"
-                className="relative p-2 text-walnut-brown transition-colors hover:text-moss-green"
+                className="relative p-2 text-walnut-brown transition-colors hover:text-moss-green rounded-full hover:bg-walnut-brown/5"
                 aria-label="Account"
               >
                 <UserIcon className="h-5 w-5" />
@@ -118,39 +146,11 @@ export default function Header() {
                 )}
               </Link>
 
-              {/* Wishlist Link */}
-              <Link
-                href="/my-account/?tab=wishlist"
-                className="relative p-2 text-walnut-brown transition-colors hover:text-moss-green"
-                aria-label="Wishlist"
-              >
-                <Heart className="h-5 w-5" />
-                {wishlistCount > 0 && (
-                  <span className="absolute -top-1 -right-1 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-walnut-brown text-[9px] font-bold text-white">
-                    {wishlistCount}
-                  </span>
-                )}
-              </Link>
-
-              {/* Cart Link */}
-              <Link
-                href="/cart/"
-                className="relative p-2 text-walnut-brown transition-colors hover:text-moss-green"
-                aria-label="Cart"
-              >
-                <ShoppingBag className="h-5 w-5" />
-                {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-moss-green text-[9px] font-bold text-white">
-                    {cartCount}
-                  </span>
-                )}
-              </Link>
-
-              {/* Mobile Menu Button */}
+              {/* Mobile Menu Toggle Button */}
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-2 text-walnut-brown lg:hidden hover:text-moss-green focus:outline-none"
-                aria-label="Toggle menu"
+                className="p-2 text-walnut-brown xl:hidden rounded-full hover:bg-walnut-brown/5"
+                aria-label="Toggle Navigation"
               >
                 {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
@@ -158,60 +158,35 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Mobile Drawer Overlay */}
+        {/* Mobile Navigation Drawer */}
         {isOpen && (
-          <div
-            className="fixed inset-0 z-40 bg-walnut-brown/40 backdrop-blur-sm lg:hidden"
-            onClick={() => setIsOpen(false)}
-          />
-        )}
-
-        {/* Mobile Drawer Menu */}
-        <div
-          className={`fixed top-0 right-0 z-50 h-full w-80 bg-cream-dark p-6 shadow-2xl transition-transform duration-300 ease-in-out lg:hidden ${
-            isOpen ? "translate-x-0" : "translate-x-full"
-          }`}
-        >
-          <div className="flex items-center justify-between mb-8 border-b border-walnut-brown/10 pb-4">
-            <span className="font-heading text-xl font-bold text-walnut-brown">Blovit</span>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="p-2 text-walnut-brown hover:text-moss-green"
-              aria-label="Close menu"
-            >
-              <X className="h-6 w-6" />
-            </button>
+          <div className="xl:hidden bg-cream/98 border-b border-walnut-brown/10 px-6 py-6 transition-all duration-300 shadow-xl">
+            <nav className="flex flex-col gap-4">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className={`font-heading font-semibold text-sm uppercase tracking-wider py-2 transition-colors border-b border-walnut-brown/5 flex items-center justify-between ${
+                      isActive ? "text-moss-green font-bold" : "text-walnut-brown/80"
+                    }`}
+                  >
+                    <span>{link.name}</span>
+                    {isActive && <span className="h-1.5 w-1.5 rounded-full bg-moss-green" />}
+                  </Link>
+                );
+              })}
+              <div className="pt-4 flex items-center justify-between border-t border-walnut-brown/10 text-xs font-body text-walnut-brown/60">
+                <span>FSSAI Lic. 22421543000120</span>
+                <span>Kumbakonam, TN</span>
+              </div>
+            </nav>
           </div>
-
-          <nav className="flex flex-col gap-5">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className={`font-heading text-base font-semibold tracking-wide transition-colors ${
-                    isActive ? "text-moss-green" : "text-walnut-brown/80"
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              );
-            })}
-            <div className="border-t border-walnut-brown/10 pt-6 mt-4">
-              <Link
-                href="/my-account/"
-                className="flex items-center gap-3 font-heading text-base font-semibold text-walnut-brown/80 hover:text-moss-green"
-              >
-                <UserIcon className="h-5 w-5" />
-                {isHydrated && user ? `Hello, ${user.name || "Customer"}` : "My Account"}
-              </Link>
-            </div>
-          </nav>
-        </div>
+        )}
       </header>
 
-      {/* Instant Search Overlay */}
+      {/* Intent Search Modal */}
       <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </>
   );

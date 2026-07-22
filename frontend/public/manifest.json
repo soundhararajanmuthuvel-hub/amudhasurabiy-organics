@@ -1,7 +1,7 @@
 {
-  "name": "Blovit - Amudhasurabiy Organics",
-  "short_name": "Blovit",
-  "description": "Premium organic health malt drinks from Kumbakonam, Tamil Nadu.",
+  "name": "Amudhasurabiy Organics",
+  "short_name": "Amudhasurabiy",
+  "description": "Official Digital Headquarters of Amudhasurabiy Organics — Pure Nutrition. Naturally Crafted.",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
@@ -9,7 +9,12 @@
   "theme_color": "#2E5A44",
   "icons": [
     {
-      "src": "/images/og-image.png",
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

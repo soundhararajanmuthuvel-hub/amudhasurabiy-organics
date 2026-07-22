@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   ArrowRight, Star, ShieldCheck, Heart, Leaf, Truck, Award, 
   ChevronDown, CheckCircle2, Flame, Sparkles, Activity, Clock, 
-  UserCheck, RefreshCw, ShoppingBag 
+  UserCheck, RefreshCw, ShoppingBag, Lock, BookOpen, Layers
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -29,54 +29,70 @@ export default function Home() {
     trackCustomerEvent("page_view", { source: "homepage" });
   }, []);
 
+  const corporateValues = [
+    { title: "Health First", desc: "Formulated to deliver maximum bioavailable nutrition for growing children and families.", icon: Activity },
+    { title: "Natural Ingredients", desc: "100% farm-sourced fresh apples, beetroots, carrots, and Kerala Nendran bananas.", icon: Leaf },
+    { title: "Quality Without Compromise", desc: "Zero artificial preservatives, chemical thickeners, or synthetic food colors.", icon: ShieldCheck },
+    { title: "Transparency", desc: "Open ingredient labeling and raw organic palm jaggery sweetening instead of refined white sugar.", icon: Award },
+    { title: "Sustainability", desc: "Supporting local agricultural growers in Tamil Nadu and eco-conscious food-grade packaging.", icon: Heart },
+    { title: "Customer Trust", desc: "FSSAI licensed facility in Kumbakonam delivering pure unadulterated nutrition nationwide.", icon: UserCheck },
+  ];
+
   const healthGoals = [
-    { id: "all", name: "All Goals", icon: Sparkles },
-    { id: "Increase Iron", name: "🩸 Increase Iron", targetId: "beetroot-malt" },
+    { id: "all", name: "All Health Goals", icon: Sparkles },
+    { id: "Increase Iron", name: "🩸 Increase Iron & Hemoglobin", targetId: "beetroot-malt" },
     { id: "Kids Growth & Nutrition", name: "👶 Kids Growth & Weight", targetId: "nendram-banana-malt" },
-    { id: "Daily Energy", name: "⚡ Daily Stamina", targetId: "banana-malt" },
-    { id: "Family Wellness", name: "🛡️ Family Wellness", targetId: "abc-malt" },
+    { id: "Daily Energy", name: "⚡ Daily Stamina & Vitality", targetId: "banana-malt" },
+    { id: "Family Wellness", name: "🛡️ Family Overall Wellness", targetId: "abc-malt" },
   ];
 
-  const whyBlovitItems = [
-    { title: "100% Natural Ingredients", desc: "Farm-fresh ingredients directly sourced from South Indian agricultural growers.", icon: Leaf },
+  const brands = [
+    {
+      name: "Blovit",
+      tagline: "Natural Malt Nutrition",
+      desc: "Flagship consumer brand featuring 100% natural ABC Malt, Beetroot Malt, and Nendran Banana Malt.",
+      status: "Flagship Brand",
+      href: "/brands/blovit/",
+      active: true,
+    },
+    {
+      name: "Heritage Spices",
+      tagline: "Sun-Dried Infusions",
+      desc: "Upcoming organic brand dedicated to traditional herbal health blends.",
+      status: "Coming Soon",
+      href: "#",
+      active: false,
+    },
+    {
+      name: "Pure Harvest Millets",
+      tagline: "Ancient Grain Superfoods",
+      desc: "Sprouted millet flakes and grain porridge mixes.",
+      status: "Coming Soon",
+      href: "#",
+      active: false,
+    }
+  ];
+
+  const whyChooseUs = [
+    { title: "100% Natural Ingredients", desc: "Farm-fresh produce sourced directly from trusted growers in South India.", icon: Leaf },
     { title: "No Preservatives", desc: "Prepared using authentic sun-drying and small-batch roasting methods.", icon: ShieldCheck },
-    { title: "No Artificial Colours", desc: "Rich vibrant colors derived purely from natural beetroots, apples, and carrots.", icon: Sparkles },
-    { title: "No Refined Sugar", desc: "Naturally sweetened using raw organic palm sugar (Nattu Sakkarai) and palm jaggery.", icon: Heart },
-    { title: "Rich in Natural Nutrition", desc: "Bioavailable iron, calcium, potassium, and vitamins naturally preserved.", icon: Activity },
-    { title: "Family Friendly", desc: "Safe, healthy, and easy to prepare for children, parents, and grandparents.", icon: UserCheck },
-  ];
-
-  const timelineSteps = [
-    { name: "Apple", desc: "Rich in Vitamin C & Fiber", color: "bg-red-500/10 text-red-700" },
-    { name: "Beetroot", desc: "Natural Iron & Nitrates", color: "bg-rose-500/10 text-rose-700" },
-    { name: "Carrot", desc: "Beta-Carotene & Antioxidants", color: "bg-orange-500/10 text-orange-700" },
-    { name: "Nendran Banana", desc: "Potassium & Calorie Booster", color: "bg-amber-500/10 text-amber-700" },
-    { name: "Jaggery", desc: "Unrefined Palm Sugar", color: "bg-amber-700/10 text-amber-800" },
-    { name: "Badam", desc: "Vitamin E & Brain Power", color: "bg-amber-600/10 text-amber-900" },
-    { name: "Cashew", desc: "Zinc & Creamy Texture", color: "bg-yellow-500/10 text-yellow-800" },
-    { name: "Cardamom", desc: "Aromatic Digestive Aid", color: "bg-emerald-500/10 text-emerald-700" },
-    { name: "Blovit", desc: "Pure Luxury Health Drink", color: "bg-moss-green text-white font-bold" },
-  ];
-
-  const processSteps = [
-    { num: "01", title: "Raw Material Sourcing", desc: "Handpicking fresh apples, beetroots, carrots, and Kerala Nendran bananas from trusted farms." },
-    { num: "02", title: "Quality Inspection", desc: "Rigorous cleaning, sorting, and lab testing for zero chemical residues." },
-    { num: "03", title: "Hygienic Production", desc: "Slow sun-drying and small-batch roasting in our FSSAI-licensed Kumbakonam facility." },
-    { num: "04", title: "Eco Packaging", desc: "Sealed in food-grade, moisture-proof containers to retain freshness naturally." },
-    { num: "05", title: "Fast Delivery", desc: "Packed with care and shipped directly to your doorstep across India." },
+    { title: "No Artificial Colours", desc: "Vibrant colors derived purely from natural beetroots, apples, and carrots.", icon: Sparkles },
+    { title: "No Refined Sugar", desc: "Naturally sweetened using raw organic palm sugar (Nattu Sakkarai).", icon: Heart },
+    { title: "Rich in Natural Nutrition", desc: "Bioavailable iron, calcium, potassium, and essential vitamins naturally preserved.", icon: Activity },
+    { title: "Family Friendly", desc: "Safe, wholesome, and easy to prepare for children, parents, and grandparents.", icon: UserCheck },
   ];
 
   const customerReviews = [
     {
       name: "Ramanathan K.",
       location: "Chennai",
-      review: "Blovit ABC Malt has become our family's daily morning drink. Knowing there are zero preservatives or refined sugars gives me complete peace of mind.",
+      review: "Blovit ABC Malt has become our family's daily morning drink. Knowing it comes from Amudhasurabiy Organics with zero artificial preservatives gives complete peace of mind.",
       stars: 5,
     },
     {
       name: "Aswathy Nair",
       location: "Kochi",
-      review: "The Nendran Banana Malt is a natural weight gainer for my toddler. He loves the natural sweetness and it digests very smoothly.",
+      review: "The Nendran Banana Malt is a natural weight gainer for my toddler. He loves the natural sweetness of raw palm jaggery.",
       stars: 5,
     },
     {
@@ -90,238 +106,231 @@ export default function Home() {
   const faqs = [
     {
       question: "Are Blovit malts 100% natural with no preservatives?",
-      answer: "Yes! All Blovit malt drink mixes are manufactured using 100% natural, farm-sourced ingredients. We never add artificial preservatives, synthetic colors, chemical thickeners, or refined white sugar."
+      answer: "Yes! All Blovit malt drink mixes by Amudhasurabiy Organics are manufactured using 100% natural, farm-sourced ingredients. We never add artificial preservatives, synthetic colors, chemical thickeners, or refined white sugar."
     },
     {
-      question: "Which Blovit malt is best for children and weight gain?",
-      answer: "Blovit Nendran Banana Malt and Blovit ABC Malt are exceptional for children. Nendran Banana powder provides clean healthy calories and potassium for weight gain and bone strength."
+      question: "Which malt is best for children and weight gain?",
+      answer: "Blovit Nendran Banana Malt and Blovit ABC Malt are exceptional for children. Nendran Banana powder provides clean healthy calories and potassium for healthy weight gain and bone strength."
     },
     {
-      question: "How do I prepare Blovit malt drinks?",
-      answer: "Simply mix 2 tablespoons (approx. 15g) of Blovit Malt powder into a glass of warm milk or warm water. Stir briskly until completely dissolved. No added sugar is required!"
-    },
-    {
-      question: "Are Blovit products licensed by FSSAI?",
-      answer: "Yes, Amudhasurabiy Organics operates an FSSAI-licensed production facility in Kumbakonam, Thanjavur District (License No: 22421543000120)."
+      question: "Where are Amudhasurabiy Organics products manufactured?",
+      answer: "Our products are manufactured in our licensed FSSAI facility in Kumbakonam, Thanjavur District, Tamil Nadu, adhering to strict sanitary and small-batch roasting standards."
     }
   ];
 
-  const filteredProducts = selectedGoal === "all"
-    ? products
-    : products.filter(p => p.healthGoals?.includes(selectedGoal));
-
   return (
     <>
-      <JsonLd type="organization" data={{}} />
-      <JsonLd type="faq" data={{ faqs }} />
+      <JsonLd
+        type="organization"
+        data={{
+          name: "Amudhasurabiy Organics",
+          url: "https://amudhasurabiy.com"
+        }}
+      />
+
       <Header />
 
-      <main className="flex-grow bg-white">
+      <main className="min-h-screen bg-cream text-charcoal">
         
-        {/* 1. Cinematic Hero Section */}
-        <section className="relative min-h-[85vh] w-full overflow-hidden flex items-center bg-black">
-          <div className="absolute inset-0 z-0">
-            <Image
-              src="/images/hero-bg.png"
-              alt="Natural Organic Ingredients background"
-              fill
-              priority
-              className="object-cover opacity-75 animate-ken-burns"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-walnut-brown/90 via-walnut-brown/50 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30" />
-          </div>
-
-          <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full py-20">
-            <div className="max-w-2xl text-white">
-              <motion.span
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                className="font-heading text-xs font-bold tracking-widest text-cream uppercase bg-moss-green/80 px-4 py-2 rounded-full inline-block mb-6 shadow-sm border border-white/10"
-              >
-                Amudhasurabiy Organics • Kumbakonam
-              </motion.span>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="font-heading text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-tight mb-6"
-              >
-                Nature's Nutrition,
-                <span className="block text-cream-dark font-light italic mt-2">Crafted with Care.</span>
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="font-body text-base sm:text-lg text-cream-dark/90 leading-relaxed mb-8 max-w-lg"
-              >
-                Premium organic malt mixes crafted with fresh farm ingredients. 100% natural, chemical-free nutrition for your whole family.
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="flex flex-col sm:flex-row gap-4"
-              >
-                <Link
-                  href="/shop/"
-                  className="flex items-center justify-center gap-2 bg-cream hover:bg-white text-walnut-brown px-8 py-4 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-lg group hover:scale-105"
-                >
-                  Shop Collection
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-                <Link
-                  href="/our-story/"
-                  className="flex items-center justify-center gap-2 bg-transparent border border-white/30 hover:border-white hover:bg-white/10 text-white px-8 py-4 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all duration-300 hover:scale-105"
-                >
-                  Our Brand Story
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* 2. Early Homepage Trust Indicators */}
-        <section className="py-8 bg-cream border-b border-walnut-brown/5">
+        {/* 1. HERO SECTION (Inspired Stage) */}
+        <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-28 border-b border-walnut-brown/10 bg-gradient-to-b from-cream via-cream-dark/30 to-cream">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 text-center">
-              {[
-                "100% Natural Ingredients",
-                "No Artificial Preservatives",
-                "FSSAI Licensed",
-                "Secure Payments",
-                "Made in India",
-                "Fast Shipping Across India",
-                "WhatsApp Support"
-              ].map((trust, idx) => (
-                <div key={idx} className="flex flex-col items-center justify-center p-3 rounded-2xl bg-white border border-walnut-brown/5 shadow-2xs">
-                  <CheckCircle2 className="h-4 w-4 text-moss-green mb-1.5" />
-                  <span className="font-heading text-[10px] font-bold text-walnut-brown uppercase tracking-wider">{trust}</span>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+              
+              {/* Left Column: Hero Content */}
+              <div className="lg:col-span-7 space-y-6 text-left">
+                
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-moss-green/10 text-moss-green font-heading text-xs font-bold uppercase tracking-widest">
+                  <Sparkles className="h-3.5 w-3.5 text-moss-green" />
+                  <span>Amudhasurabiy Organics Corporate Headquarters</span>
                 </div>
-              ))}
+
+                <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-walnut-brown leading-[1.15]">
+                  Naturally Nourishing <br />
+                  <span className="text-moss-green italic font-serif">Every Generation.</span>
+                </h1>
+
+                <p className="font-body text-base sm:text-lg text-walnut-brown/80 max-w-2xl leading-relaxed">
+                  At <strong>Amudhasurabiy Organics</strong>, we craft premium natural food and nutrition products using carefully selected ingredients, traditional wisdom, and modern quality standards—helping families embrace healthier living every day.
+                </p>
+
+                {/* Hero CTAs */}
+                <div className="pt-4 flex flex-wrap items-center gap-4">
+                  <Link
+                    href="/our-brands/"
+                    className="btn-primary px-8 py-4 text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-lg"
+                  >
+                    <span>Explore Our Brands</span>
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+
+                  <Link
+                    href="/shop/"
+                    className="btn-secondary px-8 py-4 text-xs font-bold uppercase tracking-wider flex items-center gap-2"
+                  >
+                    <span>Shop All Products</span>
+                  </Link>
+                </div>
+
+                {/* Micro Trust Tags */}
+                <div className="pt-8 border-t border-walnut-brown/10 flex flex-wrap items-center gap-6 text-xs font-body text-walnut-brown/70">
+                  <span className="flex items-center gap-1.5">
+                    <ShieldCheck className="h-4 w-4 text-moss-green" /> 100% Farm-Fresh
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Award className="h-4 w-4 text-moss-green" /> FSSAI Certified Unit
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Heart className="h-4 w-4 text-moss-green" /> Kumbakonam Sourced
+                  </span>
+                </div>
+
+              </div>
+
+              {/* Right Column: Hero Visual Showcase */}
+              <div className="lg:col-span-5 relative">
+                <div className="relative mx-auto max-w-md lg:max-w-none">
+                  <div className="absolute -inset-4 rounded-3xl bg-moss-green/10 blur-2xl -z-10" />
+                  <div className="rounded-3xl bg-white p-6 sm:p-8 border border-walnut-brown/10 shadow-2xl relative">
+                    <div className="relative h-72 sm:h-80 w-full rounded-2xl bg-cream-dark/40 overflow-hidden flex items-center justify-center p-4">
+                      <Image
+                        src="/images/abc-malt.png"
+                        alt="Blovit ABC Malt by Amudhasurabiy Organics"
+                        width={280}
+                        height={280}
+                        className="h-64 w-auto object-contain transition-transform duration-700 hover:scale-105"
+                        priority
+                      />
+                      <span className="absolute top-4 left-4 bg-moss-green text-white text-[10px] font-heading font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow">
+                        Flagship Product
+                      </span>
+                    </div>
+
+                    <div className="mt-6 flex items-center justify-between">
+                      <div>
+                        <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-wider">
+                          Flagship Brand: Blovit
+                        </span>
+                        <h3 className="font-heading text-xl font-bold text-walnut-brown">
+                          ABC Malt (Apple, Beetroot, Carrot)
+                        </h3>
+                      </div>
+                      <Link
+                        href="/product/abc-malt/"
+                        className="p-3 rounded-full bg-cream hover:bg-moss-green hover:text-white text-walnut-brown transition-all shadow"
+                        aria-label="View Product Details"
+                      >
+                        <ArrowRight className="h-5 w-5" />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </section>
 
-        {/* 3. Shop By Health Goals */}
-        <section className="py-16 bg-white">
+        {/* 2. BRAND PHILOSOPHY SECTION (Core Belief) */}
+        <section className="py-16 md:py-24 bg-walnut-brown text-cream-dark border-b border-walnut-brown/20 relative">
+          <div className="mx-auto max-w-4xl px-4 text-center space-y-6">
+            <span className="text-moss-green font-heading text-xs font-bold uppercase tracking-widest block">
+              Corporate Brand Philosophy
+            </span>
+            <h2 className="font-heading text-4xl sm:text-5xl font-bold text-white tracking-tight">
+              "Health is Wealth."
+            </h2>
+            <p className="font-body text-base sm:text-lg text-cream-dark/90 leading-relaxed max-w-2xl mx-auto">
+              This simple belief guides everything we create—from carefully sourced ingredients to thoughtfully crafted nutrition that supports healthier families and better living.
+            </p>
+            <div className="pt-4">
+              <Link
+                href="/about/"
+                className="inline-flex items-center gap-2 font-heading text-xs font-bold text-moss-green hover:text-white uppercase tracking-wider transition-colors"
+              >
+                <span>Read Amudhasurabiy Parent Story</span>
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* 3. OUR PURPOSE SECTION */}
+        <section className="py-16 md:py-24 bg-cream border-b border-walnut-brown/10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-xl mx-auto mb-10">
-              <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest block mb-2">
-                Targeted Wellness
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+              <div className="space-y-6">
+                <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest">
+                  Why Amudhasurabiy Organics Was Created
+                </span>
+                <h2 className="font-heading text-3xl sm:text-4xl font-bold text-walnut-brown tracking-tight">
+                  Restoring Pure, Chemical-Free Nutrition to Indian Homes
+                </h2>
+                <p className="font-body text-xs sm:text-sm text-walnut-brown/80 leading-relaxed">
+                  In an era dominated by processed ultra-refined food powders packed with artificial colors, synthetic thickeners, and excessive white refined sugar, Amudhasurabiy Organics was born out of a commitment to return to real nutrition.
+                </p>
+                <p className="font-body text-xs sm:text-sm text-walnut-brown/80 leading-relaxed">
+                  Named after the legendary vessel of unlimited abundance (*Amudha Surabhi*), our mission is to manufacture 100% natural, farm-sourced health drink mixes that families can rely on daily.
+                </p>
+              </div>
+
+              <div className="rounded-3xl bg-white p-8 border border-walnut-brown/10 shadow-lg space-y-6">
+                <h3 className="font-heading text-xl font-bold text-walnut-brown">Corporate Pillars</h3>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-4">
+                    <div className="h-10 w-10 rounded-2xl bg-moss-green/10 text-moss-green flex items-center justify-center shrink-0">
+                      <Leaf className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-heading text-sm font-bold text-walnut-brown">100% Farm-Sourced Raw Materials</h4>
+                      <p className="font-body text-xs text-walnut-brown/70">Sourced directly from local farmers in Kumbakonam and South India.</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4">
+                    <div className="h-10 w-10 rounded-2xl bg-moss-green/10 text-moss-green flex items-center justify-center shrink-0">
+                      <Heart className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-heading text-sm font-bold text-walnut-brown">Raw Organic Palm Sugar Sweetening</h4>
+                      <p className="font-body text-xs text-walnut-brown/70">Naturally sweetened with Nattu Sakkarai and raw palm jaggery.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 4. OUR VALUES SECTION */}
+        <section className="py-16 md:py-24 bg-cream-dark/30 border-b border-walnut-brown/10">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+              <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest">
+                Our Core Values
               </span>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-walnut-brown">
-                Shop By Health Goal
+              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-walnut-brown tracking-tight">
+                Principles That Build Unshakable Trust
               </h2>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-3 mb-12">
-              {healthGoals.map((goal) => (
-                <button
-                  key={goal.id}
-                  onClick={() => setSelectedGoal(goal.id)}
-                  className={`px-5 py-3 rounded-full font-heading text-xs font-semibold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
-                    selectedGoal === goal.id
-                      ? "bg-moss-green text-white shadow-md scale-105"
-                      : "bg-cream-dark text-walnut-brown hover:bg-walnut-brown hover:text-white"
-                  }`}
-                >
-                  {goal.name}
-                </button>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 4. Best Sellers / Featured Products */}
-        <section className="py-12 bg-cream-dark">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
-              <div>
-                <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest block mb-2">
-                  Our Signature Collection
-                </span>
-                <h2 className="font-heading text-3xl md:text-4xl font-bold text-walnut-brown">
-                  Blovit Natural Malts
-                </h2>
-              </div>
-              <Link
-                href="/shop/"
-                className="mt-4 md:mt-0 flex items-center gap-1 font-heading text-xs font-bold text-moss-green uppercase tracking-wider hover:text-walnut-brown transition-colors group"
-              >
-                View all products
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {filteredProducts.map((product) => {
-                const isFavorite = wishlist.includes(product.id);
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {corporateValues.map((v) => {
+                const Icon = v.icon;
                 return (
                   <div
-                    key={product.id}
-                    className="group bg-white rounded-3xl overflow-hidden border border-walnut-brown/5 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full hover:-translate-y-1 relative"
+                    key={v.title}
+                    className="rounded-3xl bg-white p-8 border border-walnut-brown/10 shadow-sm hover:shadow-xl transition-all duration-300 space-y-4"
                   >
-                    {product.isBestseller && (
-                      <span className="absolute top-4 left-4 z-10 bg-moss-green text-cream text-[9px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full shadow-sm">
-                        Best Seller
-                      </span>
-                    )}
-
-                    <button
-                      onClick={() => toggleWishlist(product.id)}
-                      className="absolute top-4 right-4 z-10 p-2.5 rounded-full bg-white/95 text-walnut-brown hover:text-red-500 shadow-md transition-colors hover:scale-105"
-                      aria-label="Wishlist"
-                    >
-                      <Heart className={`h-4.5 w-4.5 ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
-                    </button>
-
-                    <div className="relative h-64 w-full bg-cream overflow-hidden">
-                      <Image
-                        src={product.imageUrl}
-                        alt={product.name}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
+                    <div className="h-12 w-12 rounded-2xl bg-moss-green/10 text-moss-green flex items-center justify-center">
+                      <Icon className="h-6 w-6" />
                     </div>
-
-                    <div className="p-6 flex flex-col flex-grow">
-                      <div className="flex justify-between items-start mb-2">
-                        <Link href={`/product/${product.slug}/`} className="hover:text-moss-green transition-colors">
-                          <h3 className="font-heading text-xl font-bold text-walnut-brown">
-                            {product.name}
-                          </h3>
-                        </Link>
-                        <span className="font-heading text-lg font-bold text-moss-green">
-                          ₹{product.price}
-                        </span>
-                      </div>
-                      <p className="font-body text-xs text-walnut-brown/70 line-clamp-2 mb-6 leading-relaxed">
-                        {product.description}
-                      </p>
-
-                      <div className="flex gap-2 mt-auto">
-                        <Link
-                          href={`/product/${product.slug}/`}
-                          className="flex-grow flex items-center justify-center bg-cream-dark hover:bg-walnut-brown hover:text-white text-walnut-brown px-4 py-3 rounded-full font-heading text-[10px] font-bold uppercase tracking-wider transition-all duration-300"
-                        >
-                          Details
-                        </Link>
-                        <button
-                          onClick={() => addToCart(product, 1)}
-                          className="flex items-center justify-center gap-1 bg-moss-green hover:bg-walnut-brown text-white px-5 py-3 rounded-full font-heading text-[10px] font-bold uppercase tracking-wider transition-all duration-300 group"
-                        >
-                          Add to Cart
-                          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-                        </button>
-                      </div>
-                    </div>
+                    <h3 className="font-heading text-lg font-bold text-walnut-brown">
+                      {v.title}
+                    </h3>
+                    <p className="font-body text-xs text-walnut-brown/75 leading-relaxed">
+                      {v.desc}
+                    </p>
                   </div>
                 );
               })}
@@ -329,184 +338,73 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 5. Why Blovit Section */}
-        <section className="py-24 bg-white">
+        {/* 5. OUR BRANDS SECTION (Multi-Brand Showcase) */}
+        <section className="py-16 md:py-24 bg-cream border-b border-walnut-brown/10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-xl mx-auto mb-16">
-              <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest block mb-2">
-                Pure Quality Promise
-              </span>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-walnut-brown">
-                Why Families Choose Blovit
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {whyBlovitItems.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="bg-cream rounded-3xl p-8 border border-walnut-brown/5 card-hover flex flex-col items-start"
-                >
-                  <div className="h-12 w-12 rounded-full bg-moss-green/10 text-moss-green flex items-center justify-center mb-6">
-                    <item.icon className="h-6 w-6" />
-                  </div>
-                  <h3 className="font-heading text-lg font-bold text-walnut-brown mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="font-body text-xs text-walnut-brown/70 leading-relaxed">
-                    {item.desc}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 6. Ingredient Journey (Timeline) */}
-        <section className="py-24 bg-cream-dark">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-xl mx-auto mb-16">
-              <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest block mb-2">
-                From Farm To Cup
-              </span>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-walnut-brown">
-                The Blovit Ingredient Journey
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 gap-4 items-center">
-              {timelineSteps.map((step, idx) => (
-                <div key={idx} className="flex flex-col items-center text-center">
-                  <div className={`w-full p-4 rounded-2xl border border-walnut-brown/10 shadow-2xs mb-2 ${step.color}`}>
-                    <span className="font-heading text-xs font-bold block">{step.name}</span>
-                  </div>
-                  <span className="font-body text-[10px] text-walnut-brown/60">{step.desc}</span>
-                  {idx < timelineSteps.length - 1 && (
-                    <span className="hidden lg:block text-walnut-brown/30 mt-2 font-bold">➔</span>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 7. Founder & Brand Story */}
-        <section className="py-24 bg-white border-y border-walnut-brown/5">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-              <div className="lg:col-span-6 bg-cream rounded-3xl p-8 lg:p-12 border border-walnut-brown/5">
-                <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest block mb-4">
-                  Amudhasurabiy Organics
-                </span>
-                <h2 className="font-heading text-3xl sm:text-4xl font-bold text-walnut-brown mb-6">
-                  Rooted in Kumbakonam Heritage
-                </h2>
-                <p className="font-body text-sm text-walnut-brown/80 leading-relaxed mb-6">
-                  Founded in Kumbakonam, Thanjavur District, Amudhasurabiy Organics was born with a mission to bring authentic, farm-fresh Indian wellness drinks back into modern households.
-                </p>
-                <p className="font-body text-sm text-walnut-brown/80 leading-relaxed mb-8">
-                  Unlike commercial drinks packed with synthetic maltodextrin and refined sugars, every pack of Blovit is slowly sun-dried and crafted in small batches to preserve pure bioavailable nutrition.
-                </p>
-                <Link
-                  href="/our-story/"
-                  className="inline-flex items-center gap-2 bg-moss-green hover:bg-walnut-brown text-white px-6 py-3.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all shadow-md"
-                >
-                  Read Our Founder's Story
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-
-              <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="bg-cream-dark p-6 rounded-3xl border border-walnut-brown/5">
-                  <h3 className="font-heading text-base font-bold text-walnut-brown mb-2">Direct Sourcing</h3>
-                  <p className="font-body text-xs text-walnut-brown/70">Partnerships with local farmers in Tamil Nadu & Kerala for fresh organic raw produce.</p>
-                </div>
-                <div className="bg-cream-dark p-6 rounded-3xl border border-walnut-brown/5">
-                  <h3 className="font-heading text-base font-bold text-walnut-brown mb-2">FSSAI Certified</h3>
-                  <p className="font-body text-xs text-walnut-brown/70">Manufactured under strict ISO & hygiene audit standards (Lic. 22421543000120).</p>
-                </div>
-                <div className="bg-cream-dark p-6 rounded-3xl border border-walnut-brown/5">
-                  <h3 className="font-heading text-base font-bold text-walnut-brown mb-2">Small-Batch Care</h3>
-                  <p className="font-body text-xs text-walnut-brown/70">Roasting in controlled temperature to protect natural enzymes and minerals.</p>
-                </div>
-                <div className="bg-cream-dark p-6 rounded-3xl border border-walnut-brown/5">
-                  <h3 className="font-heading text-base font-bold text-walnut-brown mb-2">Zero Chemicals</h3>
-                  <p className="font-body text-xs text-walnut-brown/70">No artificial colors, thickeners, or chemical preservatives—guaranteed.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 8. Manufacturing Process */}
-        <section className="py-24 bg-cream">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-xl mx-auto mb-16">
-              <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest block mb-2">
-                Uncompromising Quality
-              </span>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-walnut-brown">
-                5-Step Manufacturing Standard
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
-              {processSteps.map((p, idx) => (
-                <div key={idx} className="bg-white rounded-3xl p-6 border border-walnut-brown/5 shadow-2xs flex flex-col justify-between">
-                  <span className="font-heading text-3xl font-extrabold text-moss-green/30 mb-4">{p.num}</span>
-                  <div>
-                    <h3 className="font-heading text-base font-bold text-walnut-brown mb-2">{p.title}</h3>
-                    <p className="font-body text-xs text-walnut-brown/70 leading-relaxed">{p.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 9. Featured Recipes */}
-        <section className="py-24 bg-white">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
               <div>
-                <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest block mb-2">
-                  Blovit Kitchen
+                <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest">
+                  Brand Ecosystem
                 </span>
-                <h2 className="font-heading text-3xl md:text-4xl font-bold text-walnut-brown">
-                  Delicious Recipe Ideas
+                <h2 className="font-heading text-3xl sm:text-4xl font-bold text-walnut-brown mt-1">
+                  Our Consumer Brands Portfolio
                 </h2>
               </div>
               <Link
-                href="/recipes/"
-                className="mt-4 md:mt-0 flex items-center gap-1 font-heading text-xs font-bold text-moss-green uppercase tracking-wider hover:text-walnut-brown transition-colors group"
+                href="/our-brands/"
+                className="font-heading text-xs font-bold text-moss-green hover:text-walnut-brown uppercase tracking-wider flex items-center gap-1 group transition-colors"
               >
-                View all recipes
+                <span>View Full Portfolio</span>
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {MOCK_RECIPES.map((recipe) => (
-                <div key={recipe.id} className="bg-cream rounded-3xl overflow-hidden border border-walnut-brown/5 shadow-sm flex flex-col h-full">
-                  <div className="relative h-48 w-full bg-cream-dark">
-                    <Image src={recipe.imageUrl} alt={recipe.title} fill className="object-cover" />
-                  </div>
-                  <div className="p-6 flex flex-col flex-grow">
-                    <span className="font-body text-[10px] uppercase font-bold text-moss-green tracking-wider mb-2">
-                      {recipe.category} • {recipe.prepTime}
-                    </span>
-                    <Link href={`/recipes/${recipe.slug}/`} className="hover:text-moss-green transition-colors">
-                      <h3 className="font-heading text-lg font-bold text-walnut-brown mb-2">{recipe.title}</h3>
-                    </Link>
-                    <p className="font-body text-xs text-walnut-brown/70 line-clamp-2 mb-6 leading-relaxed">
-                      {recipe.description}
+              {brands.map((b) => (
+                <div
+                  key={b.name}
+                  className={`rounded-3xl p-8 border transition-all duration-300 flex flex-col justify-between ${
+                    b.active
+                      ? "bg-white border-moss-green/30 shadow-lg hover:shadow-xl"
+                      : "bg-cream-dark/40 border-walnut-brown/10 opacity-80"
+                  }`}
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <span
+                        className={`px-3 py-1 rounded-full text-[10px] font-heading font-bold uppercase ${
+                          b.active ? "bg-moss-green text-white" : "bg-walnut-brown/10 text-walnut-brown/60"
+                        }`}
+                      >
+                        {b.status}
+                      </span>
+                    </div>
+
+                    <h3 className="font-heading text-2xl font-bold text-walnut-brown mb-1">
+                      {b.name}
+                    </h3>
+                    <p className="font-heading text-xs font-semibold text-moss-green uppercase tracking-wider mb-3">
+                      {b.tagline}
                     </p>
-                    <Link
-                      href={`/recipes/${recipe.slug}/`}
-                      className="mt-auto inline-flex items-center gap-1 font-heading text-xs font-bold text-moss-green uppercase tracking-wider hover:text-walnut-brown"
-                    >
-                      Read Recipe <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
+                    <p className="font-body text-xs text-walnut-brown/75 leading-relaxed mb-6">
+                      {b.desc}
+                    </p>
+                  </div>
+
+                  <div>
+                    {b.active ? (
+                      <Link
+                        href={b.href}
+                        className="inline-flex items-center justify-between w-full bg-moss-green hover:bg-walnut-brown text-white px-5 py-3 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-colors shadow"
+                      >
+                        <span>Explore Blovit</span>
+                        <ArrowRight className="h-4 w-4" />
+                      </Link>
+                    ) : (
+                      <span className="block text-center text-xs font-body text-walnut-brown/50 py-3">
+                        In Formulation Phase
+                      </span>
+                    )}
                   </div>
                 </div>
               ))}
@@ -514,32 +412,72 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 10. Customer Testimonials */}
-        <section className="py-24 bg-cream-dark">
+        {/* 6. FEATURED PRODUCTS SECTION */}
+        <section className="py-16 md:py-24 bg-cream-dark/20 border-b border-walnut-brown/10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-xl mx-auto mb-16">
-              <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest block mb-2">
-                Verified Reviews
+            <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
+              <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest">
+                Flagship Consumer Products
               </span>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-walnut-brown">
-                Loved by Families Nationwide
+              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-walnut-brown tracking-tight">
+                Blovit Natural Malt Health Drinks
               </h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {customerReviews.map((t, idx) => (
-                <div key={idx} className="bg-white rounded-3xl p-8 border border-walnut-brown/5 shadow-sm">
-                  <div className="flex gap-1 text-amber-500 mb-6">
-                    {[...Array(t.stars)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-amber-500 stroke-none" />
-                    ))}
-                  </div>
-                  <p className="font-body text-xs text-walnut-brown/80 leading-relaxed mb-6 italic">
-                    "{t.review}"
-                  </p>
+              {products.slice(0, 3).map((p) => (
+                <div
+                  key={p.id}
+                  className="rounded-3xl bg-white border border-walnut-brown/10 p-6 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+                >
                   <div>
-                    <h4 className="font-heading text-sm font-bold text-walnut-brown">{t.name}</h4>
-                    <span className="font-body text-[10px] text-walnut-brown/60">{t.location} • Verified Buyer</span>
+                    <div className="relative h-56 w-full rounded-2xl bg-cream-dark/30 mb-6 overflow-hidden flex items-center justify-center p-4">
+                      <Image
+                        src={p.imageUrl}
+                        alt={p.name}
+                        width={200}
+                        height={200}
+                        className="h-48 w-auto object-contain transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <span className="absolute top-3 right-3 bg-moss-green text-white text-[10px] font-heading font-bold px-2.5 py-1 rounded-full uppercase">
+                        Blovit
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2 text-amber-500 text-xs mb-2">
+                      <div className="flex">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+                        ))}
+                      </div>
+                      <span className="text-walnut-brown/60 font-body text-[11px]">
+                        ({p.reviewsCount} reviews)
+                      </span>
+                    </div>
+
+                    <h3 className="font-heading text-xl font-bold text-walnut-brown mb-1">
+                      {p.name}
+                    </h3>
+                    <p className="font-body text-xs text-walnut-brown/70 leading-relaxed mb-4">
+                      {p.description}
+                    </p>
+                  </div>
+
+                  <div className="pt-4 border-t border-walnut-brown/10 flex items-center justify-between">
+                    <div>
+                      <span className="font-heading text-lg font-bold text-walnut-brown">
+                        ₹{p.price}
+                      </span>
+                      <span className="font-body text-xs text-walnut-brown/40 line-through ml-2">
+                        ₹{p.originalPrice}
+                      </span>
+                    </div>
+                    <Link
+                      href={`/product/${p.slug}/`}
+                      className="bg-moss-green hover:bg-walnut-brown text-white px-5 py-2.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-colors shadow-md"
+                    >
+                      View Details
+                    </Link>
                   </div>
                 </div>
               ))}
@@ -547,51 +485,303 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 11. FAQs Accordion */}
-        <section className="py-24 bg-white">
-          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-xl mx-auto mb-16">
-              <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest block mb-2">
-                Got Questions?
+        {/* 7. WHY CHOOSE AMUDHASURABIY ORGANICS */}
+        <section className="py-16 md:py-24 bg-cream border-b border-walnut-brown/10">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+              <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest">
+                The Amudhasurabiy Difference
               </span>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-walnut-brown">
-                Frequently Asked Questions
+              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-walnut-brown tracking-tight">
+                Why Families Choose Our Products
               </h2>
             </div>
 
-            <div className="flex flex-col gap-4">
-              {faqs.map((faq, idx) => (
-                <div key={idx} className="border border-walnut-brown/10 rounded-2xl overflow-hidden bg-cream">
-                  <button
-                    onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
-                    className="w-full flex items-center justify-between p-6 text-left font-heading text-base font-bold text-walnut-brown hover:text-moss-green transition-colors"
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {whyChooseUs.map((w) => {
+                const Icon = w.icon;
+                return (
+                  <div
+                    key={w.title}
+                    className="rounded-3xl bg-white p-8 border border-walnut-brown/10 shadow-sm space-y-3"
                   >
-                    <span>{faq.question}</span>
-                    <ChevronDown className={`h-5 w-5 transition-transform ${activeFaq === idx ? "rotate-180 text-moss-green" : ""}`} />
-                  </button>
-                  <AnimatePresence>
-                    {activeFaq === idx && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="px-6 pb-6 font-body text-xs text-walnut-brown/80 leading-relaxed border-t border-walnut-brown/5 pt-4"
-                      >
-                        {faq.answer}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                    <div className="h-10 w-10 rounded-2xl bg-moss-green/10 text-moss-green flex items-center justify-center">
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <h3 className="font-heading text-base font-bold text-walnut-brown">
+                      {w.title}
+                    </h3>
+                    <p className="font-body text-xs text-walnut-brown/70 leading-relaxed">
+                      {w.desc}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* 8. HEALTH GOALS INTENT SELECTOR */}
+        <section className="py-16 md:py-24 bg-cream-dark/30 border-b border-walnut-brown/10">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
+              <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest">
+                Intent-Based Product Matching
+              </span>
+              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-walnut-brown tracking-tight">
+                Find Nutrition That Matches Your Health Goals
+              </h2>
+            </div>
+
+            {/* Chips */}
+            <div className="flex flex-wrap justify-center gap-3 mb-12">
+              {healthGoals.map((g) => (
+                <button
+                  key={g.id}
+                  onClick={() => setSelectedGoal(g.id)}
+                  className={`px-5 py-3 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all shadow-sm ${
+                    selectedGoal === g.id
+                      ? "bg-moss-green text-white"
+                      : "bg-white text-walnut-brown hover:bg-walnut-brown/10"
+                  }`}
+                >
+                  {g.name}
+                </button>
+              ))}
+            </div>
+
+            {/* Products Filtered Result */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {products.slice(0, 3).map((p) => (
+                <div
+                  key={p.id}
+                  className="rounded-3xl bg-white border border-walnut-brown/10 p-6 shadow-sm flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="h-44 w-full bg-cream-dark/30 rounded-2xl p-4 flex items-center justify-center mb-4">
+                      <Image
+                        src={p.imageUrl}
+                        alt={p.name}
+                        width={180}
+                        height={180}
+                        className="h-36 w-auto object-contain"
+                      />
+                    </div>
+                    <h3 className="font-heading text-lg font-bold text-walnut-brown mb-1">
+                      Blovit — {p.name}
+                    </h3>
+                    <p className="font-body text-xs text-walnut-brown/70 leading-relaxed mb-4">
+                      {p.description}
+                    </p>
+                  </div>
+                  <Link
+                    href={`/product/${p.slug}/`}
+                    className="w-full bg-moss-green text-white text-center py-3 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-colors hover:bg-walnut-brown"
+                  >
+                    Select Product — ₹{p.price}
+                  </Link>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 9. HEALTH LIBRARY & BLOGS */}
+        <section className="py-16 md:py-24 bg-cream border-b border-walnut-brown/10">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
+              <div>
+                <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest">
+                  Educational Content
+                </span>
+                <h2 className="font-heading text-3xl sm:text-4xl font-bold text-walnut-brown mt-1">
+                  Amudhasurabiy Health Library
+                </h2>
+              </div>
+              <Link
+                href="/health-library/"
+                className="font-heading text-xs font-bold text-moss-green hover:text-walnut-brown uppercase tracking-wider flex items-center gap-1 group transition-colors"
+              >
+                <span>Browse All Articles</span>
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="rounded-3xl bg-white border border-walnut-brown/10 p-8 shadow-sm space-y-4">
+                <span className="px-3 py-1 rounded-full bg-moss-green/10 text-moss-green text-[10px] font-heading font-bold uppercase">
+                  Nutritional Science
+                </span>
+                <h3 className="font-heading text-lg font-bold text-walnut-brown leading-snug">
+                  Why ABC Malt (Apple, Beetroot, Carrot) Boosts Hemoglobin
+                </h3>
+                <p className="font-body text-xs text-walnut-brown/70 leading-relaxed">
+                  Discover how bioavailable iron from beetroots and Vitamin C from fresh apples combine for daily stamina.
+                </p>
+                <Link
+                  href="/health-library/why-abc-malt-is-the-ultimate-morning-drink/"
+                  className="inline-flex items-center gap-1 text-xs font-heading font-bold text-moss-green uppercase tracking-wider hover:text-walnut-brown"
+                >
+                  <span>Read Article</span>
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+
+              <div className="rounded-3xl bg-white border border-walnut-brown/10 p-8 shadow-sm space-y-4">
+                <span className="px-3 py-1 rounded-full bg-moss-green/10 text-moss-green text-[10px] font-heading font-bold uppercase">
+                  Kids Growth
+                </span>
+                <h3 className="font-heading text-lg font-bold text-walnut-brown leading-snug">
+                  Kerala Nendran Banana Powder for Toddler Weight Gain
+                </h3>
+                <p className="font-body text-xs text-walnut-brown/70 leading-relaxed">
+                  Traditional South Indian nutrition wisdom for healthy calories, easy digestion, and bone strength.
+                </p>
+                <Link
+                  href="/health-library/nendran-banana-powder-for-toddler-weight-gain/"
+                  className="inline-flex items-center gap-1 text-xs font-heading font-bold text-moss-green uppercase tracking-wider hover:text-walnut-brown"
+                >
+                  <span>Read Article</span>
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+
+              <div className="rounded-3xl bg-white border border-walnut-brown/10 p-8 shadow-sm space-y-4">
+                <span className="px-3 py-1 rounded-full bg-moss-green/10 text-moss-green text-[10px] font-heading font-bold uppercase">
+                  Ingredient Wisdom
+                </span>
+                <h3 className="font-heading text-lg font-bold text-walnut-brown leading-snug">
+                  The Sugar Trap: Why Raw Organic Palm Sugar Matters
+                </h3>
+                <p className="font-body text-xs text-walnut-brown/70 leading-relaxed">
+                  How raw palm jaggery (Nattu Sakkarai) provides sustained energy without white sugar glycemic spikes.
+                </p>
+                <Link
+                  href="/health-library/dangers-of-refined-sugar-in-commercial-health-drinks/"
+                  className="inline-flex items-center gap-1 text-xs font-heading font-bold text-moss-green uppercase tracking-wider hover:text-walnut-brown"
+                >
+                  <span>Read Article</span>
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 10. CUSTOMER REVIEWS (Social Proof) */}
+        <section className="py-16 md:py-24 bg-cream-dark/30 border-b border-walnut-brown/10">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
+              <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest">
+                Customer Stories & Social Proof
+              </span>
+              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-walnut-brown tracking-tight">
+                Trusted by Families Across India
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {customerReviews.map((r, i) => (
+                <div
+                  key={i}
+                  className="rounded-3xl bg-white p-8 border border-walnut-brown/10 shadow-sm space-y-4 flex flex-col justify-between"
+                >
+                  <div className="space-y-3">
+                    <div className="flex text-amber-400">
+                      {[...Array(r.stars)].map((_, s) => (
+                        <Star key={s} className="h-4 w-4 fill-amber-400" />
+                      ))}
+                    </div>
+                    <p className="font-body text-xs text-walnut-brown/80 leading-relaxed italic">
+                      "{r.review}"
+                    </p>
+                  </div>
+                  <div className="pt-4 border-t border-walnut-brown/10 flex items-center justify-between text-xs font-body">
+                    <span className="font-heading font-bold text-walnut-brown">{r.name}</span>
+                    <span className="text-walnut-brown/50">{r.location}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 11. FAQ ACCORDION SECTION */}
+        <section className="py-16 md:py-24 bg-cream border-b border-walnut-brown/10">
+          <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 space-y-8">
+            <div className="text-center space-y-3">
+              <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest">
+                Frequently Asked Questions
+              </span>
+              <h2 className="font-heading text-3xl font-bold text-walnut-brown">
+                Everything You Need to Know
+              </h2>
+            </div>
+
+            <div className="space-y-4">
+              {faqs.map((faq, index) => {
+                const isOpen = activeFaq === index;
+                return (
+                  <div
+                    key={index}
+                    className="rounded-2xl bg-white border border-walnut-brown/10 overflow-hidden transition-all"
+                  >
+                    <button
+                      onClick={() => setActiveFaq(isOpen ? null : index)}
+                      className="w-full p-6 text-left font-heading text-sm font-bold text-walnut-brown flex items-center justify-between gap-4"
+                    >
+                      <span>{faq.question}</span>
+                      <ChevronDown
+                        className={`h-5 w-5 text-moss-green transition-transform duration-300 shrink-0 ${
+                          isOpen ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+                    {isOpen && (
+                      <div className="px-6 pb-6 pt-2 font-body text-xs text-walnut-brown/80 leading-relaxed border-t border-walnut-brown/5">
+                        {faq.answer}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* 12. CORPORATE FOOTER BANNER */}
+        <section className="py-16 bg-walnut-brown text-white text-center">
+          <div className="mx-auto max-w-4xl px-4 space-y-6">
+            <Sparkles className="h-10 w-10 text-moss-green mx-auto" />
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold">
+              Amudhasurabiy Organics
+            </h2>
+            <p className="font-body text-xs sm:text-sm text-cream-dark/80 max-w-xl mx-auto leading-relaxed">
+              Official Digital Headquarters • Kumbakonam, Tamil Nadu, India.
+              <br />
+              Pure Nutrition. Naturally Crafted.
+            </p>
+            <div className="pt-2 flex flex-wrap justify-center gap-4">
+              <Link
+                href="/shop/"
+                className="bg-moss-green hover:bg-white hover:text-walnut-brown text-white px-8 py-3.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all shadow-md"
+              >
+                Shop Blovit Range
+              </Link>
+              <Link
+                href="/quality-and-trust/"
+                className="border border-cream/30 hover:border-white text-white px-8 py-3.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all"
+              >
+                Quality Standards
+              </Link>
             </div>
           </div>
         </section>
 
       </main>
 
-      <WhatsAppButton />
       <Footer />
+      <WhatsAppButton />
     </>
   );
 }

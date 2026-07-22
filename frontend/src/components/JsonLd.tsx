@@ -15,7 +15,7 @@ export default function JsonLd({ type, data }: JsonLdProps) {
       "name": "Amudhasurabiy Organics",
       "alternateName": "Blovit",
       "url": "https://amudhasurabiy.com",
-      "logo": "https://amudhasurabiy.com/images/og-image.png",
+      "logo": "https://amudhasurabiy.com/images/logo.png",
       "contactPoint": {
         "@type": "ContactPoint",
         "telephone": "+91-70106-02115",
@@ -41,7 +41,11 @@ export default function JsonLd({ type, data }: JsonLdProps) {
       "description": data.description,
       "brand": {
         "@type": "Brand",
-        "name": "Blovit"
+        "name": "Blovit",
+        "parentOrganization": {
+          "@type": "Organization",
+          "name": "Amudhasurabiy Organics"
+        }
       },
       "offers": {
         "@type": "Offer",
@@ -54,7 +58,7 @@ export default function JsonLd({ type, data }: JsonLdProps) {
       "aggregateRating": data.rating ? {
         "@type": "AggregateRating",
         "ratingValue": data.rating,
-        "reviewCount": data.reviewCount || 100
+        "reviewCount": data.reviewCount || 120
       } : undefined,
       ...data.additional
     };
@@ -62,7 +66,7 @@ export default function JsonLd({ type, data }: JsonLdProps) {
     schema = {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
-      "itemListElement": data.items.map((item: any, index: number) => ({
+      "itemListElement": (data.items || []).map((item: any, index: number) => ({
         "@type": "ListItem",
         "position": index + 1,
         "name": item.name,
@@ -75,7 +79,7 @@ export default function JsonLd({ type, data }: JsonLdProps) {
       "@type": "BlogPosting",
       "headline": data.title,
       "image": [
-        data.imageUrl.startsWith("http") ? data.imageUrl : `https://amudhasurabiy.com${data.imageUrl}`
+        data.imageUrl?.startsWith("http") ? data.imageUrl : `https://amudhasurabiy.com${data.imageUrl || "/images/logo.png"}`
       ],
       "datePublished": data.publishedAt || "2026-07-22T00:00:00Z",
       "dateModified": data.updatedAt || data.publishedAt || "2026-07-22T00:00:00Z",
@@ -89,7 +93,7 @@ export default function JsonLd({ type, data }: JsonLdProps) {
         "name": "Amudhasurabiy Organics",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://amudhasurabiy.com/images/og-image.png"
+          "url": "https://amudhasurabiy.com/images/logo.png"
         }
       },
       "description": data.description
@@ -113,11 +117,11 @@ export default function JsonLd({ type, data }: JsonLdProps) {
       "@type": "Recipe",
       "name": data.title,
       "image": [
-        data.imageUrl.startsWith("http") ? data.imageUrl : `https://amudhasurabiy.com${data.imageUrl}`
+        data.imageUrl?.startsWith("http") ? data.imageUrl : `https://amudhasurabiy.com${data.imageUrl || "/images/logo.png"}`
       ],
       "author": {
         "@type": "Organization",
-        "name": "Blovit Kitchen"
+        "name": "Blovit Kitchen by Amudhasurabiy Organics"
       },
       "description": data.description,
       "prepTime": "PT5M",

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
+import { Outfit, Plus_Jakarta_Sans, Inter } from "next/font/google";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -14,25 +14,38 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   display: "swap",
 });
 
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "Blovit | Amudhasurabiy Organics Natural Health Drink",
-  description: "Blovit natural health drinks by Amudhasurabiy Organics. Crafted with ABC, Beetroot, and Nendran Banana. 100% natural, no additives.",
+  title: "Amudhasurabiy Organics | Pure Nutrition. Naturally Crafted.",
+  description: "Official Digital Headquarters of Amudhasurabiy Organics. Crafting premium natural food and nutrition products inspired by nature, traditional wisdom, and modern quality standards.",
   metadataBase: new URL("https://amudhasurabiy.com"),
   alternates: {
     canonical: "/",
   },
-  manifest: "/manifest.json",
+  manifest: "/site.webmanifest",
+  icons: {
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
-    title: "Blovit | Amudhasurabiy Organics Natural Health Drink",
-    description: "100% natural organic malt health drink powders from Kumbakonam. No added preservatives.",
+    title: "Amudhasurabiy Organics | Pure Nutrition. Naturally Crafted.",
+    description: "Official Digital Headquarters of Amudhasurabiy Organics. Creators of Blovit natural malt health drinks from Kumbakonam.",
     url: "https://amudhasurabiy.com",
-    siteName: "Blovit",
+    siteName: "Amudhasurabiy Organics",
     images: [
       {
-        url: "/images/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Blovit Natural Malts",
+        url: "/images/logo.png",
+        width: 512,
+        height: 512,
+        alt: "Amudhasurabiy Organics Logo",
       },
     ],
     locale: "en_IN",
@@ -40,9 +53,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Blovit | Amudhasurabiy Organics Natural Health Drink",
-    description: "100% natural organic malt health drink powders from Kumbakonam.",
-    images: ["/images/og-image.png"],
+    title: "Amudhasurabiy Organics | Pure Nutrition. Naturally Crafted.",
+    description: "Official Digital Headquarters of Amudhasurabiy Organics.",
+    images: ["/images/logo.png"],
   },
 };
 
@@ -54,7 +67,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${outfit.variable} ${plusJakartaSans.variable} h-full antialiased`}
+      className={`${outfit.variable} ${plusJakartaSans.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-body bg-cream text-charcoal">
         {children}
@@ -65,7 +78,7 @@ export default function RootLayout({
               if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function() {
                   navigator.serviceWorker.register('/sw.js').then(function(reg) {
-                    console.log('ServiceWorker registration successful with scope: ', reg.scope);
+                    console.log('ServiceWorker registered with scope: ', reg.scope);
                   }, function(err) {
                     console.log('ServiceWorker registration failed: ', err);
                   });
