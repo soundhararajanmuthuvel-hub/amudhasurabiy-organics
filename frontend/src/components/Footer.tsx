@@ -96,7 +96,7 @@ export default function Footer() {
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
               <Image
-                src="/images/logo.svg"
+                src="/images/logo.png"
                 alt="Amudhasurabiy Organics Logo"
                 width={36}
                 height={36}

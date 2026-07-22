@@ -54,7 +54,7 @@ export default function Header() {
               <Link href="/" className="group flex items-center gap-3">
                 <div className="relative h-10 w-10 shrink-0 transition-transform duration-500 group-hover:scale-105">
                   <Image
-                    src="/images/logo.svg"
+                    src="/images/logo.png"
                     alt="Amudhasurabiy Organics Logo"
                     width={40}
                     height={40}
