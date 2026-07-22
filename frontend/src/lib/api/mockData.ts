@@ -16,6 +16,8 @@ export interface Product {
   videoUrl?: string;
   rating?: number;
   reviewCount?: number;
+  originalPrice: number;
+  category: string;
 }
 
 export interface Recipe {
@@ -75,6 +77,8 @@ export const MOCK_PRODUCTS: Product[] = [
     name: "Blovit ABC Malt",
     slug: "abc-malt",
     price: 250,
+    originalPrice: 299,
+    category: "Natural Malts",
     description: "Premium Apple, Beetroot, and Carrot health drink powder. An organic formulation crafted to improve hemoglobin levels, enhance natural skin radiance, and provide clean daily energy.",
     imageUrl: "/images/abc-malt.png",
     benefits: [
@@ -113,6 +117,8 @@ export const MOCK_PRODUCTS: Product[] = [
     name: "Blovit Beetroot Malt",
     slug: "beetroot-malt",
     price: 200,
+    originalPrice: 249,
+    category: "Natural Malts",
     description: "Packed with the natural goodness of iron-rich beetroots, sprouted grains, and premium nuts. Specially designed to boost stamina, improve circulation, and manage anemia naturally.",
     imageUrl: "/images/beetroot-malt.png",
     benefits: [
@@ -149,6 +155,8 @@ export const MOCK_PRODUCTS: Product[] = [
     name: "Blovit Nendran Banana Malt",
     slug: "nendram-banana-malt",
     price: 260,
+    originalPrice: 320,
+    category: "Natural Malts",
     description: "An authentic, highly nutritious health mix prepared from raw Kerala Nendran Bananas. Rich in potassium and fibers, it is an excellent natural weight gainer for growing toddlers and energy drink for all ages.",
     imageUrl: "/images/banana-malt.png",
     benefits: [

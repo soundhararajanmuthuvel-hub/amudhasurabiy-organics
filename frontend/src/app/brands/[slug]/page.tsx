@@ -27,7 +27,7 @@ export default function BrandSlugPage({ params }: { params: Promise<{ slug: stri
         price: 399,
         originalPrice: 499,
         rating: 4.9,
-        reviewsCount: 128,
+        reviewCount: 128,
         image: "/images/abc-malt.png",
         description: "Apple, Beetroot & Carrot natural malt blend enriched with raw palm sugar, badam, and cashew.",
         benefits: ["Boosts Hemoglobin", "Natural Immunity", "100% Chemical Free"]
@@ -40,7 +40,7 @@ export default function BrandSlugPage({ params }: { params: Promise<{ slug: stri
         price: 349,
         originalPrice: 429,
         rating: 4.85,
-        reviewsCount: 94,
+        reviewCount: 94,
         image: "/images/beetroot-malt.png",
         description: "Pure farm-fresh beetroot powder with cardamom, palm jaggery, and premium nuts.",
         benefits: ["Iron Booster", "Stamina & Energy", "Zero Refined Sugar"]
@@ -53,7 +53,7 @@ export default function BrandSlugPage({ params }: { params: Promise<{ slug: stri
         price: 379,
         originalPrice: 459,
         rating: 4.92,
-        reviewsCount: 156,
+        reviewCount: 156,
         image: "/images/banana-malt.png",
         description: "Authentic Kerala Nendran banana malt powder for healthy kids growth and weight gain.",
         benefits: ["Weight Gain for Kids", "Rich Potassium", "Easy Digestion"]
@@ -151,7 +151,7 @@ export default function BrandSlugPage({ params }: { params: Promise<{ slug: stri
                         ))}
                       </div>
                       <span className="text-walnut-brown/60 font-body text-[11px]">
-                        ({product.reviewsCount} reviews)
+                        ({product.reviewCount} reviews)
                       </span>
                     </div>
 

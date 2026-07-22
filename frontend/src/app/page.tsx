@@ -451,7 +451,7 @@ export default function Home() {
                         ))}
                       </div>
                       <span className="text-walnut-brown/60 font-body text-[11px]">
-                        ({p.reviewsCount} reviews)
+                        ({p.reviewCount} reviews)
                       </span>
                     </div>
 
