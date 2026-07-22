@@ -66,6 +66,7 @@ export interface Order {
 export interface Coupon {
   code: string;
   type: 'percentage' | 'fixed';
+  category: 'Referral' | 'Festival' | 'Welcome' | 'Flat' | 'Percentage' | 'Free Shipping';
   value: number;
   minSubtotal: number;
   message: string;
@@ -264,10 +265,12 @@ export const MOCK_RECIPES: Recipe[] = [
 ];
 
 export const MOCK_COUPONS: Coupon[] = [
-  { code: "FIRST10", type: "percentage", value: 10, minSubtotal: 200, message: "10% OFF First Order Discount Applied!" },
-  { code: "BLOVI10", type: "percentage", value: 10, minSubtotal: 200, message: "10% Blovit Circle Discount Applied!" },
-  { code: "ORGANIC50", type: "fixed", value: 50, minSubtotal: 400, message: "₹50 OFF Special Coupon Applied!" },
-  { code: "FREESHIP", type: "percentage", value: 0, minSubtotal: 300, message: "Free Shipping Coupon Applied!" }
+  { code: "WELCOME100", category: "Welcome", type: "fixed", value: 100, minSubtotal: 300, message: "₹100 OFF Welcome Coupon Applied!" },
+  { code: "FIRST10", category: "Percentage", type: "percentage", value: 10, minSubtotal: 200, message: "10% OFF First Order Discount Applied!" },
+  { code: "REF100", category: "Referral", type: "fixed", value: 100, minSubtotal: 250, message: "₹100 Referral Reward Applied!" },
+  { code: "KUMBAKONAM20", category: "Festival", type: "percentage", value: 20, minSubtotal: 500, message: "20% Harvest Festival Discount Applied!" },
+  { code: "ORGANIC50", category: "Flat", type: "fixed", value: 50, minSubtotal: 400, message: "₹50 Flat Discount Applied!" },
+  { code: "FREESHIP", category: "Free Shipping", type: "fixed", value: 60, minSubtotal: 300, message: "Free Shipping Discount Applied!" }
 ];
 
 const getLocalStorage = (key: string, defaultValue: any) => {
@@ -288,14 +291,6 @@ const setLocalStorage = (key: string, value: any) => {
       console.error(e);
     }
   }
-};
-
-export const getMockUser = () => {
-  return getLocalStorage("blovit_user", null);
-};
-
-export const setMockUser = (user: { phone: string; name: string; rewardPoints: number } | null) => {
-  setLocalStorage("blovit_user", user);
 };
 
 export const getMockAddresses = (): Address[] => {

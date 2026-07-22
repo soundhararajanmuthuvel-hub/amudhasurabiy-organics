@@ -27,7 +27,7 @@ export default function PrivacyPolicy() {
 
             <h2 className="font-heading text-xl font-bold text-walnut-brown mt-8">1. Information We Collect</h2>
             <p>
-              When you visit Blovit, place an order, or register for an account via OTP, we collect standard customer identifiers:
+              When you visit Blovit, place an order, or register for an account, we collect standard customer identifiers:
             </p>
             <ul className="list-disc pl-5 space-y-2">
               <li>Contact details: Name, phone number, email address, delivery and billing addresses.</li>
@@ -41,7 +41,7 @@ export default function PrivacyPolicy() {
             </p>
             <ul className="list-disc pl-5 space-y-2">
               <li>Process and fulfill your orders, including calculating shipping fees and managing Razorpay payments.</li>
-              <li>Provide secure authentication services via SMS/OTP.</li>
+              <li>Provide secure account authentication services.</li>
               <li>Enhance and customize store functionalities, cart preservation, and user dashboard statistics.</li>
             </ul>
 

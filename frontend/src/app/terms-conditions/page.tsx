@@ -32,7 +32,7 @@ export default function TermsConditions() {
 
             <h2 className="font-heading text-xl font-bold text-walnut-brown mt-8">2. User Accounts</h2>
             <p>
-              To purchase products or view order statistics on our platform, you will be required to authenticate using an OTP sent to your verified mobile number. You are responsible for ensuring the accuracy of your delivery details.
+              To purchase products or view order statistics on our platform, you will be required to authenticate using a secure mobile number and password or via guest checkout. You are responsible for ensuring the accuracy of your delivery details.
             </p>
 
             <h2 className="font-heading text-xl font-bold text-walnut-brown mt-8">3. Purchases & Payment</h2>

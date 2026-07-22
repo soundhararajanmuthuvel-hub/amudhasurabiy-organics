@@ -3,7 +3,22 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Trash2, Minus, Plus, ArrowRight, ShoppingBag, Tag, X, ShieldCheck, Lock, Truck } from "lucide-react";
+import { useRouter } from "next/navigation";
+import {
+  Trash2,
+  Minus,
+  Plus,
+  ArrowRight,
+  ShoppingBag,
+  Tag,
+  X,
+  ShieldCheck,
+  Lock,
+  Truck,
+  Wallet,
+  UserCheck,
+  UserX,
+} from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -13,23 +28,46 @@ import { validateCoupon } from "@/lib/api/coupons";
 import { trackCustomerEvent } from "@/lib/api/events";
 
 export default function Cart() {
-  const { cart, updateQty, removeFromCart, coupon, setCoupon, shippingCharge, shippingPincode, shippingMessage, calculateShipping, hydrate, isHydrated } = useCartStore();
+  const router = useRouter();
+  const {
+    cart,
+    updateQty,
+    removeFromCart,
+    coupon,
+    setCoupon,
+    shippingCharge,
+    shippingPincode,
+    shippingMessage,
+    calculateShipping,
+    customer,
+    walletBalance,
+    useWallet,
+    toggleUseWallet,
+    setCheckoutMode,
+    hydrate,
+    isHydrated,
+  } = useCartStore();
+
   const [couponCode, setCouponCode] = useState("");
   const [couponError, setCouponError] = useState("");
   const [couponSuccess, setCouponSuccess] = useState("");
   const [pincodeInput, setPincodeInput] = useState("");
   const [isValidating, setIsValidating] = useState(false);
+  const [showAuthChoiceModal, setShowAuthChoiceModal] = useState(false);
 
   useEffect(() => {
     hydrate();
   }, [hydrate]);
 
   const subtotal = isHydrated ? cart.reduce((sum, item) => sum + item.price * item.qty, 0) : 0;
-  
+
   let discount = 0;
   if (coupon && coupon.valid && subtotal >= 200) {
     discount = coupon.discount;
   }
+
+  const walletDeduction = customer && useWallet ? Math.min(walletBalance, Math.max(0, subtotal - discount)) : 0;
+  const grandTotal = Math.max(0, subtotal - discount - walletDeduction + shippingCharge);
 
   const handleApplyCoupon = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,7 +85,7 @@ export default function Cart() {
           discount: res.discount,
           type: res.type,
           value: res.value,
-          message: res.message
+          message: res.message,
         });
         setCouponSuccess(res.message);
         setCouponCode("");
@@ -72,6 +110,25 @@ export default function Cart() {
     calculateShipping(pincodeInput);
   };
 
+  const handleProceedToCheckout = () => {
+    if (customer) {
+      setCheckoutMode("login");
+      router.push("/checkout/");
+    } else {
+      setShowAuthChoiceModal(true);
+    }
+  };
+
+  const handleChooseLogin = () => {
+    setCheckoutMode("login");
+    router.push("/login/?redirect=/checkout/");
+  };
+
+  const handleChooseGuest = () => {
+    setCheckoutMode("guest");
+    router.push("/checkout/");
+  };
+
   if (!isHydrated) return null;
 
   return (
@@ -93,7 +150,6 @@ export default function Cart() {
 
           {cart.length > 0 ? (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-              
               {/* Cart Items List */}
               <div className="lg:col-span-8 bg-white border border-walnut-brown/5 rounded-3xl p-6 shadow-sm flex flex-col gap-6">
                 {cart.map((item) => (
@@ -146,7 +202,6 @@ export default function Cart() {
 
               {/* Summary and Coupons Sidebar */}
               <div className="lg:col-span-4 flex flex-col gap-6">
-                
                 {/* Shipping Estimator Panel */}
                 <div className="bg-white border border-walnut-brown/5 rounded-3xl p-6 shadow-sm">
                   <h3 className="font-heading text-base font-bold text-walnut-brown mb-3 flex items-center gap-2">
@@ -175,7 +230,7 @@ export default function Cart() {
                   <h3 className="font-heading text-base font-bold text-walnut-brown mb-4 flex items-center gap-2">
                     <Tag className="h-4.5 w-4.5 text-moss-green" /> Apply Promo Code
                   </h3>
-                  
+
                   {coupon ? (
                     <div className="flex items-center justify-between p-3 rounded-2xl bg-moss-green/10 border border-moss-green/20 text-moss-green text-xs font-body">
                       <span>Promo Active: {coupon.message}</span>
@@ -204,11 +259,32 @@ export default function Cart() {
 
                   {couponError && <p className="text-red-500 text-xs font-body mt-2 pl-2">{couponError}</p>}
                   {couponSuccess && <p className="text-moss-green text-xs font-body mt-2 pl-2">{couponSuccess}</p>}
-                  
-                  <span className="text-[10px] text-walnut-brown/50 mt-3 block pl-1">
-                    Try <strong>FIRST10</strong> or <strong>BLOVI10</strong> for 10% discount.
-                  </span>
                 </div>
+
+                {/* Reward Wallet Panel */}
+                {customer && walletBalance > 0 && (
+                  <div className="bg-moss-green/5 border border-moss-green/20 rounded-3xl p-6 shadow-sm">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2.5">
+                        <Wallet className="h-5 w-5 text-moss-green" />
+                        <div>
+                          <h4 className="font-heading text-sm font-bold text-walnut-brown">Reward Wallet Balance</h4>
+                          <span className="font-heading text-xs font-bold text-moss-green">₹{walletBalance} available</span>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => toggleUseWallet()}
+                        className={`px-4 py-2 rounded-full font-heading text-[10px] font-bold uppercase transition-colors ${
+                          useWallet
+                            ? "bg-moss-green text-white"
+                            : "bg-cream border border-walnut-brown/20 text-walnut-brown hover:border-moss-green"
+                        }`}
+                      >
+                        {useWallet ? "Applied (-₹" + walletDeduction + ")" : "Apply Wallet"}
+                      </button>
+                    </div>
+                  </div>
+                )}
 
                 {/* Summary Card */}
                 <div className="bg-white border border-walnut-brown/5 rounded-3xl p-6 shadow-sm">
@@ -222,8 +298,15 @@ export default function Cart() {
 
                     {discount > 0 && (
                       <div className="flex justify-between text-moss-green">
-                        <span>Discount</span>
+                        <span>Coupon Discount</span>
                         <span className="font-semibold">-₹{discount}</span>
+                      </div>
+                    )}
+
+                    {walletDeduction > 0 && (
+                      <div className="flex justify-between text-moss-green">
+                        <span>Reward Wallet Deduction</span>
+                        <span className="font-semibold">-₹{walletDeduction}</span>
                       </div>
                     )}
 
@@ -234,27 +317,23 @@ export default function Cart() {
                   </div>
 
                   <div className="flex justify-between items-center py-6">
-                    <span className="font-heading text-base font-bold text-walnut-brown">Total</span>
-                    <span className="font-heading text-2xl font-bold text-moss-green">
-                      ₹{Math.max(0, subtotal - discount + shippingCharge)}
-                    </span>
+                    <span className="font-heading text-base font-bold text-walnut-brown">Total to Pay</span>
+                    <span className="font-heading text-2xl font-bold text-moss-green">₹{grandTotal}</span>
                   </div>
 
-                  <Link
-                    href="/checkout/"
-                    onClick={() => trackCustomerEvent("checkout_started")}
+                  <button
+                    onClick={handleProceedToCheckout}
                     className="w-full flex items-center justify-center gap-2 bg-moss-green hover:bg-walnut-brown text-white py-4 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-md group hover:scale-[1.01]"
                   >
                     Proceed to Checkout
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </Link>
+                  </button>
 
                   <div className="mt-6 flex items-center justify-center gap-4 text-[10px] text-walnut-brown/60 font-body">
                     <span className="flex items-center gap-1"><Lock className="h-3 w-3 text-moss-green" /> 256-bit SSL</span>
                     <span className="flex items-center gap-1"><ShieldCheck className="h-3 w-3 text-moss-green" /> FSSAI Certified</span>
                   </div>
                 </div>
-
               </div>
             </div>
           ) : (
@@ -275,9 +354,56 @@ export default function Cart() {
               </Link>
             </div>
           )}
-
         </div>
       </main>
+
+      {/* Equal-Weight Guest vs Login Modal */}
+      {showAuthChoiceModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
+          <div className="w-full max-w-md bg-white rounded-3xl p-8 border border-walnut-brown/10 shadow-2xl flex flex-col relative animate-fade-in">
+            <button
+              onClick={() => setShowAuthChoiceModal(false)}
+              className="absolute top-6 right-6 text-walnut-brown/40 hover:text-walnut-brown transition-colors"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            <div className="text-center mb-6">
+              <span className="font-heading text-[10px] font-bold uppercase tracking-widest text-moss-green block mb-2">
+                Checkout Choice
+              </span>
+              <h3 className="font-heading text-xl font-bold text-walnut-brown">How would you like to proceed?</h3>
+              <p className="font-body text-xs text-walnut-brown/70 mt-1">
+                You can sign in to earn reward points or continue as a guest instantly.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <button
+                onClick={handleChooseLogin}
+                className="flex flex-col items-center justify-center p-5 rounded-2xl border-2 border-moss-green bg-moss-green/5 hover:bg-moss-green hover:text-white text-moss-green transition-all group font-heading text-xs font-bold uppercase tracking-wider text-center"
+              >
+                <UserCheck className="h-6 w-6 mb-2 text-moss-green group-hover:text-white" />
+                <span>Sign In to Account</span>
+                <span className="text-[10px] normal-case font-body font-normal opacity-80 mt-1">
+                  Earn points & use wallet
+                </span>
+              </button>
+
+              <button
+                onClick={handleChooseGuest}
+                className="flex flex-col items-center justify-center p-5 rounded-2xl border-2 border-walnut-brown/20 bg-cream-dark hover:bg-walnut-brown hover:text-white text-walnut-brown transition-all group font-heading text-xs font-bold uppercase tracking-wider text-center"
+              >
+                <UserX className="h-6 w-6 mb-2 text-walnut-brown group-hover:text-white" />
+                <span>Continue as Guest</span>
+                <span className="text-[10px] normal-case font-body font-normal opacity-80 mt-1">
+                  Fast 1-step checkout
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <WhatsAppButton />
       <Footer />
