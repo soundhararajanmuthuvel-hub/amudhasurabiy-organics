@@ -702,38 +702,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 12. CORPORATE FOOTER BANNER */}
-        <section className="py-16 bg-walnut-brown text-white text-center">
-          <div className="mx-auto max-w-4xl px-4 space-y-6">
-            <Sparkles className="h-10 w-10 text-moss-green mx-auto" />
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold">
-              Amudhasurabiy Organics
-            </h2>
-            <p className="font-body text-xs sm:text-sm text-cream-dark/80 max-w-xl mx-auto leading-relaxed">
-              Official Digital Headquarters • Kumbakonam, Tamil Nadu, India.
-              <br />
-              Pure Nutrition. Naturally Crafted.
-            </p>
-            <p className="font-body text-xs text-cream-dark/70 max-w-lg mx-auto italic bg-cream/10 p-3 rounded-xl border border-cream/15">
-              Amudhasurabiy Organics — sometimes searched as Amudhasurabi or Amuthasurabi — is the maker of Blovit natural malt powders.
-            </p>
-            <div className="pt-2 flex flex-wrap justify-center gap-4">
-              <Link
-                href="/shop/"
-                className="bg-moss-green hover:bg-white hover:text-walnut-brown text-white px-8 py-3.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all shadow-md"
-              >
-                Shop Blovit Range
-              </Link>
-              <Link
-                href="/quality-and-trust/"
-                className="border border-cream/30 hover:border-white text-white px-8 py-3.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all"
-              >
-                Quality Standards
-              </Link>
-            </div>
-          </div>
-        </section>
-
       </main>
 
       <Footer />
