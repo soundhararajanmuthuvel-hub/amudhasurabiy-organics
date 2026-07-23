@@ -43,32 +43,7 @@ export default function Home() {
     { id: "Family Wellness", name: "🛡️ Family Overall Wellness", targetId: "abc-malt" },
   ];
 
-  const brands = [
-    {
-      name: "Blovit",
-      tagline: "Natural Malt Nutrition",
-      desc: "Flagship consumer brand featuring 100% natural ABC Malt, Beetroot Malt, and Nendran Banana Malt.",
-      status: "Flagship Brand",
-      href: "/brands/blovit/",
-      active: true,
-    },
-    {
-      name: "Heritage Spices",
-      tagline: "Sun-Dried Infusions",
-      desc: "Upcoming organic brand dedicated to traditional herbal health blends.",
-      status: "Coming Soon",
-      href: "#",
-      active: false,
-    },
-    {
-      name: "Pure Harvest Millets",
-      tagline: "Ancient Grain Superfoods",
-      desc: "Sprouted millet flakes and grain porridge mixes.",
-      status: "Coming Soon",
-      href: "#",
-      active: false,
-    }
-  ];
+
 
   const whyChooseUs = [
     { title: "100% Natural Ingredients", desc: "Farm-fresh produce sourced directly from trusted growers in South India.", icon: Leaf },
@@ -326,79 +301,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 5. OUR BRANDS SECTION (Multi-Brand Showcase) */}
-        <section className="py-16 md:py-24 bg-cream border-b border-walnut-brown/10">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
-              <div>
-                <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest">
-                  Brand Ecosystem
-                </span>
-                <h2 className="font-heading text-3xl sm:text-4xl font-bold text-walnut-brown mt-1">
-                  Our Consumer Brands Portfolio
-                </h2>
-              </div>
-              <Link
-                href="/shop/"
-                className="font-heading text-xs font-bold text-moss-green hover:text-walnut-brown uppercase tracking-wider flex items-center gap-1 group transition-colors"
-              >
-                <span>Explore Blovit Products</span>
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {brands.map((b) => (
-                <div
-                  key={b.name}
-                  className={`rounded-3xl p-8 border transition-all duration-300 flex flex-col justify-between ${
-                    b.active
-                      ? "bg-white border-moss-green/30 shadow-lg hover:shadow-xl"
-                      : "bg-cream-dark/40 border-walnut-brown/10 opacity-80"
-                  }`}
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span
-                        className={`px-3 py-1 rounded-full text-[10px] font-heading font-bold uppercase ${
-                          b.active ? "bg-moss-green text-white" : "bg-walnut-brown/10 text-walnut-brown/60"
-                        }`}
-                      >
-                        {b.status}
-                      </span>
-                    </div>
-
-                    <h3 className="font-heading text-2xl font-bold text-walnut-brown mb-1">
-                      {b.name}
-                    </h3>
-                    <p className="font-heading text-xs font-semibold text-moss-green uppercase tracking-wider mb-3">
-                      {b.tagline}
-                    </p>
-                    <p className="font-body text-xs text-walnut-brown/75 leading-relaxed mb-6">
-                      {b.desc}
-                    </p>
-                  </div>
-
-                  <div>
-                    {b.active ? (
-                      <Link
-                        href={b.href}
-                        className="inline-flex items-center justify-between w-full bg-moss-green hover:bg-walnut-brown text-white px-5 py-3 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-colors shadow"
-                      >
-                        <span>Explore Blovit</span>
-                        <ArrowRight className="h-4 w-4" />
-                      </Link>
-                    ) : (
-                      <span className="block text-center text-xs font-body text-walnut-brown/50 py-3">
-                        In Formulation Phase
-                      </span>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* 6. FEATURED PRODUCTS SECTION */}
         <section className="py-16 md:py-24 bg-cream-dark/20 border-b border-walnut-brown/10">
