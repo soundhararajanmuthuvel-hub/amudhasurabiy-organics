@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit, Plus_Jakarta_Sans, Inter } from "next/font/google";
+import AIChatWidget from "@/components/ai/AIChatWidget";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -71,6 +72,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col font-body bg-cream text-charcoal">
         {children}
+        <AIChatWidget />
         {/* Service Worker registration script */}
         <script
           dangerouslySetInnerHTML={{

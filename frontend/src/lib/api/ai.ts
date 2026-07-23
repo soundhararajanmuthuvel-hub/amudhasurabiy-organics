@@ -1,49 +1,120 @@
-import { MOCK_PRODUCTS, Product } from "./mockData";
+import { apiFetch } from "@/lib/api";
+import { Product } from "@/lib/api/mockData";
+import { getProducts } from "@/lib/api/products";
 
-export interface AIRecommendationRequest {
-  customerId?: string;
-  recentlyViewed?: string[];
-  healthGoals?: string[];
+export interface AiChatMessage {
+  id: string;
+  sender: "user" | "ai";
+  text: string;
+  timestamp: string;
+  intent?: string;
+  products?: Product[];
+  requiresAddress?: boolean;
+  orderSummary?: {
+    items: { name: string; qty: number; price: number }[];
+    subtotal: number;
+    shippingCharge: number;
+    discount: number;
+    grandTotal: number;
+  };
+  paymentUrl?: string;
+  quickReplies?: string[];
 }
 
-export interface AISearchResult {
-  products: Product[];
-  intent: string;
-  explanation: string;
+export interface SendAiMessagePayload {
+  message: string;
+  sessionId: string;
+  cartContext?: unknown;
 }
 
-export const getAIRecommendations = async (): Promise<Product[]> => {
-  // Simulates AI recommendation response
-  return MOCK_PRODUCTS;
-};
+export async function sendAiMessage(payload: SendAiMessagePayload): Promise<AiChatMessage> {
+  const { message, sessionId } = payload;
+  const userText = message.toLowerCase().trim();
 
-export const getAIRelatedProducts = async (productId: string): Promise<Product[]> => {
-  return MOCK_PRODUCTS.filter((p) => p.id !== productId);
-};
+  try {
+    const res = await apiFetch<Record<string, unknown>>("/ai/chat", {
+      method: "POST",
+      body: JSON.stringify({ message, sessionId }),
+    });
 
-export const getAISearchIntent = async (query: string): Promise<AISearchResult> => {
-  const q = query.toLowerCase().trim();
-  let intent = "general_search";
-  let explanation = "Showing matching natural nutrition products.";
-  let products = MOCK_PRODUCTS;
+    if (res && res.reply) {
+      return {
+        id: `msg_${Date.now()}`,
+        sender: "ai",
+        text: String(res.reply),
+        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        intent: (res.intent as string) || "chat",
+        products: Array.isArray(res.products) ? (res.products as Product[]) : undefined,
+        requiresAddress: Boolean(res.requiresAddress),
+        orderSummary: (res.orderSummary as AiChatMessage["orderSummary"]) || undefined,
+        paymentUrl: (res.paymentUrl as string) || undefined,
+        quickReplies: Array.isArray(res.quickReplies) ? (res.quickReplies as string[]) : undefined,
+      };
+    }
+  } catch (err) {
+    console.warn("[AI API Proxy] Backend AI route unavailable, generating intelligent sales response:", err);
+  }
 
-  if (q.includes("iron") || q.includes("blood") || q.includes("anemia") || q.includes("hemoglobin")) {
-    intent = "increase_iron";
-    explanation = "Recommended for boosting iron levels, hemoglobin count, and managing anemia.";
-    products = MOCK_PRODUCTS.filter((p) => p.id === "beetroot-malt" || p.id === "abc-malt");
-  } else if (q.includes("kid") || q.includes("child") || q.includes("weight") || q.includes("toddler")) {
-    intent = "kids_growth";
-    explanation = "Formulated with sprouted grains and Kerala Nendran Bananas for healthy weight gain and child nutrition.";
-    products = MOCK_PRODUCTS.filter((p) => p.id === "nendram-banana-malt" || p.id === "abc-malt");
-  } else if (q.includes("energy") || q.includes("stamina") || q.includes("workout") || q.includes("daily")) {
-    intent = "daily_energy";
-    explanation = "Rich in potassium, magnesium, and natural complex carbs for clean daily energy.";
-    products = MOCK_PRODUCTS.filter((p) => p.id === "nendram-banana-malt" || p.id === "beetroot-malt");
+  // Conversational Fallback powered by live AO ERP catalog
+  const allProducts = await getProducts().catch(() => []);
+  const timestamp = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+  if (userText.includes("abc") || userText.includes("apple") || userText.includes("iron")) {
+    const abcMalt = allProducts.find((p) => p.name.toLowerCase().includes("abc") || p.slug.includes("abc")) || allProducts[0];
+    return {
+      id: `msg_${Date.now()}`,
+      sender: "ai",
+      text: "Blovit ABC Malt (Apple, Beetroot & Carrot) is our #1 bestseller for natural hemoglobin and iron boosting! Crafted from 100% natural ingredients in Kumbakonam.",
+      timestamp,
+      intent: "product_recommendation",
+      products: abcMalt ? [abcMalt] : allProducts.slice(0, 1),
+      quickReplies: ["Buy ABC Malt Now", "Show Ingredients", "View Other Malts"],
+    };
+  }
+
+  if (userText.includes("ragi") || userText.includes("kids") || userText.includes("growth") || userText.includes("weight")) {
+    const ragiMalt = allProducts.find((p) => p.name.toLowerCase().includes("ragi") || p.slug.includes("ragi")) || allProducts[0];
+    return {
+      id: `msg_${Date.now()}`,
+      sender: "ai",
+      text: "For kids' healthy weight gain and bone strength, Sprouted Ragi Malt is our top recommendation! Easy to digest, rich in calcium and natural fiber.",
+      timestamp,
+      intent: "product_recommendation",
+      products: ragiMalt ? [ragiMalt] : allProducts.slice(0, 1),
+      quickReplies: ["Buy Sprouted Ragi Malt", "How to Use", "Offers & Discounts"],
+    };
+  }
+
+  if (userText.includes("address") || userText.includes("buy") || userText.includes("checkout") || userText.includes("order")) {
+    const targetProduct = allProducts[0];
+    const subtotal = targetProduct ? targetProduct.price : 250;
+    const shippingCharge = subtotal >= 499 ? 0 : 40;
+    const grandTotal = subtotal + shippingCharge;
+
+    return {
+      id: `msg_${Date.now()}`,
+      sender: "ai",
+      text: "I can help you place your order right here! Please fill in your delivery address below to calculate instant shipping.",
+      timestamp,
+      intent: "checkout",
+      requiresAddress: true,
+      orderSummary: targetProduct ? {
+        items: [{ name: targetProduct.name, qty: 1, price: targetProduct.price }],
+        subtotal,
+        shippingCharge,
+        discount: 0,
+        grandTotal,
+      } : undefined,
+    };
   }
 
   return {
-    products,
-    intent,
-    explanation,
+    id: `msg_${Date.now()}`,
+    sender: "ai",
+    text: `Hello! I'm your Blovit AI Sales Executive. I can help you find the perfect natural malt health mix for your family, answer ingredient queries, or assist with instant checkout.`,
+    timestamp,
+    intent: "general_inquiry",
+    products: allProducts.slice(0, 2),
+    quickReplies: ["🩸 ABC Malt for Hemoglobin", "👶 Ragi Malt for Kids Weight", "📦 Track Order", "🏷️ Today's Offers"],
   };
-};
+}
