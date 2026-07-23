@@ -1,50 +1,37 @@
 # Blovit Storefront — Amudhasurabiy Organics Frontend
 
-Next.js 16 storefront for Blovit natural malt health drinks, integrated with the live AO Core ERP "Website" module backend.
+Next.js 16 storefront for Blovit natural malt health drinks, integrated with the live AO Core ERP "Website" module backend via a secure Next.js server proxy.
 
 ## Environment Configuration (`.env.local`)
 
 ```env
-NEXT_PUBLIC_API_BASE_URL=http://localhost:5000
-NEXT_PUBLIC_WEBSITE_API_KEY=blovit_website_secret_key_2026
+# Server-Only Secret API Key (NEVER prefix with NEXT_PUBLIC_)
+WEBSITE_API_KEY=blovit_live_sec_99382174620091823746
+
+# Public Domain Base URL
+NEXT_PUBLIC_API_BASE_URL=https://api.amudhasurabiy.com
+
+# Mock API toggle (true for local mock data, false for live ERP backend)
 NEXT_PUBLIC_USE_MOCK_API=false
+
+# Public Razorpay Key ID (intended for browser widget)
 NEXT_PUBLIC_RAZORPAY_KEY_ID=rzp_test_key
 ```
 
-## Live Storefront API Contract (`/api/website/...`)
+## Security Architecture — Next.js Server API Proxy
 
-All requests require the `X-API-Key` header matching `NEXT_PUBLIC_WEBSITE_API_KEY`. Authenticated customer endpoints require `Authorization: Bearer <jwt_token>`.
+All browser requests route through the same-origin Next.js Route Handler at `/api/proxy/[...path]`.
+- The browser **never** sees or sends the secret `WEBSITE_API_KEY`.
+- Next.js server handles proxying to `https://api.amudhasurabiy.com/api/website/...` and attaches `X-API-Key: process.env.WEBSITE_API_KEY` on the server side.
 
-### Auth Endpoints (`/api/website/auth`)
-- `POST /api/website/auth/register` — Register customer (Full Name, Mobile, Email, City, State, Password, Referral Code).
-- `POST /api/website/auth/login` — Password-based sign in (Mobile, Password).
-- `POST /api/website/auth/forgot-password` — Password recovery initialization.
-- `POST /api/website/auth/reset-password` — Reset password using token/code.
-
-### Catalog Endpoints (`/api/website/products`)
-- `GET /api/website/products` — List all products with `originalPrice`, `category`, `rating`, `reviewCount`, `healthGoals`.
-- `GET /api/website/products/:slug` — Single product details.
-
-### Customer Account & Cart (`/api/website/account`)
-- `GET /api/website/account/orders` — Customer order history.
-- `GET /api/website/account/orders/:id` — Order details.
-- `GET /api/website/account/addresses` — Saved addresses.
-- `POST /api/website/account/addresses` — Add/update delivery address.
-- `GET /api/website/account/wishlist` — Saved wishlist product IDs.
-- `POST /api/website/account/wishlist` — Toggle wishlist product.
-- `POST /api/website/account/cart/sync` — Merge guest cart with customer cart on login.
-
-### Referral Program (`/api/website/referrals`)
-- `GET /api/website/referrals/my-code` — Customer's unique referral code.
-- `GET /api/website/referrals/my-referrals` — List referrals made with status & single-use coupon codes upon approval.
-- `POST /api/website/referrals/submit` — Submit referral code during checkout or registration.
-
-### Orders & Razorpay (`/api/website/orders`)
-- `POST /api/website/orders/create-order` — Create Razorpay payment order.
-- `POST /api/website/orders/verify` — Verify Razorpay HMAC signature.
-
-### Testimonials & Reviews (`/api/website`)
-- `GET /api/website/testimonials` — Real verified Google testimonials for infinite marquee.
+### Client Proxy Route Mapping (`/api/proxy/...`)
+- `/api/proxy/auth/register` → `POST /api/website/auth/register`
+- `/api/proxy/auth/login` → `POST /api/website/auth/login`
+- `/api/proxy/products` → `GET /api/website/products`
+- `/api/proxy/account/orders` → `GET /api/website/account/orders`
+- `/api/proxy/account/cart/sync` → `POST /api/website/account/cart/sync`
+- `/api/proxy/referrals/my-code` → `GET /api/website/referrals/my-code`
+- `/api/proxy/testimonials` → `GET /api/website/testimonials`
 
 ## Development
 
