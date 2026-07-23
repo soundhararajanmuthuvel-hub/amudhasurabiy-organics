@@ -8,12 +8,14 @@ async function handleProxy(
 ) {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 30000); // 30-second timeout
+  let targetUrl = "";
 
   try {
     const resolvedParams = await params;
     const subpath = resolvedParams.path ? resolvedParams.path.join("/") : "";
     let rawBaseUrl =
       process.env.BACKEND_API_BASE_URL ||
+      process.env.AO_ERP_API_URL ||
       process.env.NEXT_PUBLIC_API_BASE_URL ||
       "http://localhost:5000";
 
@@ -21,7 +23,7 @@ async function handleProxy(
     rawBaseUrl = rawBaseUrl.replace(/\/$/, "").replace(/\/api\/website$/, "").replace(/\/api$/, "");
 
     const search = request.nextUrl.search || "";
-    const targetUrl = `${rawBaseUrl}/api/website/${subpath}${search}`;
+    targetUrl = `${rawBaseUrl}/api/website/${subpath}${search}`;
 
     console.log("[AO ERP Proxy] Incoming Path:", subpath);
     console.log("[AO ERP Proxy] Target URL:", targetUrl);
@@ -41,6 +43,7 @@ async function handleProxy(
     // Attach server-only secret API Key (NEVER exposed to browser)
     const apiKey =
       process.env.WEBSITE_API_KEY ||
+      process.env.STOREFRONT_API_KEY ||
       process.env.BLO_WEBSITE_API_KEY ||
       "blovit_live_sec_99382174620091823746";
     headers["X-API-Key"] = apiKey;
@@ -69,7 +72,6 @@ async function handleProxy(
 
     const bodyBuffer = await backendRes.arrayBuffer();
 
-    // Log diagnostic check for Step 4
     console.log("[AO ERP Proxy] Response Status:", backendRes.status);
     console.log("[AO ERP Proxy] Content-Type:", resContentType);
 
@@ -86,9 +88,13 @@ async function handleProxy(
       );
     }
 
-    console.error("[AO ERP Proxy Error]", err);
+    console.error("[AO ERP Proxy Error]", err, "Target URL:", targetUrl);
     return NextResponse.json(
-      { message: "API Proxy Error: Failed to connect to AO ERP Backend." },
+      {
+        message: "API Proxy Error: Failed to connect to AO ERP Backend.",
+        targetUrl,
+        error: err instanceof Error ? err.message : String(err),
+      },
       { status: 502 }
     );
   }
