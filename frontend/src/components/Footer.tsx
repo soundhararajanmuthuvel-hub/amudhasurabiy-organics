@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { motion } from "framer-motion";
 import { ArrowRight, ShieldCheck, Lock, Award, Heart, Leaf } from "lucide-react";
 
 export default function Footer() {
@@ -17,21 +19,24 @@ export default function Footer() {
   };
 
   return (
-    <footer className="w-full bg-walnut-brown text-cream-dark border-t border-walnut-brown/20 mt-auto">
+    <footer className="w-full text-cream-dark border-t border-white/10 mt-auto">
       
       {/* SECTION 1 — Brand Statement Band */}
-      <div className="py-16 md:py-20 bg-walnut-brown text-white text-center border-b border-cream-dark/10">
-        <div className="mx-auto max-w-4xl px-4 space-y-6">
-          <div className="h-10 w-10 rounded-2xl bg-moss-green/10 text-moss-green flex items-center justify-center mx-auto">
+      <div className="relative py-20 md:py-24 bg-[#563E2D] text-white text-center overflow-hidden">
+        {/* Subtle Radial Glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-moss-green/10 rounded-full blur-3xl pointer-events-none -z-0" />
+
+        <div className="relative z-10 mx-auto max-w-4xl px-4 space-y-6">
+          <div className="h-12 w-12 rounded-2xl bg-moss-green/15 border border-moss-green/30 text-moss-green flex items-center justify-center mx-auto shadow-inner">
             <Leaf className="h-6 w-6 text-moss-green" />
           </div>
 
-          <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
+          <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white drop-shadow-sm">
             Amudhasurabiy Organics
           </h2>
 
-          <div className="space-y-1 font-body text-xs sm:text-sm text-cream-dark/90">
-            <p className="font-semibold text-cream-dark">
+          <div className="space-y-1 font-body text-xs sm:text-sm text-cream-dark/95">
+            <p className="font-semibold text-white">
               Official Digital Headquarters • Kumbakonam, Tamil Nadu, India.
             </p>
             <p className="text-moss-green font-heading uppercase tracking-wider text-xs font-bold">
@@ -39,29 +44,35 @@ export default function Footer() {
             </p>
           </div>
 
-          <div className="max-w-2xl mx-auto p-4 rounded-2xl bg-cream/5 border border-cream/15 text-xs text-cream-dark/80 italic leading-relaxed">
+          <div className="max-w-2xl mx-auto p-4 sm:p-5 rounded-2xl bg-white/10 border border-white/20 text-xs sm:text-sm text-white/90 italic leading-relaxed backdrop-blur-sm shadow-sm">
             Amudhasurabiy Organics — sometimes searched as Amudhasurabi or Amuthasurabi — is the maker of Blovit natural malt powders.
           </div>
 
-          <div className="pt-2 flex flex-wrap justify-center items-center gap-4">
-            <Link
-              href="/shop/"
-              className="bg-moss-green hover:bg-white hover:text-walnut-brown text-white px-8 py-3.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all shadow-md"
-            >
-              SHOP BLOVIT RANGE
-            </Link>
-            <Link
-              href="/quality-and-trust/"
-              className="border border-white/40 hover:border-white hover:bg-white/10 text-white px-8 py-3.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all"
-            >
-              QUALITY STANDARDS
-            </Link>
+          <div className="pt-3 flex flex-wrap justify-center items-center gap-4">
+            <motion.div whileHover={{ y: -2, scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <Link
+                href="/shop/"
+                className="bg-moss-green hover:bg-moss-green/90 text-white px-8 py-3.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all shadow-md hover:shadow-moss-green/25 inline-flex items-center gap-2"
+              >
+                <span>SHOP BLOVIT RANGE</span>
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </motion.div>
+
+            <motion.div whileHover={{ y: -2, scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <Link
+                href="/quality-and-trust/"
+                className="border-2 border-white/50 hover:border-white hover:bg-white/10 text-white px-8 py-3.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all shadow-sm"
+              >
+                QUALITY STANDARDS
+              </Link>
+            </motion.div>
           </div>
         </div>
       </div>
 
       {/* SECTION 2 — Newsletter Band */}
-      <div className="border-b border-cream-dark/10 py-12 md:py-16 bg-walnut-brown/95">
+      <div className="border-t border-b border-white/10 py-14 md:py-18 bg-[#3E2C1E]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
@@ -71,32 +82,37 @@ export default function Footer() {
               <h3 className="font-heading text-2xl md:text-3xl font-bold tracking-tight text-white mb-2">
                 Pure Nutrition Insights & Seasonal Harvests
               </h3>
-              <p className="font-body text-xs md:text-sm text-cream-dark/80 max-w-md leading-relaxed">
+              <p className="font-body text-xs md:text-sm text-cream-dark/85 max-w-md leading-relaxed">
                 Subscribe to receive traditional wellness knowledge, health drink recipes, and early access to pure organic harvests.
               </p>
             </div>
+
             <div>
               {subscribed ? (
-                <div className="p-4 rounded-full bg-moss-green/20 border border-moss-green/30 text-white font-medium text-xs flex items-center justify-center gap-2">
+                <div className="p-4 rounded-full bg-moss-green/20 border border-moss-green/30 text-white font-medium text-xs flex items-center justify-center gap-2 shadow-sm">
                   <span>✓</span> Thank you for subscribing to the Amudhasurabiy Organics Circle!
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="flex gap-2 max-w-md w-full relative">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email address"
-                    className="w-full rounded-full px-6 py-4 bg-white/10 text-white placeholder-cream-dark/50 border border-white/20 focus:outline-none focus:border-white focus:ring-1 focus:ring-white/30 text-xs transition-all"
-                    required
-                  />
-                  <button
-                    type="submit"
-                    className="absolute right-2 top-2 flex items-center gap-1 bg-white hover:bg-cream text-walnut-brown px-5 py-2.5 rounded-full font-heading text-[10px] font-bold uppercase tracking-wider transition-all duration-300 shadow-md group"
-                  >
-                    <span>SUBSCRIBE</span>
-                    <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
-                  </button>
+                <form onSubmit={handleSubmit} className="w-full max-w-md">
+                  <div className="relative flex items-center rounded-full bg-white/10 border border-white/20 p-1.5 focus-within:border-moss-green focus-within:ring-2 focus-within:ring-moss-green/30 transition-all shadow-inner">
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your email address"
+                      className="w-full rounded-full bg-transparent px-5 py-3 text-white placeholder-cream-dark/50 text-xs focus:outline-none"
+                      required
+                    />
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      type="submit"
+                      className="shrink-0 flex items-center gap-1.5 bg-white hover:bg-cream text-walnut-brown px-6 py-3 rounded-full font-heading text-[10px] font-bold uppercase tracking-wider transition-all shadow-md group"
+                    >
+                      <span>SUBSCRIBE</span>
+                      <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
+                    </motion.button>
+                  </div>
                 </form>
               )}
             </div>
@@ -105,157 +121,224 @@ export default function Footer() {
       </div>
 
       {/* SECTION 3 — Trust Badges Strip */}
-      <div className="border-b border-cream-dark/10 py-6 bg-black/25">
+      <div className="border-b border-white/10 py-8 bg-[#312217]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <div className="flex items-center justify-center gap-2 text-xs font-body text-cream-dark/90">
-              <ShieldCheck className="h-4 w-4 text-moss-green shrink-0" />
-              <span>FSSAI Certified Unit</span>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center">
+            
+            <div className="flex items-center justify-center gap-3 p-3.5 rounded-2xl bg-white/10 border border-white/15 shadow-sm transition-transform hover:-translate-y-0.5">
+              <div className="h-9 w-9 rounded-full bg-moss-green/20 border border-moss-green/40 text-moss-green flex items-center justify-center shrink-0">
+                <ShieldCheck className="h-4.5 w-4.5 text-moss-green" />
+              </div>
+              <span className="text-xs font-body font-semibold text-white text-left leading-snug">
+                FSSAI Certified Unit
+              </span>
             </div>
-            <div className="flex items-center justify-center gap-2 text-xs font-body text-cream-dark/90">
-              <Lock className="h-4 w-4 text-moss-green shrink-0" />
-              <span>Secure Razorpay Payments</span>
+
+            <div className="flex items-center justify-center gap-3 p-3.5 rounded-2xl bg-white/10 border border-white/15 shadow-sm transition-transform hover:-translate-y-0.5">
+              <div className="h-9 w-9 rounded-full bg-moss-green/20 border border-moss-green/40 text-moss-green flex items-center justify-center shrink-0">
+                <Lock className="h-4.5 w-4.5 text-moss-green" />
+              </div>
+              <span className="text-xs font-body font-semibold text-white text-left leading-snug">
+                Secure Razorpay Payments
+              </span>
             </div>
-            <div className="flex items-center justify-center gap-2 text-xs font-body text-cream-dark/90">
-              <Award className="h-4 w-4 text-moss-green shrink-0" />
-              <span>100% Natural & Chemical-Free</span>
+
+            <div className="flex items-center justify-center gap-3 p-3.5 rounded-2xl bg-white/10 border border-white/15 shadow-sm transition-transform hover:-translate-y-0.5">
+              <div className="h-9 w-9 rounded-full bg-moss-green/20 border border-moss-green/40 text-moss-green flex items-center justify-center shrink-0">
+                <Award className="h-4.5 w-4.5 text-moss-green" />
+              </div>
+              <span className="text-xs font-body font-semibold text-white text-left leading-snug">
+                100% Natural & Chemical-Free
+              </span>
             </div>
-            <div className="flex items-center justify-center gap-2 text-xs font-body text-cream-dark/90">
-              <Heart className="h-4 w-4 text-moss-green shrink-0" />
-              <span>Made with Care in Kumbakonam</span>
+
+            <div className="flex items-center justify-center gap-3 p-3.5 rounded-2xl bg-white/10 border border-white/15 shadow-sm transition-transform hover:-translate-y-0.5">
+              <div className="h-9 w-9 rounded-full bg-moss-green/20 border border-moss-green/40 text-moss-green flex items-center justify-center shrink-0">
+                <Heart className="h-4.5 w-4.5 text-moss-green" />
+              </div>
+              <span className="text-xs font-body font-semibold text-white text-left leading-snug">
+                Made with Care in Kumbakonam
+              </span>
             </div>
+
           </div>
         </div>
       </div>
 
       {/* SECTION 4 — Link Columns */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-          
-          {/* Column 1 — Company Info */}
-          <div className="flex flex-col gap-3">
-            <h4 className="font-heading text-base font-bold text-white tracking-tight uppercase">
-              AMUDHASURABIY ORGANICS
-            </h4>
-            <span className="text-[10px] font-heading font-semibold uppercase tracking-widest text-moss-green">
-              PURE NUTRITION. NATURALLY CRAFTED.
-            </span>
-            <p className="font-body text-xs text-cream-dark/70 leading-relaxed">
-              Manufacturers of 100% quality organic food & nutrition products. Parent company behind Blovit natural malt drinks. Rooted in traditional wisdom and farm-fresh purity.
-            </p>
-            <div className="text-[11px] font-body text-cream-dark/50 space-y-1 pt-2 border-t border-cream-dark/10">
-              <p>FSSAI Lic. No: <strong className="text-cream-dark/80">22421543000120</strong></p>
-              <p>GST Reg: <strong className="text-cream-dark/80">33AAFFA9012K1Z9</strong></p>
+      <div className="relative bg-[#39271B] text-cream-dark/90 py-16 md:py-20">
+        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+            
+            {/* Column 1 — Company Info with Collison-Free Framed Logo Lockup */}
+            <div className="flex flex-col gap-3.5">
+              <div className="flex items-center gap-3 mb-1">
+                <div className="relative h-10 w-10 shrink-0 bg-white/10 rounded-xl p-1.5 border border-white/15 shadow-sm">
+                  <Image
+                    src="/images/logo.png"
+                    alt="Amudhasurabiy Organics Logo"
+                    width={32}
+                    height={32}
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+                <div>
+                  <h4 className="font-heading text-sm font-bold text-white tracking-tight uppercase leading-snug">
+                    AMUDHASURABIY ORGANICS
+                  </h4>
+                  <span className="text-[9px] font-heading font-semibold uppercase tracking-widest text-moss-green block">
+                    PURE NUTRITION. NATURALLY CRAFTED.
+                  </span>
+                </div>
+              </div>
+
+              <p className="font-body text-xs text-cream-dark/80 leading-relaxed">
+                Manufacturers of 100% quality organic food & nutrition products. Parent company behind Blovit natural malt drinks. Rooted in traditional wisdom and farm-fresh purity.
+              </p>
+
+              <div className="text-[11px] font-body text-cream-dark/60 space-y-1 pt-3 border-t border-white/10">
+                <p>FSSAI Lic. No: <strong className="text-white font-semibold">22421543000120</strong></p>
+                <p>GST Reg: <strong className="text-white font-semibold">33AAFFA9012K1Z9</strong></p>
+              </div>
             </div>
-          </div>
 
-          {/* Column 2 — CORPORATE & BRANDS */}
-          <div>
-            <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-cream-dark/60 mb-5">
-              CORPORATE & BRANDS
-            </h4>
-            <ul className="flex flex-col gap-3 font-body text-xs text-cream-dark/80">
-              <li>
-                <Link href="/" className="hover:text-moss-green transition-colors duration-300">
-                  Home Headquarters
-                </Link>
-              </li>
-              <li>
-                <Link href="/shop/" className="hover:text-moss-green transition-colors duration-300">
-                  Shop Blovit Range
-                </Link>
-              </li>
-              <li>
-                <Link href="/brands/blovit/" className="hover:text-moss-green transition-colors duration-300">
-                  Blovit Flagship Brand
-                </Link>
-              </li>
-              <li>
-                <Link href="/shop/" className="hover:text-moss-green transition-colors duration-300">
-                  Shop All Products
-                </Link>
-              </li>
-              <li>
-                <Link href="/about/" className="hover:text-moss-green transition-colors duration-300">
-                  About Amudhasurabiy Organics
-                </Link>
-              </li>
-            </ul>
-          </div>
+            {/* Column 2 — CORPORATE & BRANDS */}
+            <div>
+              <div className="flex items-center gap-2 mb-5">
+                <span className="h-1.5 w-1.5 rounded-full bg-moss-green" />
+                <h4 className="font-heading text-[11px] font-bold uppercase tracking-widest text-cream-dark/70">
+                  CORPORATE & BRANDS
+                </h4>
+              </div>
 
-          {/* Column 3 — EDUCATION & QUALITY */}
-          <div>
-            <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-cream-dark/60 mb-5">
-              EDUCATION & QUALITY
-            </h4>
-            <ul className="flex flex-col gap-3 font-body text-xs text-cream-dark/80">
-              <li>
-                <Link href="/recipes/" className="hover:text-moss-green transition-colors duration-300">
-                  Health Drink Recipes
-                </Link>
-              </li>
-              <li>
-                <Link href="/health-library/" className="hover:text-moss-green transition-colors duration-300">
-                  Health Library & Blogs
-                </Link>
-              </li>
-              <li>
-                <Link href="/quality-and-trust/" className="hover:text-moss-green transition-colors duration-300">
-                  Quality & Trust Hub
-                </Link>
-              </li>
-              <li>
-                <Link href="/our-process/" className="hover:text-moss-green transition-colors duration-300">
-                  Manufacturing Process
-                </Link>
-              </li>
-              <li>
-                <Link href="/ingredients/" className="hover:text-moss-green transition-colors duration-300">
-                  Ingredient Philosophy
-                </Link>
-              </li>
-            </ul>
-          </div>
+              <ul className="flex flex-col gap-3.5 font-body text-xs text-cream-dark/85">
+                <li>
+                  <Link href="/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                    <span>Home Headquarters</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/shop/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                    <span>Shop Blovit Range</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/brands/blovit/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                    <span>Blovit Flagship Brand</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/shop/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                    <span>Shop All Products</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/about/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                    <span>About Amudhasurabiy Organics</span>
+                  </Link>
+                </li>
+              </ul>
+            </div>
 
-          {/* Column 4 — CUSTOMER SUPPORT & CONTACT */}
-          <div>
-            <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-cream-dark/60 mb-5">
-              CUSTOMER SUPPORT & CONTACT
-            </h4>
-            <ul className="flex flex-col gap-3 font-body text-xs text-cream-dark/80">
-              <li>
-                <Link href="/contact/" className="hover:text-moss-green transition-colors duration-300">
-                  Contact Us & Wholesale
-                </Link>
-              </li>
-              <li>
-                <Link href="/privacy-policy-2/" className="hover:text-moss-green transition-colors duration-300">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/shipping-policy/" className="hover:text-moss-green transition-colors duration-300">
-                  Shipping Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/return-refund-policy/" className="hover:text-moss-green transition-colors duration-300">
-                  Return & Refund Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms-conditions/" className="hover:text-moss-green transition-colors duration-300">
-                  Terms & Conditions
-                </Link>
-              </li>
-            </ul>
-          </div>
+            {/* Column 3 — EDUCATION & QUALITY */}
+            <div>
+              <div className="flex items-center gap-2 mb-5">
+                <span className="h-1.5 w-1.5 rounded-full bg-moss-green" />
+                <h4 className="font-heading text-[11px] font-bold uppercase tracking-widest text-cream-dark/70">
+                  EDUCATION & QUALITY
+                </h4>
+              </div>
 
+              <ul className="flex flex-col gap-3.5 font-body text-xs text-cream-dark/85">
+                <li>
+                  <Link href="/recipes/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                    <span>Health Drink Recipes</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/health-library/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                    <span>Health Library & Blogs</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/quality-and-trust/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                    <span>Quality & Trust Hub</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/our-process/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                    <span>Manufacturing Process</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/ingredients/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                    <span>Ingredient Philosophy</span>
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 4 — CUSTOMER SUPPORT & CONTACT */}
+            <div>
+              <div className="flex items-center gap-2 mb-5">
+                <span className="h-1.5 w-1.5 rounded-full bg-moss-green" />
+                <h4 className="font-heading text-[11px] font-bold uppercase tracking-widest text-cream-dark/70">
+                  CUSTOMER SUPPORT & CONTACT
+                </h4>
+              </div>
+
+              <ul className="flex flex-col gap-3.5 font-body text-xs text-cream-dark/85">
+                <li>
+                  <Link href="/contact/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                    <span>Contact Us & Wholesale</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/privacy-policy-2/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                    <span>Privacy Policy</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/shipping-policy/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                    <span>Shipping Policy</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/return-refund-policy/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                    <span>Return & Refund Policy</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/terms-conditions/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                    <span>Terms & Conditions</span>
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+          </div>
         </div>
       </div>
 
       {/* SECTION 5 — Copyright Bar */}
-      <div className="border-t border-cream-dark/10 py-6 bg-black/20 text-xs text-cream-dark/60 font-body">
+      <div className="border-t border-white/10 py-6 bg-[#281B12] text-xs text-cream-dark/70 font-body">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-center md:text-left">
             © 2026 Amudhasurabiy Organics. All rights reserved. Blovit is a registered consumer brand of Amudhasurabiy Organics.
