@@ -10,6 +10,7 @@ import {
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import Testimonials from "@/components/Testimonials";
 import JsonLd from "@/components/JsonLd";
 import { Product } from "@/lib/api/mockData";
 import { getProducts } from "@/lib/api/products";
@@ -78,26 +79,7 @@ export default function Home() {
     { title: "Family Friendly", desc: "Safe, wholesome, and easy to prepare for children, parents, and grandparents.", icon: UserCheck },
   ];
 
-  const customerReviews = [
-    {
-      name: "Ramanathan K.",
-      location: "Chennai",
-      review: "Blovit ABC Malt has become our family's daily morning drink. Knowing it comes from Amudhasurabiy Organics with zero artificial preservatives gives complete peace of mind.",
-      stars: 5,
-    },
-    {
-      name: "Aswathy Nair",
-      location: "Kochi",
-      review: "The Nendran Banana Malt is a natural weight gainer for my toddler. He loves the natural sweetness of raw palm jaggery.",
-      stars: 5,
-    },
-    {
-      name: "Meera Krishnan",
-      location: "Bengaluru",
-      review: "Blovit Beetroot Malt improved my hemoglobin levels within a month. Authentic taste, premium packaging, and quick shipping from Kumbakonam!",
-      stars: 5,
-    },
-  ];
+
 
   const faqs = [
     {
@@ -674,43 +656,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 10. CUSTOMER REVIEWS (Social Proof) */}
-        <section className="py-16 md:py-24 bg-cream-dark/30 border-b border-walnut-brown/10">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-              <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest">
-                Customer Stories & Social Proof
-              </span>
-              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-walnut-brown tracking-tight">
-                Trusted by Families Across India
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {customerReviews.map((r, i) => (
-                <div
-                  key={i}
-                  className="rounded-3xl bg-white p-8 border border-walnut-brown/10 shadow-sm space-y-4 flex flex-col justify-between"
-                >
-                  <div className="space-y-3">
-                    <div className="flex text-amber-400">
-                      {[...Array(r.stars)].map((_, s) => (
-                        <Star key={s} className="h-4 w-4 fill-amber-400" />
-                      ))}
-                    </div>
-                    <p className="font-body text-xs text-walnut-brown/80 leading-relaxed italic">
-                      &quot;{r.review}&quot;
-                    </p>
-                  </div>
-                  <div className="pt-4 border-t border-walnut-brown/10 flex items-center justify-between text-xs font-body">
-                    <span className="font-heading font-bold text-walnut-brown">{r.name}</span>
-                    <span className="text-walnut-brown/50">{r.location}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* 10. GOOGLE VERIFIED REVIEWS MARQUEE (Social Proof) */}
+        <Testimonials />
 
         {/* 11. FAQ ACCORDION SECTION */}
         <section className="py-16 md:py-24 bg-cream border-b border-walnut-brown/10">
