@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 async function handleProxy(
   request: NextRequest,
   { params }: { params: Promise<{ path: string[] }> }
 ) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 30000); // 30-second timeout
+
   try {
     const resolvedParams = await params;
     const subpath = resolvedParams.path ? resolvedParams.path.join("/") : "";
@@ -18,43 +23,64 @@ async function handleProxy(
 
     const headers: Record<string, string> = {};
 
+    // Forward relevant incoming request headers
     const contentType = request.headers.get("content-type");
     if (contentType) headers["Content-Type"] = contentType;
 
     const auth = request.headers.get("authorization");
     if (auth) headers["Authorization"] = auth;
 
-    // Attach server-only secret API key (never exposed to browser)
+    const cookie = request.headers.get("cookie");
+    if (cookie) headers["Cookie"] = cookie;
+
+    // Attach server-only secret API Key (NEVER exposed to browser)
     const apiKey =
       process.env.WEBSITE_API_KEY ||
       process.env.NEXT_PUBLIC_WEBSITE_API_KEY ||
-      "blovit_website_secret_key_2026";
+      "blovit_live_mrxfusiy_04ux73qg";
     headers["X-API-Key"] = apiKey;
 
     const init: RequestInit = {
       method: request.method,
       headers,
+      signal: controller.signal,
+      cache: "no-store",
     };
 
-    if (request.method !== "GET" && request.method !== "HEAD") {
+    if (request.method !== "GET" && request.method !== "HEAD" && request.method !== "OPTIONS") {
       const bodyText = await request.text();
       if (bodyText) init.body = bodyText;
     }
 
-    const res = await fetch(targetUrl, init);
-    const dataText = await res.text();
+    const backendRes = await fetch(targetUrl, init);
+    clearTimeout(timeoutId);
 
-    return new NextResponse(dataText, {
-      status: res.status,
-      headers: {
-        "Content-Type": res.headers.get("content-type") || "application/json",
-      },
+    const responseHeaders = new Headers();
+    const resContentType = backendRes.headers.get("content-type");
+    if (resContentType) responseHeaders.set("Content-Type", resContentType);
+
+    const setCookie = backendRes.headers.get("set-cookie");
+    if (setCookie) responseHeaders.set("Set-Cookie", setCookie);
+
+    const bodyBuffer = await backendRes.arrayBuffer();
+
+    return new NextResponse(bodyBuffer, {
+      status: backendRes.status,
+      headers: responseHeaders,
     });
-  } catch (err) {
-    console.error("[Next Proxy Error]", err);
+  } catch (err: unknown) {
+    clearTimeout(timeoutId);
+    if (err instanceof Error && err.name === "AbortError") {
+      return NextResponse.json(
+        { message: "504 Gateway Timeout: AO ERP Backend did not respond within 30 seconds." },
+        { status: 504 }
+      );
+    }
+
+    console.error("[AO ERP Proxy Error]", err);
     return NextResponse.json(
-      { message: "API Proxy error connecting to ERP backend." },
-      { status: 500 }
+      { message: "API Proxy Error: Failed to connect to AO ERP Backend." },
+      { status: 502 }
     );
   }
 }
@@ -63,6 +89,7 @@ export {
   handleProxy as GET,
   handleProxy as POST,
   handleProxy as PUT,
-  handleProxy as DELETE,
   handleProxy as PATCH,
+  handleProxy as DELETE,
+  handleProxy as OPTIONS,
 };
