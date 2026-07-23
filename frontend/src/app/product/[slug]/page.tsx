@@ -3,6 +3,8 @@ import { getProductBySlug, getProducts } from "@/lib/api/products";
 import ProductDetailClient from "./ProductDetailClient";
 import { notFound } from "next/navigation";
 
+export const revalidate = 300; // ISR: revalidate product details every 5 minutes
+
 interface PageProps {
   params: Promise<{ slug: string }>;
 }

@@ -42,6 +42,14 @@ export async function apiFetch<T>(endpoint: string, options: ApiFetchOptions = {
     if (token) {
       headers["Authorization"] = `Bearer ${token}`;
     }
+  } else {
+    // Attach secret X-API-Key when server component fetches directly from backend
+    const apiKey =
+      process.env.WEBSITE_API_KEY ||
+      process.env.STOREFRONT_API_KEY ||
+      process.env.BLO_WEBSITE_API_KEY ||
+      "blovit_live_sec_99382174620091823746";
+    headers["X-API-Key"] = apiKey;
   }
 
   let attempt = 0;
