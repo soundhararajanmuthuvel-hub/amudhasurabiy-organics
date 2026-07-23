@@ -14,6 +14,7 @@ import { trackCustomerEvent } from "@/lib/api/events";
 
 export default function Shop() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("all");
   const [selectedGoal, setSelectedGoal] = useState("all");
@@ -35,9 +36,16 @@ export default function Shop() {
   ];
 
   useEffect(() => {
-    getProducts().then((data) => {
-      setProducts(data);
-    });
+    getProducts()
+      .then((data) => {
+        setProducts(data);
+      })
+      .catch((err) => {
+        console.error("Failed to load products:", err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
     trackCustomerEvent("category_view", { source: "shop_page" });
   }, []);
 
@@ -57,13 +65,16 @@ export default function Shop() {
         (p) =>
           p.name.toLowerCase().includes(term) ||
           p.description.toLowerCase().includes(term) ||
-          p.ingredients.some((i) => i.toLowerCase().includes(term))
+          (Array.isArray(p.ingredients) && p.ingredients.some((i) => i.toLowerCase().includes(term)))
       );
     }
 
-    // Health Goal filter
+    // Health Goal filter (case-insensitive substring match)
     if (selectedGoal !== "all") {
-      result = result.filter((p) => p.healthGoals?.includes(selectedGoal));
+      result = result.filter((p) =>
+        Array.isArray(p.healthGoals) &&
+        p.healthGoals.some((g) => g.toLowerCase().includes(selectedGoal.toLowerCase()))
+      );
     }
 
     // Bestseller filter
@@ -175,8 +186,21 @@ export default function Shop() {
 
           </div>
 
-          {/* Product Grid */}
-          {filteredProducts.length === 0 ? (
+          {/* Product Grid / Skeleton Loading / Empty State */}
+          {isLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="rounded-3xl bg-white border border-walnut-brown/10 p-6 animate-pulse h-96 flex flex-col justify-between">
+                  <div>
+                    <div className="h-48 bg-cream-dark/40 rounded-2xl mb-6" />
+                    <div className="h-6 bg-cream-dark/60 rounded w-3/4 mb-3" />
+                    <div className="h-4 bg-cream-dark/40 rounded w-1/2 mb-4" />
+                  </div>
+                  <div className="h-10 bg-cream-dark/40 rounded-full" />
+                </div>
+              ))}
+            </div>
+          ) : filteredProducts.length === 0 ? (
             <div className="text-center py-16 rounded-3xl bg-white border border-walnut-brown/10 p-8">
               <h3 className="font-heading text-xl font-bold text-walnut-brown mb-2">No Products Found</h3>
               <p className="font-body text-xs text-walnut-brown/60 max-w-md mx-auto">
@@ -221,7 +245,7 @@ export default function Shop() {
                     <p className="font-body text-xs text-walnut-brown/50 uppercase tracking-widest mb-2 font-medium">
                       By Amudhasurabiy Organics
                     </p>
-                    <p className="font-body text-xs text-walnut-brown/70 leading-relaxed mb-4">
+                    <p className="font-body text-xs text-walnut-brown/70 leading-relaxed mb-4 line-clamp-3">
                       {p.description}
                     </p>
                   </div>
@@ -231,9 +255,11 @@ export default function Shop() {
                       <span className="font-heading text-lg font-bold text-walnut-brown">
                         ₹{p.price}
                       </span>
-                      <span className="font-body text-xs text-walnut-brown/40 line-through ml-2">
-                        ₹{p.originalPrice}
-                      </span>
+                      {p.originalPrice > p.price && (
+                        <span className="font-body text-xs text-walnut-brown/40 line-through ml-2">
+                          ₹{p.originalPrice}
+                        </span>
+                      )}
                     </div>
                     <Link
                       href={`/product/${p.slug}/`}

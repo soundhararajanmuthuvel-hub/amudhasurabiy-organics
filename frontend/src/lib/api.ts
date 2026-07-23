@@ -23,7 +23,13 @@ export class ApiError extends Error {
 
 export async function apiFetch<T>(endpoint: string, options: ApiFetchOptions = {}): Promise<T> {
   const { timeoutMs = 10000, retries = 2, headers: customHeaders, ...restOptions } = options;
-  const cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+  
+  // Normalize endpoint with leading and trailing slashes for Next.js trailingSlash config
+  let cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+  if (!cleanEndpoint.includes("?") && !cleanEndpoint.endsWith("/")) {
+    cleanEndpoint = `${cleanEndpoint}/`;
+  }
+  
   const url = `${API_BASE}${cleanEndpoint}`;
 
   const headers: Record<string, string> = {

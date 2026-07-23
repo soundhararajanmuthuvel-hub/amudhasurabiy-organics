@@ -12,14 +12,19 @@ async function handleProxy(
   try {
     const resolvedParams = await params;
     const subpath = resolvedParams.path ? resolvedParams.path.join("/") : "";
-    const rawBaseUrl =
+    let rawBaseUrl =
       process.env.BACKEND_API_BASE_URL ||
       process.env.NEXT_PUBLIC_API_BASE_URL ||
       "http://localhost:5000";
-    const backendBase = rawBaseUrl.replace(/\/$/, "");
+
+    // Normalize base URL without duplicate /api or trailing slashes
+    rawBaseUrl = rawBaseUrl.replace(/\/$/, "").replace(/\/api\/website$/, "").replace(/\/api$/, "");
 
     const search = request.nextUrl.search || "";
-    const targetUrl = `${backendBase}/api/website/${subpath}${search}`;
+    const targetUrl = `${rawBaseUrl}/api/website/${subpath}${search}`;
+
+    console.log("[AO ERP Proxy] Incoming Path:", subpath);
+    console.log("[AO ERP Proxy] Target URL:", targetUrl);
 
     const headers: Record<string, string> = {};
 
@@ -36,8 +41,8 @@ async function handleProxy(
     // Attach server-only secret API Key (NEVER exposed to browser)
     const apiKey =
       process.env.WEBSITE_API_KEY ||
-      process.env.NEXT_PUBLIC_WEBSITE_API_KEY ||
-      "blovit_live_mrxfusiy_04ux73qg";
+      process.env.BLO_WEBSITE_API_KEY ||
+      "blovit_live_sec_99382174620091823746";
     headers["X-API-Key"] = apiKey;
 
     const init: RequestInit = {
@@ -63,6 +68,10 @@ async function handleProxy(
     if (setCookie) responseHeaders.set("Set-Cookie", setCookie);
 
     const bodyBuffer = await backendRes.arrayBuffer();
+
+    // Log diagnostic check for Step 4
+    console.log("[AO ERP Proxy] Response Status:", backendRes.status);
+    console.log("[AO ERP Proxy] Content-Type:", resContentType);
 
     return new NextResponse(bodyBuffer, {
       status: backendRes.status,
