@@ -12,7 +12,9 @@ async function handleProxy(
 
   try {
     const resolvedParams = await params;
-    const subpath = resolvedParams.path ? resolvedParams.path.join("/") : "";
+    const rawSubpath = resolvedParams.path ? resolvedParams.path.join("/") : "";
+    const cleanSubpath = rawSubpath.replace(/\/$/, ""); // Strip trailing slash to match Express routes
+
     let rawBaseUrl =
       process.env.BACKEND_API_BASE_URL ||
       process.env.AO_ERP_API_URL ||
@@ -23,10 +25,10 @@ async function handleProxy(
     rawBaseUrl = rawBaseUrl.replace(/\/$/, "").replace(/\/api\/website$/, "").replace(/\/api$/, "");
 
     const search = request.nextUrl.search || "";
-    targetUrl = `${rawBaseUrl}/api/website/${subpath}${search}`;
+    targetUrl = `${rawBaseUrl}/api/website/${cleanSubpath}${search}`;
 
-    console.log("[AO ERP Proxy] Incoming Path:", subpath);
-    console.log("[AO ERP Proxy] Target URL:", targetUrl);
+    console.log("[AO ERP Proxy] Incoming Path:", rawSubpath);
+    console.log("[AO ERP Proxy] Final Target URL:", targetUrl);
 
     const headers: Record<string, string> = {};
 
@@ -53,6 +55,7 @@ async function handleProxy(
       headers,
       signal: controller.signal,
       cache: "no-store",
+      redirect: "follow",
     };
 
     if (request.method !== "GET" && request.method !== "HEAD" && request.method !== "OPTIONS") {
@@ -63,19 +66,43 @@ async function handleProxy(
     const backendRes = await fetch(targetUrl, init);
     clearTimeout(timeoutId);
 
+    const resContentType = backendRes.headers.get("content-type") || "";
+    const bodyText = await backendRes.text();
+    const preview = bodyText.substring(0, 300);
+
+    console.log("[AO ERP Proxy] HTTP Status:", backendRes.status);
+    console.log("[AO ERP Proxy] Response Content-Type:", resContentType);
+    console.log("[AO ERP Proxy] Response Body Preview (300 chars):", preview);
+
+    if (backendRes.redirected) {
+      console.warn("[AO ERP Proxy] Backend redirected to:", backendRes.url);
+    }
+
+    // Verify content-type contains application/json or valid JSON structure
+    const isJson = resContentType.includes("application/json") || bodyText.trim().startsWith("{") || bodyText.trim().startsWith("[");
+
+    if (!isJson) {
+      console.error("[AO ERP Proxy Error] Non-JSON response received from targetUrl:", targetUrl);
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Backend returned HTML/Non-JSON response",
+          targetUrl,
+          status: backendRes.status,
+          contentType: resContentType,
+          preview: preview,
+        },
+        { status: 502 }
+      );
+    }
+
     const responseHeaders = new Headers();
-    const resContentType = backendRes.headers.get("content-type");
-    if (resContentType) responseHeaders.set("Content-Type", resContentType);
+    responseHeaders.set("Content-Type", "application/json; charset=utf-8");
 
     const setCookie = backendRes.headers.get("set-cookie");
     if (setCookie) responseHeaders.set("Set-Cookie", setCookie);
 
-    const bodyBuffer = await backendRes.arrayBuffer();
-
-    console.log("[AO ERP Proxy] Response Status:", backendRes.status);
-    console.log("[AO ERP Proxy] Content-Type:", resContentType);
-
-    return new NextResponse(bodyBuffer, {
+    return new NextResponse(bodyText, {
       status: backendRes.status,
       headers: responseHeaders,
     });
@@ -88,12 +115,13 @@ async function handleProxy(
       );
     }
 
-    console.error("[AO ERP Proxy Error]", err, "Target URL:", targetUrl);
+    console.error("[AO ERP Proxy Exception]", err, "Target URL:", targetUrl);
     return NextResponse.json(
       {
-        message: "API Proxy Error: Failed to connect to AO ERP Backend.",
+        success: false,
+        error: "API Proxy Error: Failed to connect to AO ERP Backend.",
         targetUrl,
-        error: err instanceof Error ? err.message : String(err),
+        message: err instanceof Error ? err.message : String(err),
       },
       { status: 502 }
     );
