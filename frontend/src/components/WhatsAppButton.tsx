@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MessageSquare } from "lucide-react";
 
 export default function WhatsAppButton() {
   const [isVisible, setIsVisible] = useState(false);

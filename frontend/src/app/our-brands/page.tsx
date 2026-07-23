@@ -3,8 +3,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import Image from "next/image";
-import { ArrowRight, Sparkles, ShieldCheck, Heart, Leaf } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
 
 export default function OurBrandsPage() {
@@ -13,126 +12,137 @@ export default function OurBrandsPage() {
       id: "blovit",
       name: "Blovit",
       tagline: "Natural Malt Nutrition",
-      description: "Flagship consumer brand of Amudhasurabiy Organics. Manufacturing 100% natural, farm-sourced ABC Malt, Beetroot Malt, and Kerala Nendran Banana Malt powders with zero artificial additives.",
       status: "Active Flagship Brand",
+      description: "Our flagship consumer brand specializing in 100% natural, farm-sourced health drink mixes including Beetroot Malt, ABC Malt, and Sprouted Nendran Banana Malt.",
+      highlights: [
+        "No Chemical Preservatives",
+        "Direct Farm Sourcing",
+        "Formulated for All Ages",
+        "Palm Sugar Sweetened"
+      ],
       href: "/brands/blovit/",
-      badge: "Flagship Brand",
-      productsCount: "3 Premium Malts",
-      active: true,
-      image: "/images/abc-malt.png"
+      isLaunched: true,
     },
     {
       id: "future-brand-1",
-      name: "Heritage Spices & Herbal Elixirs",
-      tagline: "Traditional South Indian Herbal Blends",
-      description: "Upcoming organic brand dedicated to sun-dried spice infusions and traditional herbal health formulations.",
-      status: "In Formulation Phase",
+      name: "Amudha Organics Care",
+      tagline: "Pure Herbal & Skincare Line",
+      status: "In Development",
+      description: "Upcoming consumer brand focused on cold-pressed oils, traditional bath powders, and chemical-free personal care products.",
+      highlights: [
+        "100% Cold-Pressed Oils",
+        "Traditional Heritage Recipes",
+        "Zero Paraben or Sulfates"
+      ],
       href: "#",
-      badge: "Coming Soon",
-      productsCount: "Harvest 2026",
-      active: false,
+      isLaunched: false,
     },
     {
       id: "future-brand-2",
-      name: "Pure Harvest Millets",
-      tagline: "Wholesome Ancient Grain Mixes",
-      description: "Sustainably grown millet flakes, porridge mixes, and sprouted grain superfoods sourced directly from local Tamil Nadu farmers.",
-      status: "In Sourcing Phase",
+      name: "Surabiy Spices & Staples",
+      tagline: "Farm-Direct Spices & Grains",
+      status: "Planned for 2027",
+      description: "Upcoming brand for single-origin spices, unpolished millets, and traditional South Indian rice varieties directly sourced from organic farmer clusters.",
+      highlights: [
+        "Single-Origin Spices",
+        "Unpolished Native Millets",
+        "Fair Trade Farmer Pay"
+      ],
       href: "#",
-      badge: "Coming Soon",
-      productsCount: "Harvest 2026",
-      active: false,
-    },
-    {
-      id: "future-brand-3",
-      name: "Vitality Oils & Botanicals",
-      tagline: "Cold-Pressed Seed Oils & Botanical Extracts",
-      description: "Cold-pressed wood-churned oils and pure botanical wellness extracts.",
-      status: "In Research & Development",
-      href: "#",
-      badge: "Coming Soon",
-      productsCount: "Future Expansion",
-      active: false,
+      isLaunched: false,
     }
   ];
 
   return (
     <>
       <JsonLd
-        type="organization"
+        type="breadcrumb"
         data={{
-          name: "Amudhasurabiy Organics",
-          url: "https://amudhasurabiy.com/our-brands/"
+          items: [
+            { name: "Home", url: "/" },
+            { name: "Our Brands", url: "/our-brands/" },
+          ],
         }}
       />
       <Header />
-      <main className="min-h-screen bg-cream text-charcoal py-12 md:py-20">
+
+      <main className="flex-grow bg-cream py-12 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           
-          {/* Header Hero */}
+          {/* Header */}
           <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-moss-green/10 text-moss-green font-heading text-xs font-bold uppercase tracking-widest">
-              Brand Architecture & Portfolio
+            <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest block">
+              Parent Brand Portfolio
             </span>
-            <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-walnut-brown">
-              Our Portfolio of Natural Brands
+            <h1 className="font-heading text-4xl sm:text-5xl font-bold text-walnut-brown">
+              Our Brands & Product Ecosystem
             </h1>
-            <p className="font-body text-sm sm:text-base text-walnut-brown/70 leading-relaxed">
-              At <strong className="text-walnut-brown font-semibold">Amudhasurabiy Organics</strong>, we craft trusted consumer brands rooted in traditional Indian nutrition, clean ingredients, and zero compromise on quality.
+            <p className="font-body text-xs sm:text-sm text-walnut-brown/75 leading-relaxed">
+              Amudhasurabiy Organics is the parent enterprise behind specialized consumer brands dedicated to pure nutrition, traditional recipes, and sustainable farming.
             </p>
           </div>
 
-          {/* Brands Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mb-20">
+          {/* Brand Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             {brands.map((brand) => (
               <div
                 key={brand.id}
-                className={`rounded-3xl p-8 sm:p-10 border transition-all duration-500 flex flex-col justify-between relative overflow-hidden ${
-                  brand.active
-                    ? "bg-white border-moss-green/20 shadow-lg hover:shadow-2xl hover:-translate-y-1"
-                    : "bg-cream-dark/40 border-walnut-brown/10 opacity-90"
-                }`}
+                className="bg-white rounded-3xl p-8 border border-walnut-brown/10 shadow-sm flex flex-col justify-between hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
               >
-                <div>
-                  <div className="flex items-center justify-between gap-4 mb-6">
-                    <span
-                      className={`px-3 py-1 rounded-full text-[10px] font-heading font-bold uppercase tracking-wider ${
-                        brand.active
-                          ? "bg-moss-green text-white"
-                          : "bg-walnut-brown/10 text-walnut-brown/70"
-                      }`}
-                    >
-                      {brand.badge}
-                    </span>
-                    <span className="text-xs font-body text-walnut-brown/60">
-                      {brand.productsCount}
-                    </span>
+                {!brand.isLaunched && (
+                  <div className="absolute top-4 right-4 bg-cream-dark text-walnut-brown/70 font-heading text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                    {brand.status}
                   </div>
+                )}
+                {brand.isLaunched && (
+                  <div className="absolute top-4 right-4 bg-moss-green text-white font-heading text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                    {brand.status}
+                  </div>
+                )}
 
-                  <h2 className="font-heading text-2xl sm:text-3xl font-bold text-walnut-brown mb-2">
+                <div>
+                  <span className="text-[11px] font-body text-walnut-brown/50 uppercase tracking-widest block mb-1">
+                    Amudhasurabiy Organics
+                  </span>
+                  <h3 className="font-heading text-2xl font-bold text-walnut-brown mb-1">
                     {brand.name}
-                  </h2>
-                  <p className="font-heading text-xs font-semibold text-moss-green uppercase tracking-wider mb-4">
+                  </h3>
+                  <p className="font-heading text-xs font-bold text-moss-green uppercase tracking-wider mb-4">
                     {brand.tagline}
                   </p>
-                  <p className="font-body text-xs sm:text-sm text-walnut-brown/75 leading-relaxed mb-8">
+                  <p className="font-body text-xs text-walnut-brown/75 leading-relaxed mb-6">
                     {brand.description}
                   </p>
+
+                  <div className="space-y-2 mb-6 pt-4 border-t border-walnut-brown/10">
+                    <span className="text-[10px] font-heading font-bold uppercase tracking-wider text-walnut-brown/50 block">
+                      Brand Principles:
+                    </span>
+                    {brand.highlights.map((h, i) => (
+                      <div key={i} className="flex items-center gap-2 text-xs font-body text-walnut-brown/85">
+                        <span className="h-1.5 w-1.5 rounded-full bg-moss-green shrink-0" />
+                        <span>{h}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
                 <div>
-                  {brand.active ? (
+                  {brand.isLaunched ? (
                     <Link
                       href={brand.href}
-                      className="inline-flex items-center justify-between w-full bg-moss-green hover:bg-walnut-brown text-white px-6 py-4 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-md group"
+                      className="w-full inline-flex items-center justify-center gap-2 bg-moss-green hover:bg-walnut-brown text-white py-3.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-colors shadow-md group"
                     >
-                      <span>Explore Blovit Brand</span>
+                      Explore {brand.name} Products
                       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </Link>
                   ) : (
-                    <div className="w-full bg-walnut-brown/5 text-walnut-brown/50 px-6 py-4 rounded-full font-heading text-xs font-bold uppercase tracking-wider text-center cursor-not-allowed">
-                      Coming Soon — Under Development
-                    </div>
+                    <button
+                      disabled
+                      className="w-full inline-flex items-center justify-center gap-2 bg-cream-dark text-walnut-brown/50 py-3.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider cursor-not-allowed"
+                    >
+                      Coming Soon
+                    </button>
                   )}
                 </div>
               </div>
@@ -143,7 +153,7 @@ export default function OurBrandsPage() {
           <div className="rounded-3xl bg-walnut-brown text-white p-8 md:p-12 text-center max-w-4xl mx-auto shadow-xl space-y-6">
             <Sparkles className="h-8 w-8 text-moss-green mx-auto" />
             <h3 className="font-heading text-2xl md:text-3xl font-bold tracking-tight">
-              Building India's Trusted Natural Food Ecosystem
+              Building India&apos;s Trusted Natural Food Ecosystem
             </h3>
             <p className="font-body text-xs md:text-sm text-cream-dark/80 max-w-2xl mx-auto leading-relaxed">
               Every brand under Amudhasurabiy Organics adheres strictly to our core promise: 100% natural, farm-sourced ingredients, zero synthetic chemicals, and complete manufacturing transparency from Kumbakonam.
@@ -153,19 +163,20 @@ export default function OurBrandsPage() {
                 href="/shop/"
                 className="bg-cream hover:bg-white text-walnut-brown px-8 py-3.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all shadow-md"
               >
-                Shop All Products
+                Shop Blovit Products
               </Link>
               <Link
-                href="/quality-and-trust/"
-                className="border border-cream/30 hover:border-white text-white px-8 py-3.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all"
+                href="/about/"
+                className="bg-transparent border border-cream/30 text-cream hover:bg-white/10 px-8 py-3.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all"
               >
-                View Quality Standards
+                Learn About Parent Enterprise
               </Link>
             </div>
           </div>
 
         </div>
       </main>
+
       <Footer />
     </>
   );

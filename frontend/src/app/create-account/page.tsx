@@ -37,7 +37,7 @@ function CreateAccountForm() {
   const [state, setState] = useState("Tamil Nadu");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [referralCode, setReferralCode] = useState(refCode);
+  const [referralCode, setReferralCode] = useState(refCode || "");
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -46,10 +46,6 @@ function CreateAccountForm() {
   useEffect(() => {
     hydrate();
   }, [hydrate]);
-
-  useEffect(() => {
-    if (refCode) setReferralCode(refCode);
-  }, [refCode]);
 
   useEffect(() => {
     if (isHydrated && customer) router.replace("/my-account/");

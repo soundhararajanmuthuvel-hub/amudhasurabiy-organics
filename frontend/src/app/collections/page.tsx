@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Sparkles, Heart, Activity } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -55,7 +55,7 @@ export default function CollectionsPage() {
               Blovit Collections
             </h1>
             <p className="font-body text-sm text-walnut-brown/70 leading-relaxed">
-              Explore our curated natural product lines designed to fulfill your family's daily health and nutrition goals.
+              Explore our curated natural product lines designed to fulfill your family&apos;s daily health and nutrition goals.
             </p>
           </div>
 

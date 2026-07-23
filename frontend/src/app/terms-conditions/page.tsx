@@ -22,7 +22,7 @@ export default function TermsConditions() {
           <article className="bg-white rounded-3xl p-8 md:p-12 border border-walnut-brown/5 shadow-sm font-body text-sm text-walnut-brown/85 leading-relaxed space-y-6">
             <h1 className="font-heading text-3xl font-bold text-walnut-brown mb-6">Terms & Conditions</h1>
             <p>
-              Welcome to Blovit! These terms and conditions outline the rules and regulations for the use of Amudhasurabiy Organics' Website, located at https://amudhasurabiy.com.
+              Welcome to Blovit! These terms and conditions outline the rules and regulations for the use of Amudhasurabiy Organics&apos; Website, located at https://amudhasurabiy.com.
             </p>
 
             <h2 className="font-heading text-xl font-bold text-walnut-brown mt-8">1. License</h2>

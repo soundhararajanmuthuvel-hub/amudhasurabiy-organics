@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { ShoppingBag, User as UserIcon, Menu, X, Heart, Search, ShieldCheck, Sparkles } from "lucide-react";
+import { ShoppingBag, User as UserIcon, Menu, X, Heart, Search, ShieldCheck } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 import SearchModal from "./SearchModal";
 
@@ -12,16 +12,17 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const pathname = usePathname();
+  const [prevPath, setPrevPath] = useState(pathname);
   const { cart, wishlist, user, hydrate, isHydrated } = useCartStore();
+
+  if (prevPath !== pathname) {
+    setPrevPath(pathname);
+    setIsOpen(false);
+  }
 
   useEffect(() => {
     hydrate();
   }, [hydrate]);
-
-  // Close drawer on path change
-  useEffect(() => {
-    setIsOpen(false);
-  }, [pathname]);
 
   const cartCount = isHydrated ? cart.reduce((sum, item) => sum + item.qty, 0) : 0;
   const wishlistCount = isHydrated ? wishlist.length : 0;

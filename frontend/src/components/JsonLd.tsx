@@ -1,12 +1,21 @@
-import React from "react";
-
-interface JsonLdProps {
+interface JsonLdProps<T extends object = Record<string, unknown>> {
   type: "organization" | "product" | "breadcrumb" | "article" | "faq" | "recipe";
-  data: any;
+  data: T;
 }
 
-export default function JsonLd({ type, data }: JsonLdProps) {
-  let schema: any = null;
+interface BreadcrumbItem {
+  name: string;
+  url: string;
+}
+
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+export default function JsonLd<T extends object>({ type, data }: JsonLdProps<T>) {
+  const d = data as Record<string, unknown>;
+  let schema: Record<string, unknown> | null = null;
 
   if (type === "organization") {
     schema = {
@@ -30,15 +39,16 @@ export default function JsonLd({ type, data }: JsonLdProps) {
         "postalCode": "612001",
         "addressCountry": "IN"
       },
-      ...data
+      ...d
     };
   } else if (type === "product") {
+    const additional = (d.additional as Record<string, unknown>) || {};
     schema = {
       "@context": "https://schema.org",
       "@type": "Product",
-      "name": data.name,
-      "image": `https://amudhasurabiy.com${data.imageUrl}`,
-      "description": data.description,
+      "name": d.name,
+      "image": `https://amudhasurabiy.com${d.imageUrl}`,
+      "description": d.description,
       "brand": {
         "@type": "Brand",
         "name": "Blovit",
@@ -49,24 +59,25 @@ export default function JsonLd({ type, data }: JsonLdProps) {
       },
       "offers": {
         "@type": "Offer",
-        "price": data.price,
+        "price": d.price,
         "priceCurrency": "INR",
         "availability": "https://schema.org/InStock",
-        "url": `https://amudhasurabiy.com/product/${data.slug}/`,
+        "url": `https://amudhasurabiy.com/product/${d.slug}/`,
         "priceValidUntil": "2030-01-01"
       },
-      "aggregateRating": data.rating ? {
+      "aggregateRating": d.rating ? {
         "@type": "AggregateRating",
-        "ratingValue": data.rating,
-        "reviewCount": data.reviewCount || 120
+        "ratingValue": d.rating,
+        "reviewCount": d.reviewCount || 120
       } : undefined,
-      ...data.additional
+      ...additional
     };
   } else if (type === "breadcrumb") {
+    const items = (d.items as BreadcrumbItem[]) || [];
     schema = {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
-      "itemListElement": (data.items || []).map((item: any, index: number) => ({
+      "itemListElement": items.map((item, index) => ({
         "@type": "ListItem",
         "position": index + 1,
         "name": item.name,
@@ -74,15 +85,18 @@ export default function JsonLd({ type, data }: JsonLdProps) {
       }))
     };
   } else if (type === "article") {
+    const imageUrl = d.imageUrl as string | undefined;
+    const publishedAt = d.publishedAt as string | undefined;
+    const updatedAt = d.updatedAt as string | undefined;
     schema = {
       "@context": "https://schema.org",
       "@type": "BlogPosting",
-      "headline": data.title,
+      "headline": d.title,
       "image": [
-        data.imageUrl?.startsWith("http") ? data.imageUrl : `https://amudhasurabiy.com${data.imageUrl || "/images/logo.png"}`
+        imageUrl?.startsWith("http") ? imageUrl : `https://amudhasurabiy.com${imageUrl || "/images/logo.png"}`
       ],
-      "datePublished": data.publishedAt || "2026-07-22T00:00:00Z",
-      "dateModified": data.updatedAt || data.publishedAt || "2026-07-22T00:00:00Z",
+      "datePublished": publishedAt || "2026-07-22T00:00:00Z",
+      "dateModified": updatedAt || publishedAt || "2026-07-22T00:00:00Z",
       "author": {
         "@type": "Organization",
         "name": "Amudhasurabiy Organics",
@@ -96,13 +110,14 @@ export default function JsonLd({ type, data }: JsonLdProps) {
           "url": "https://amudhasurabiy.com/images/logo.png"
         }
       },
-      "description": data.description
+      "description": d.description
     };
   } else if (type === "faq") {
+    const faqs = (d.faqs as FaqItem[]) || [];
     schema = {
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      "mainEntity": (data.faqs || []).map((faq: any) => ({
+      "mainEntity": faqs.map((faq) => ({
         "@type": "Question",
         "name": faq.question,
         "acceptedAnswer": {
@@ -112,21 +127,24 @@ export default function JsonLd({ type, data }: JsonLdProps) {
       }))
     };
   } else if (type === "recipe") {
+    const imageUrl = d.imageUrl as string | undefined;
+    const ingredients = (d.ingredients as string[]) || [];
+    const steps = (d.steps as string[]) || [];
     schema = {
       "@context": "https://schema.org",
       "@type": "Recipe",
-      "name": data.title,
+      "name": d.title,
       "image": [
-        data.imageUrl?.startsWith("http") ? data.imageUrl : `https://amudhasurabiy.com${data.imageUrl || "/images/logo.png"}`
+        imageUrl?.startsWith("http") ? imageUrl : `https://amudhasurabiy.com${imageUrl || "/images/logo.png"}`
       ],
       "author": {
         "@type": "Organization",
         "name": "Blovit Kitchen by Amudhasurabiy Organics"
       },
-      "description": data.description,
+      "description": d.description,
       "prepTime": "PT5M",
-      "recipeIngredient": data.ingredients || [],
-      "recipeInstructions": (data.steps || []).map((step: string) => ({
+      "recipeIngredient": ingredients,
+      "recipeInstructions": steps.map((step) => ({
         "@type": "HowToStep",
         "text": step
       }))

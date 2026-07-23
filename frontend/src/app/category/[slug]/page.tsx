@@ -49,6 +49,7 @@ export default async function CategoryPage({ params }: PageProps) {
     {
       id: "raw-ragi",
       name: "Organic Sprouted Finger Millet (Ragi)",
+      slug: "abc-malt",
       price: 120,
       description: "Naturally sprouted and sun-dried organic Ragi grains, ready for custom home milling.",
       imageUrl: "/images/hero-bg.png"
@@ -56,6 +57,7 @@ export default async function CategoryPage({ params }: PageProps) {
     {
       id: "raw-kambu",
       name: "Organic Sprouted Pearl Millet (Kambu)",
+      slug: "abc-malt",
       price: 110,
       description: "Rich in iron and fiber, harvested from our pesticide-free Kumbakonam farms.",
       imageUrl: "/images/hero-bg.png"
@@ -99,7 +101,7 @@ export default async function CategoryPage({ params }: PageProps) {
 
           {visibleProducts.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {visibleProducts.map((p: any) => (
+              {visibleProducts.map((p) => (
                 <div key={p.id} className="bg-white rounded-3xl overflow-hidden border border-walnut-brown/5 shadow-sm p-4 flex flex-col h-full hover:shadow-md transition-shadow relative">
                   <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-cream-dark mb-4">
                     <Image src={p.imageUrl} alt={p.name} fill className="object-cover" />

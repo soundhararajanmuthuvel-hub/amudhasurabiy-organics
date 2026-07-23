@@ -3,8 +3,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import Image from "next/image";
-import { ShieldCheck, Heart, Award, Sparkles, MapPin } from "lucide-react";
+import { ShieldCheck, Sparkles, MapPin } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
 
 export default function AboutPage() {
@@ -51,7 +50,7 @@ export default function AboutPage() {
               <span className="h-10 w-10 rounded-2xl bg-moss-green/10 text-moss-green flex items-center justify-center font-heading font-bold text-sm">02</span>
               <h3 className="font-heading text-xl font-bold text-walnut-brown">Our Vision</h3>
               <p className="font-body text-xs sm:text-sm text-walnut-brown/70 leading-relaxed">
-                To become one of India's most trusted natural food and wellness companies, fostering a portfolio of pure consumer health brands.
+                To become one of India&apos;s most trusted natural food and wellness companies, fostering a portfolio of pure consumer health brands.
               </p>
             </div>
 

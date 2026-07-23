@@ -3,7 +3,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import { ShieldCheck, Award, Lock, Truck, RefreshCw, FileText, CheckCircle2, MapPin, Heart, Sparkles } from "lucide-react";
+import { ShieldCheck, Award, Lock, RefreshCw } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
 
 export default function QualityAndTrustPage() {

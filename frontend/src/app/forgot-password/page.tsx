@@ -15,7 +15,6 @@ export default function ForgotPasswordPage() {
   const [mobile, setMobile] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const [emailHint, setEmailHint] = useState("");
-  const [hasEmail, setHasEmail] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,7 +37,6 @@ export default function ForgotPasswordPage() {
         return;
       }
 
-      setHasEmail(res.hasEmail);
       if (res.hasEmail) {
         setEmailHint(res.emailHint || "");
         setStep(2);

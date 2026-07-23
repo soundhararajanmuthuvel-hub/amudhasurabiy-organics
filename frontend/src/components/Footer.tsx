@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, Phone, MapPin, ArrowRight, ShieldCheck, Lock, Award, Heart, Sparkles } from "lucide-react";
+import { ArrowRight, ShieldCheck, Lock, Award, Heart } from "lucide-react";
 
 export default function Footer() {
   const [email, setEmail] = useState("");

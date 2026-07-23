@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
-import { ChevronLeft, Clock, ChefHat, CheckCircle2, ArrowRight, ShoppingCart } from "lucide-react";
+import { ChevronLeft, Clock, ChefHat, CheckCircle2, ShoppingCart } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";

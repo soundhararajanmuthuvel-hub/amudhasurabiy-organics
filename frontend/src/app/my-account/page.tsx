@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import {
   User,
   ShoppingBag,
@@ -20,15 +20,8 @@ import {
   Copy,
   CheckCircle2,
   Clock,
-  AlertCircle,
-  ExternalLink,
-  KeyRound,
   Laptop,
-  Smartphone,
-  RefreshCw,
   Sparkles,
-  ArrowRight,
-  ShieldAlert,
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -44,17 +37,17 @@ import { getProducts } from "@/lib/api/products";
 import { getMyReferrals, getReferralMetrics, getWhatsAppShareUrl, getReferralShareUrl } from "@/lib/api/referrals";
 import { getRewardWallet } from "@/lib/api/wallet";
 import { changePassword } from "@/lib/api/auth";
-import { Product, MOCK_COUPONS } from "@/lib/api/mockData";
+import { Product, Order, Address, MOCK_COUPONS } from "@/lib/api/mockData";
 import { ReferralRecord, ReferralMetrics, RewardWallet as WalletType } from "@/lib/types/customer";
 import { mockGetSecuritySettings } from "@/lib/auth/mockAuthStore";
 
 export default function MyAccount() {
   const router = useRouter();
-  const { customer, token, logout, wishlist, addToCart, hydrate, isHydrated } = useCartStore();
+  const { customer, logout, wishlist, addToCart, hydrate, isHydrated } = useCartStore();
 
   const [activeTab, setActiveTab] = useState("overview");
-  const [orders, setOrders] = useState<any[]>([]);
-  const [addresses, setAddresses] = useState<any[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [addresses, setAddresses] = useState<Address[]>([]);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [referrals, setReferrals] = useState<ReferralRecord[]>([]);
   const [metrics, setMetrics] = useState<ReferralMetrics>({
@@ -66,7 +59,7 @@ export default function MyAccount() {
     withdrawnBalance: 300,
   });
   const [wallet, setWallet] = useState<WalletType>({ balance: 500, transactions: [] });
-  const [securitySettings, setSecuritySettings] = useState<any>(null);
+  const [securitySettings, setSecuritySettings] = useState<ReturnType<typeof mockGetSecuritySettings> | null>(null);
 
   const [copiedLink, setCopiedLink] = useState(false);
   const [copiedCoupon, setCopiedCoupon] = useState<string | null>(null);
@@ -96,7 +89,7 @@ export default function MyAccount() {
       getMyReferrals().then(setReferrals).catch(console.error);
       getReferralMetrics().then(setMetrics).catch(console.error);
       getRewardWallet().then(setWallet).catch(console.error);
-      setSecuritySettings(mockGetSecuritySettings(customer.id));
+      Promise.resolve().then(() => setSecuritySettings(mockGetSecuritySettings()));
     }
   }, [isHydrated, customer]);
 
@@ -116,6 +109,8 @@ export default function MyAccount() {
 
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!oldPassword || !newPassword) return;
+
     setIsChangingPass(true);
     setChangePasswordMsg("");
     setChangePasswordErr("");
@@ -125,9 +120,13 @@ export default function MyAccount() {
       setChangePasswordMsg("Password updated successfully.");
       setOldPassword("");
       setNewPassword("");
-    } catch (err: any) {
-      setChangePasswordErr(err.message || "Failed to update password.");
-    } fontally: {
+    } catch (err) {
+      if (err instanceof Error) {
+        setChangePasswordErr(err.message);
+      } else {
+        setChangePasswordErr("Failed to update password.");
+      }
+    } finally {
       setIsChangingPass(false);
     }
   };
@@ -317,7 +316,7 @@ export default function MyAccount() {
                             </span>
                           </div>
                           <div className="p-5 flex flex-col gap-2.5">
-                            {order.items.map((item: any, idx: number) => (
+                            {order.items.map((item, idx: number) => (
                               <div key={idx} className="flex justify-between items-center text-xs font-body">
                                 <span className="font-semibold text-walnut-brown">{item.name} (x{item.quantity})</span>
                                 <span className="font-bold text-walnut-brown">₹{item.price * item.quantity}</span>
@@ -345,8 +344,8 @@ export default function MyAccount() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       {wishlistedProducts.map((p) => (
                         <div key={p.id} className="border border-walnut-brown/10 rounded-2xl p-4 flex flex-col h-full bg-cream">
-                          <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-white mb-3">
-                            <img src={p.imageUrl} alt={p.name} className="object-cover h-full w-full" />
+                          <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-white mb-3 flex items-center justify-center">
+                            <Image src={p.imageUrl} alt={p.name} width={150} height={150} className="object-contain max-h-full" />
                           </div>
                           <h3 className="font-heading text-sm font-bold text-walnut-brown line-clamp-1 mb-1">{p.name}</h3>
                           <span className="font-heading text-xs font-semibold text-moss-green mb-4">₹{p.price}</span>
@@ -693,7 +692,7 @@ export default function MyAccount() {
                       </div>
 
                       <div className="space-y-3 font-body text-xs">
-                        {securitySettings.loginHistory.map((sess: any) => (
+                        {securitySettings.loginHistory.map((sess) => (
                           <div key={sess.id} className="p-3.5 rounded-2xl bg-white border border-walnut-brown/10 flex justify-between items-center">
                             <div className="flex items-center gap-3">
                               <Laptop className="h-5 w-5 text-moss-green" />

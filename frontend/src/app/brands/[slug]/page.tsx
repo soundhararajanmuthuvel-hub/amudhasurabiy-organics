@@ -5,13 +5,11 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, ShieldCheck, Heart, Leaf, Star, Sparkles, Award } from "lucide-react";
+import { ArrowRight, ShieldCheck, Heart, Star, Award } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
-import { useCartStore } from "@/store/useCartStore";
 
 export default function BrandSlugPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
-  const { addToCart } = useCartStore();
 
   const brandInfo = {
     name: "Blovit",

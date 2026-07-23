@@ -23,7 +23,7 @@ export default function AboutUs() {
             <h1 className="font-heading text-3xl md:text-4xl font-bold text-walnut-brown mb-6">Our Story</h1>
             
             <p className="text-base font-medium text-moss-green italic">
-              "We are manufacturers of 100% quality products, rooted in the heritage of traditional Indian wellness."
+              &quot;We are manufacturers of 100% quality products, rooted in the heritage of traditional Indian wellness.&quot;
             </p>
 
             <p>
@@ -44,14 +44,14 @@ export default function AboutUs() {
               </div>
               <div className="p-4 bg-cream-dark rounded-2xl border">
                 <Sparkles className="h-8 w-8 text-moss-green mx-auto mb-2" />
-                <h4 className="font-heading font-bold text-walnut-brown">Pure Nutrition</h4>
+                <h4 className="font-heading font-bold text-walnut-brown">Pure Nutrition</h4>                       
                 <p className="text-xs text-walnut-brown/70 mt-1">Naturally rich in iron, calcium, potassium and vitamins.</p>
               </div>
             </div>
 
             <h2 className="font-heading text-xl font-bold text-walnut-brown mt-8">Our Heritage</h2>
             <p>
-              Every jar of Blovit Malt is the culmination of careful harvesting and traditional processing. Whether it's the premium raw Kerala Nendran Bananas sun-dried and milled, or the organic carrots, apples, and beetroots dehydrated to retain their essential enzymes—our focus is on maximum bioavailability. We sprouted Finger Millet (Ragi) to amplify calcium absorption and added real almonds and cashews for cognitive power.
+              Every jar of Blovit Malt is the culmination of careful harvesting and traditional processing. Whether it&apos;s the premium raw Kerala Nendran Bananas sun-dried and milled, or the organic carrots, apples, and beetroots dehydrated to retain their essential enzymes—our focus is on maximum bioavailability. We sprouted Finger Millet (Ragi) to amplify calcium absorption and added real almonds and cashews for cognitive power.
             </p>
 
             <p>

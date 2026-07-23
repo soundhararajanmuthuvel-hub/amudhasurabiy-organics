@@ -3,12 +3,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Clock, Sparkles, ChefHat } from "lucide-react";
+import { ArrowRight, Clock, ChefHat } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import JsonLd from "@/components/JsonLd";
-import { MOCK_RECIPES, Recipe } from "@/lib/api/mockData";
+import { MOCK_RECIPES } from "@/lib/api/mockData";
 
 export default function RecipesIndex() {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");

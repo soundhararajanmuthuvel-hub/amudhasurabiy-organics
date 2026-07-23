@@ -2,7 +2,7 @@
 
 import { Suspense, useState } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { KeyRound, CheckCircle2, ShieldAlert } from "lucide-react";
 import Header from "@/components/Header";
@@ -15,7 +15,6 @@ import { resetPassword, AuthApiError } from "@/lib/api/auth";
 import { passwordsMatch } from "@/lib/auth/passwordStrength";
 
 function ResetPasswordForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token") || "mock-reset-token";
 

@@ -22,7 +22,7 @@ export interface CustomerEvent {
   quantity?: number;
   source?: string;
   device?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 // Generate or retrieve persistent Session ID
@@ -59,8 +59,8 @@ export const trackCustomerEvent = (
       
       // Console log event dispatch in development
       console.log("[AO ERP CRM Event Logged]:", payload.event, payload);
-    } catch (e) {
-      console.error("Failed logging event", e);
+    } catch (err) {
+      console.error("Failed logging event", err);
     }
   }
 
@@ -72,7 +72,7 @@ export const getCustomerEventLogs = (): CustomerEvent[] => {
   if (typeof window === "undefined") return [];
   try {
     return JSON.parse(window.localStorage.getItem("blovit_crm_events") || "[]");
-  } catch (e) {
+  } catch {
     return [];
   }
 };

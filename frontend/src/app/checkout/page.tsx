@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { CreditCard, MapPin, Plus, CheckCircle, ChevronLeft, UserPlus, Lock, ShieldCheck } from "lucide-react";
+import { CreditCard, MapPin, CheckCircle, ChevronLeft, UserPlus } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -29,9 +28,15 @@ interface SavedAddress {
   phone: string;
 }
 
+interface CompletedOrder {
+  orderNumber: string;
+  total: number;
+  isGuest: boolean;
+  guestPhone?: string;
+}
+
 export default function Checkout() {
-  const router = useRouter();
-  const { cart, coupon, customer, walletBalance, useWallet, shippingCharge, calculateShipping, clearCart, checkoutMode, setCustomer, hydrate, isHydrated } = useCartStore();
+  const { cart, coupon, customer, walletBalance, useWallet, shippingCharge, calculateShipping, clearCart, setCustomer, hydrate, isHydrated } = useCartStore();
 
   const [addresses, setAddresses] = useState<SavedAddress[]>([]);
   const [selectedAddressId, setSelectedAddressId] = useState("");
@@ -50,7 +55,7 @@ export default function Checkout() {
   // Payment State
   const [isProcessing, setIsProcessing] = useState(false);
   const [showMockPaymentModal, setShowMockPaymentModal] = useState(false);
-  const [orderCompleted, setOrderCompleted] = useState<any>(null);
+  const [orderCompleted, setOrderCompleted] = useState<CompletedOrder | null>(null);
 
   // Post-Checkout Guest Conversion State
   const [convertPassword, setConvertPassword] = useState("");
@@ -75,7 +80,7 @@ export default function Checkout() {
         }
       });
     } else if (isHydrated && !customer) {
-      setShowAddressForm(true);
+      Promise.resolve().then(() => setShowAddressForm(true));
     }
   }, [isHydrated, customer, calculateShipping]);
 
@@ -190,7 +195,7 @@ export default function Checkout() {
             name: "Blovit - Amudhasurabiy Organics",
             description: "Malt Health Drinks Order",
             order_id: rzpOrder.id,
-            handler: async (response: any) => {
+            handler: async (response: { razorpay_payment_id: string; razorpay_signature: string }) => {
               try {
                 const verify = await verifyRazorpayPayment(
                   rzpOrder.id,
@@ -218,7 +223,7 @@ export default function Checkout() {
             },
             theme: { color: "#2E5A44" },
           };
-          const rzp = new (window as any).Razorpay(options);
+          const rzp = new (window as unknown as { Razorpay: new (opts: unknown) => { open: () => void } }).Razorpay(options);
           rzp.open();
           setIsProcessing(false);
         };
@@ -264,6 +269,7 @@ export default function Checkout() {
 
   const handleConvertGuestAccount = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!orderCompleted) return;
     if (convertPassword.length < 8) {
       setConvertError("Password must be at least 8 characters long.");
       return;
@@ -281,8 +287,12 @@ export default function Checkout() {
 
       setCustomer(res.customer, res.token);
       setConvertSuccess(true);
-    } catch (err: any) {
-      setConvertError(err.message || "Failed to create account.");
+    } catch (err) {
+      if (err instanceof Error) {
+        setConvertError(err.message);
+      } else {
+        setConvertError("Failed to create account.");
+      }
     } finally {
       setIsConverting(false);
     }

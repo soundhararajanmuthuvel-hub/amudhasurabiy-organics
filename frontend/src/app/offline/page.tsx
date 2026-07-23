@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { WifiOff, ChevronLeft } from "lucide-react";
+import { WifiOff } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 

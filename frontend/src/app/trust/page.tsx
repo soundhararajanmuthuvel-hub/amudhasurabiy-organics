@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ShieldCheck, Award, Lock, Truck, RefreshCw, Phone, Mail, CheckCircle2, ChevronLeft, MapPin } from "lucide-react";
+import { ShieldCheck, Award, Lock, Truck, RefreshCw, CheckCircle2, ChevronLeft } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";

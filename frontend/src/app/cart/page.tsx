@@ -36,22 +36,21 @@ export default function Cart() {
     coupon,
     setCoupon,
     shippingCharge,
-    shippingPincode,
     shippingMessage,
     calculateShipping,
     customer,
     walletBalance,
     useWallet,
     toggleUseWallet,
-    setCheckoutMode,
     hydrate,
     isHydrated,
+    setCheckoutMode,
   } = useCartStore();
 
+  const [pincodeInput, setPincodeInput] = useState("");
   const [couponCode, setCouponCode] = useState("");
   const [couponError, setCouponError] = useState("");
   const [couponSuccess, setCouponSuccess] = useState("");
-  const [pincodeInput, setPincodeInput] = useState("");
   const [isValidating, setIsValidating] = useState(false);
   const [showAuthChoiceModal, setShowAuthChoiceModal] = useState(false);
 
@@ -59,14 +58,19 @@ export default function Cart() {
     hydrate();
   }, [hydrate]);
 
-  const subtotal = isHydrated ? cart.reduce((sum, item) => sum + item.price * item.qty, 0) : 0;
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 
+  // Dynamic Coupon Discount Calculation
   let discount = 0;
-  if (coupon && coupon.valid && subtotal >= 200) {
-    discount = coupon.discount;
+  if (coupon) {
+    if (coupon.type === "percentage") {
+      discount = Math.round((subtotal * coupon.value) / 100);
+    } else {
+      discount = coupon.value;
+    }
   }
 
-  const walletDeduction = customer && useWallet ? Math.min(walletBalance, Math.max(0, subtotal - discount)) : 0;
+  const walletDeduction = useWallet ? Math.min(walletBalance, subtotal - discount) : 0;
   const grandTotal = Math.max(0, subtotal - discount - walletDeduction + shippingCharge);
 
   const handleApplyCoupon = async (e: React.FormEvent) => {
@@ -93,8 +97,12 @@ export default function Cart() {
       } else {
         setCouponError(res.message);
       }
-    } catch (err: any) {
-      setCouponError(err.message || "Failed to apply coupon.");
+    } catch (err) {
+      if (err instanceof Error) {
+        setCouponError(err.message);
+      } else {
+        setCouponError("Failed to apply coupon.");
+      }
     } finally {
       setIsValidating(false);
     }

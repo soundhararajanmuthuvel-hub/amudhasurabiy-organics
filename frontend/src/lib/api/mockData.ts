@@ -273,22 +273,22 @@ export const MOCK_COUPONS: Coupon[] = [
   { code: "FREESHIP", category: "Free Shipping", type: "fixed", value: 60, minSubtotal: 300, message: "Free Shipping Discount Applied!" }
 ];
 
-const getLocalStorage = (key: string, defaultValue: any) => {
+const getLocalStorage = <T>(key: string, defaultValue: T): T => {
   if (typeof window === "undefined") return defaultValue;
   try {
     const item = window.localStorage.getItem(key);
     return item ? JSON.parse(item) : defaultValue;
-  } catch (e) {
+  } catch {
     return defaultValue;
   }
 };
 
-const setLocalStorage = (key: string, value: any) => {
+const setLocalStorage = <T>(key: string, value: T): void => {
   if (typeof window !== "undefined") {
     try {
       window.localStorage.setItem(key, JSON.stringify(value));
-    } catch (e) {
-      console.error(e);
+    } catch (err) {
+      console.error(err);
     }
   }
 };

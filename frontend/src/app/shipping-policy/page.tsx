@@ -27,7 +27,7 @@ export default function ShippingPolicy() {
 
             <h2 className="font-heading text-xl font-bold text-walnut-brown mt-8">1. Shipping Charges & Delivery Estimates</h2>
             <p>
-              Shipping charges are calculated dynamically at checkout based on the delivery destination's pincode and subtotal:
+              Shipping charges are calculated dynamically at checkout based on the delivery destination&apos;s pincode and subtotal:
             </p>
             <div className="overflow-x-auto">
               <table className="min-w-full text-xs font-body text-walnut-brown/80 border border-walnut-brown/10 mb-4">

@@ -12,7 +12,7 @@ export interface AISearchResult {
   explanation: string;
 }
 
-export const getAIRecommendations = async (req: AIRecommendationRequest): Promise<Product[]> => {
+export const getAIRecommendations = async (): Promise<Product[]> => {
   // Simulates AI recommendation response
   return MOCK_PRODUCTS;
 };

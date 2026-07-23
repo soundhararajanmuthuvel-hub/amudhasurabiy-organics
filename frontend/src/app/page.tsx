@@ -3,18 +3,15 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
 import { 
-  ArrowRight, Star, ShieldCheck, Heart, Leaf, Truck, Award, 
-  ChevronDown, CheckCircle2, Flame, Sparkles, Activity, Clock, 
-  UserCheck, RefreshCw, ShoppingBag, Lock, BookOpen, Layers
+  ArrowRight, Star, ShieldCheck, Heart, Leaf, Award, 
+  ChevronDown, Activity, UserCheck, Sparkles
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import JsonLd from "@/components/JsonLd";
-import { useCartStore } from "@/store/useCartStore";
-import { Product, MOCK_RECIPES, Recipe } from "@/lib/api/mockData";
+import { Product } from "@/lib/api/mockData";
 import { getProducts } from "@/lib/api/products";
 import { trackCustomerEvent } from "@/lib/api/events";
 
@@ -22,7 +19,6 @@ export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
   const [selectedGoal, setSelectedGoal] = useState<string>("all");
-  const { addToCart, toggleWishlist, wishlist } = useCartStore();
 
   useEffect(() => {
     getProducts().then(setProducts);
@@ -238,7 +234,7 @@ export default function Home() {
               Corporate Brand Philosophy
             </span>
             <h2 className="font-heading text-4xl sm:text-5xl font-bold text-white tracking-tight">
-              "Health is Wealth."
+              &quot;Health is Wealth.&quot;
             </h2>
             <p className="font-body text-base sm:text-lg text-cream-dark/90 leading-relaxed max-w-2xl mx-auto">
               This simple belief guides everything we create—from carefully sourced ingredients to thoughtfully crafted nutrition that supports healthier families and better living.
@@ -693,7 +689,7 @@ export default function Home() {
                       ))}
                     </div>
                     <p className="font-body text-xs text-walnut-brown/80 leading-relaxed italic">
-                      "{r.review}"
+                      &quot;{r.review}&quot;
                     </p>
                   </div>
                   <div className="pt-4 border-t border-walnut-brown/10 flex items-center justify-between text-xs font-body">

@@ -3,8 +3,6 @@ import type {
   CustomerAuth,
   ForgotPasswordStep1Response,
   ForgotPasswordStep2Response,
-  GuestCheckoutPayload,
-  GuestCheckoutResponse,
   GuestConvertPayload,
   ReferralMetrics,
   ReferralRecord,
@@ -482,7 +480,7 @@ export async function mockConvertGuestToAccount(payload: GuestConvertPayload): P
   return registerResult;
 }
 
-export function mockGetSecuritySettings(customerId: string): SecuritySettings {
+export function mockGetSecuritySettings(): SecuritySettings {
   return {
     loginHistory: [
       {

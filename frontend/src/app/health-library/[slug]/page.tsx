@@ -1,14 +1,10 @@
-"use client";
-
-import { use } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { ArrowLeft, Clock, Calendar, User, ShieldCheck } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
 
-export default function HealthLibraryArticlePage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = use(params);
+export default function HealthLibraryArticlePage() {
 
   const article = {
     title: "Why ABC Malt (Apple, Beetroot, Carrot) is the Ultimate Morning Health Drink",

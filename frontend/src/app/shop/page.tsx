@@ -1,27 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Search, SlidersHorizontal, ArrowRight, Heart, Sparkles, Star, ShieldCheck } from "lucide-react";
+import { Search, Star } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import JsonLd from "@/components/JsonLd";
-import { useCartStore } from "@/store/useCartStore";
 import { Product } from "@/lib/api/mockData";
 import { getProducts } from "@/lib/api/products";
 import { trackCustomerEvent } from "@/lib/api/events";
 
 export default function Shop() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("all");
   const [selectedGoal, setSelectedGoal] = useState("all");
   const [sortBy, setSortBy] = useState("default");
-  const [filterBestseller, setFilterBestseller] = useState(false);
-  const { addToCart, toggleWishlist, wishlist } = useCartStore();
+  const [filterBestseller] = useState(false);
 
   const brandOptions = [
     { id: "all", label: "All Brands" },
@@ -40,13 +37,12 @@ export default function Shop() {
   useEffect(() => {
     getProducts().then((data) => {
       setProducts(data);
-      setFilteredProducts(data);
     });
     trackCustomerEvent("category_view", { source: "shop_page" });
   }, []);
 
-  // Filter and sort products
-  useEffect(() => {
+  // Filter and sort products derived directly during render
+  const filteredProducts = useMemo(() => {
     let result = [...products];
 
     // Brand filter
@@ -61,13 +57,13 @@ export default function Shop() {
         (p) =>
           p.name.toLowerCase().includes(term) ||
           p.description.toLowerCase().includes(term) ||
-          p.ingredients.some(i => i.toLowerCase().includes(term))
+          p.ingredients.some((i) => i.toLowerCase().includes(term))
       );
     }
 
     // Health Goal filter
     if (selectedGoal !== "all") {
-      result = result.filter(p => p.healthGoals?.includes(selectedGoal));
+      result = result.filter((p) => p.healthGoals?.includes(selectedGoal));
     }
 
     // Bestseller filter
@@ -84,7 +80,7 @@ export default function Shop() {
       result.sort((a, b) => a.name.localeCompare(b.name));
     }
 
-    setFilteredProducts(result);
+    return result;
   }, [products, searchTerm, selectedBrand, selectedGoal, sortBy, filterBestseller]);
 
   return (

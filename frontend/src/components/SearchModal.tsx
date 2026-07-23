@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Search, X, Sparkles, ArrowRight } from "lucide-react";
+import { Search, X, ArrowRight } from "lucide-react";
 import { Product } from "@/lib/api/mockData";
 import { getProducts } from "@/lib/api/products";
 
@@ -49,7 +49,6 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 bg-black/60 backdrop-blur-sm transition-opacity">
       <div className="w-full max-w-2xl bg-cream border border-walnut-brown/10 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
-        
         {/* Search Header */}
         <div className="flex items-center justify-between border-b border-walnut-brown/10 pb-4">
           <div className="flex items-center gap-2 text-walnut-brown">
@@ -108,7 +107,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
         <div className="max-h-80 overflow-y-auto space-y-3 pt-2">
           {query.trim() && filteredProducts.length === 0 && (
             <div className="text-center py-8 text-xs font-body text-walnut-brown/60">
-              No direct malt matches for "{query}". Try searching "Iron", "Kids", or "ABC".
+              No direct malt matches for &quot;{query}&quot;. Try searching &quot;Iron&quot;, &quot;Kids&quot;, or &quot;ABC&quot;.
             </div>
           )}
 
@@ -143,7 +142,6 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
             </Link>
           ))}
         </div>
-
       </div>
     </div>
   );

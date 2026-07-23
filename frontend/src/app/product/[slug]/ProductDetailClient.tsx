@@ -5,8 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  ChevronDown, Star, Heart, ArrowRight, Minus, Plus, 
-  ShoppingCart, ShieldCheck, CheckCircle2, UserCheck, Play, Sparkles 
+  ChevronDown, Star, Heart, Minus, Plus, 
+  ShoppingCart, UserCheck 
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -357,7 +357,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
                     </div>
                   </div>
                   <p className="font-body text-xs text-walnut-brown/80 leading-relaxed italic">
-                    "{rev.text}"
+                    &quot;{rev.text}&quot;
                   </p>
                 </div>
               ))}
