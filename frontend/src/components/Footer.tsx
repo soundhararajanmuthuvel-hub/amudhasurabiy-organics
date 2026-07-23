@@ -23,28 +23,28 @@ export default function Footer() {
       
       {/* SECTION 1 — Brand Statement Band */}
       <div className="relative py-20 md:py-24 bg-[#563E2D] text-white text-center overflow-hidden">
-        {/* Subtle Radial Glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-moss-green/10 rounded-full blur-3xl pointer-events-none -z-0" />
+        {/* Subtle Radial Backdrop Glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#8CBD7B]/10 rounded-full blur-3xl pointer-events-none -z-0" />
 
         <div className="relative z-10 mx-auto max-w-4xl px-4 space-y-6">
-          <div className="h-12 w-12 rounded-2xl bg-moss-green/15 border border-moss-green/30 text-moss-green flex items-center justify-center mx-auto shadow-inner">
-            <Leaf className="h-6 w-6 text-moss-green" />
+          <div className="h-12 w-12 rounded-2xl bg-[#8CBD7B]/15 border border-[#8CBD7B]/30 text-[#8CBD7B] flex items-center justify-center mx-auto shadow-inner">
+            <Leaf className="h-6 w-6 text-[#8CBD7B]" />
           </div>
 
           <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white drop-shadow-sm">
             Amudhasurabiy Organics
           </h2>
 
-          <div className="space-y-1 font-body text-xs sm:text-sm text-cream-dark/95">
-            <p className="font-semibold text-white">
+          <div className="space-y-3 font-body text-xs sm:text-sm text-cream-dark">
+            <p className="font-semibold text-white leading-relaxed">
               Official Digital Headquarters • Kumbakonam, Tamil Nadu, India.
             </p>
-            <p className="text-moss-green font-heading uppercase tracking-wider text-xs font-bold">
+            <p className="text-[#8CBD7B] font-heading uppercase tracking-widest text-xs font-bold mt-3 block leading-normal">
               Pure Nutrition. Naturally Crafted.
             </p>
           </div>
 
-          <div className="max-w-2xl mx-auto p-4 sm:p-5 rounded-2xl bg-white/10 border border-white/20 text-xs sm:text-sm text-white/90 italic leading-relaxed backdrop-blur-sm shadow-sm">
+          <div className="max-w-2xl mx-auto p-4 sm:p-5 rounded-2xl bg-white/10 border border-white/20 text-xs sm:text-sm text-white/95 italic leading-relaxed backdrop-blur-sm shadow-sm">
             Amudhasurabiy Organics — sometimes searched as Amudhasurabi or Amuthasurabi — is the maker of Blovit natural malt powders.
           </div>
 
@@ -76,13 +76,13 @@ export default function Footer() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
-              <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest block mb-2">
+              <span className="font-heading text-xs font-bold text-[#8CBD7B] uppercase tracking-widest block mb-2">
                 JOIN THE AMUDHASURABIY CIRCLE
               </span>
               <h3 className="font-heading text-2xl md:text-3xl font-bold tracking-tight text-white mb-2">
                 Pure Nutrition Insights & Seasonal Harvests
               </h3>
-              <p className="font-body text-xs md:text-sm text-cream-dark/85 max-w-md leading-relaxed">
+              <p className="font-body text-xs md:text-sm text-cream-dark/90 max-w-md leading-relaxed">
                 Subscribe to receive traditional wellness knowledge, health drink recipes, and early access to pure organic harvests.
               </p>
             </div>
@@ -94,7 +94,7 @@ export default function Footer() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="w-full max-w-md">
-                  <div className="relative flex items-center rounded-full bg-white/10 border border-white/20 p-1.5 focus-within:border-moss-green focus-within:ring-2 focus-within:ring-moss-green/30 transition-all shadow-inner">
+                  <div className="relative flex items-center rounded-full bg-white/10 border border-white/20 p-1.5 focus-within:border-[#8CBD7B] focus-within:ring-2 focus-within:ring-[#8CBD7B]/30 transition-all shadow-inner">
                     <input
                       type="email"
                       value={email}
@@ -126,8 +126,8 @@ export default function Footer() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center">
             
             <div className="flex items-center justify-center gap-3 p-3.5 rounded-2xl bg-white/10 border border-white/15 shadow-sm transition-transform hover:-translate-y-0.5">
-              <div className="h-9 w-9 rounded-full bg-moss-green/20 border border-moss-green/40 text-moss-green flex items-center justify-center shrink-0">
-                <ShieldCheck className="h-4.5 w-4.5 text-moss-green" />
+              <div className="h-9 w-9 rounded-full bg-[#8CBD7B]/20 border border-[#8CBD7B]/40 text-[#8CBD7B] flex items-center justify-center shrink-0">
+                <ShieldCheck className="h-4.5 w-4.5 text-[#8CBD7B]" />
               </div>
               <span className="text-xs font-body font-semibold text-white text-left leading-snug">
                 FSSAI Certified Unit
@@ -135,8 +135,8 @@ export default function Footer() {
             </div>
 
             <div className="flex items-center justify-center gap-3 p-3.5 rounded-2xl bg-white/10 border border-white/15 shadow-sm transition-transform hover:-translate-y-0.5">
-              <div className="h-9 w-9 rounded-full bg-moss-green/20 border border-moss-green/40 text-moss-green flex items-center justify-center shrink-0">
-                <Lock className="h-4.5 w-4.5 text-moss-green" />
+              <div className="h-9 w-9 rounded-full bg-[#8CBD7B]/20 border border-[#8CBD7B]/40 text-[#8CBD7B] flex items-center justify-center shrink-0">
+                <Lock className="h-4.5 w-4.5 text-[#8CBD7B]" />
               </div>
               <span className="text-xs font-body font-semibold text-white text-left leading-snug">
                 Secure Razorpay Payments
@@ -144,8 +144,8 @@ export default function Footer() {
             </div>
 
             <div className="flex items-center justify-center gap-3 p-3.5 rounded-2xl bg-white/10 border border-white/15 shadow-sm transition-transform hover:-translate-y-0.5">
-              <div className="h-9 w-9 rounded-full bg-moss-green/20 border border-moss-green/40 text-moss-green flex items-center justify-center shrink-0">
-                <Award className="h-4.5 w-4.5 text-moss-green" />
+              <div className="h-9 w-9 rounded-full bg-[#8CBD7B]/20 border border-[#8CBD7B]/40 text-[#8CBD7B] flex items-center justify-center shrink-0">
+                <Award className="h-4.5 w-4.5 text-[#8CBD7B]" />
               </div>
               <span className="text-xs font-body font-semibold text-white text-left leading-snug">
                 100% Natural & Chemical-Free
@@ -153,8 +153,8 @@ export default function Footer() {
             </div>
 
             <div className="flex items-center justify-center gap-3 p-3.5 rounded-2xl bg-white/10 border border-white/15 shadow-sm transition-transform hover:-translate-y-0.5">
-              <div className="h-9 w-9 rounded-full bg-moss-green/20 border border-moss-green/40 text-moss-green flex items-center justify-center shrink-0">
-                <Heart className="h-4.5 w-4.5 text-moss-green" />
+              <div className="h-9 w-9 rounded-full bg-[#8CBD7B]/20 border border-[#8CBD7B]/40 text-[#8CBD7B] flex items-center justify-center shrink-0">
+                <Heart className="h-4.5 w-4.5 text-[#8CBD7B]" />
               </div>
               <span className="text-xs font-body font-semibold text-white text-left leading-snug">
                 Made with Care in Kumbakonam
@@ -172,10 +172,10 @@ export default function Footer() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
             
-            {/* Column 1 — Company Info with Collison-Free Framed Logo Lockup */}
+            {/* Column 1 — Company Info with Crisp White Framed Logo Lockup */}
             <div className="flex flex-col gap-3.5">
               <div className="flex items-center gap-3 mb-1">
-                <div className="relative h-10 w-10 shrink-0 bg-white/10 rounded-xl p-1.5 border border-white/15 shadow-sm">
+                <div className="relative h-10 w-10 shrink-0 bg-white p-1 rounded-xl border border-white/30 shadow-md">
                   <Image
                     src="/images/logo.png"
                     alt="Amudhasurabiy Organics Logo"
@@ -188,17 +188,17 @@ export default function Footer() {
                   <h4 className="font-heading text-sm font-bold text-white tracking-tight uppercase leading-snug">
                     AMUDHASURABIY ORGANICS
                   </h4>
-                  <span className="text-[9px] font-heading font-semibold uppercase tracking-widest text-moss-green block">
+                  <span className="text-[9px] font-heading font-semibold uppercase tracking-widest text-[#8CBD7B] block">
                     PURE NUTRITION. NATURALLY CRAFTED.
                   </span>
                 </div>
               </div>
 
-              <p className="font-body text-xs text-cream-dark/80 leading-relaxed">
+              <p className="font-body text-xs text-cream-dark/85 leading-relaxed">
                 Manufacturers of 100% quality organic food & nutrition products. Parent company behind Blovit natural malt drinks. Rooted in traditional wisdom and farm-fresh purity.
               </p>
 
-              <div className="text-[11px] font-body text-cream-dark/60 space-y-1 pt-3 border-t border-white/10">
+              <div className="text-[11px] font-body text-cream-dark/65 space-y-1 pt-3 border-t border-white/10">
                 <p>FSSAI Lic. No: <strong className="text-white font-semibold">22421543000120</strong></p>
                 <p>GST Reg: <strong className="text-white font-semibold">33AAFFA9012K1Z9</strong></p>
               </div>
@@ -207,7 +207,7 @@ export default function Footer() {
             {/* Column 2 — CORPORATE & BRANDS */}
             <div>
               <div className="flex items-center gap-2 mb-5">
-                <span className="h-1.5 w-1.5 rounded-full bg-moss-green" />
+                <span className="h-1.5 w-1.5 rounded-full bg-[#8CBD7B]" />
                 <h4 className="font-heading text-[11px] font-bold uppercase tracking-widest text-cream-dark/70">
                   CORPORATE & BRANDS
                 </h4>
@@ -215,32 +215,32 @@ export default function Footer() {
 
               <ul className="flex flex-col gap-3.5 font-body text-xs text-cream-dark/85">
                 <li>
-                  <Link href="/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
-                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                  <Link href="/" className="inline-flex items-center gap-1 hover:text-[#8CBD7B] hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-[#8CBD7B] font-bold">›</span>
                     <span>Home Headquarters</span>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/shop/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
-                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                  <Link href="/shop/" className="inline-flex items-center gap-1 hover:text-[#8CBD7B] hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-[#8CBD7B] font-bold">›</span>
                     <span>Shop Blovit Range</span>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/brands/blovit/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
-                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                  <Link href="/brands/blovit/" className="inline-flex items-center gap-1 hover:text-[#8CBD7B] hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-[#8CBD7B] font-bold">›</span>
                     <span>Blovit Flagship Brand</span>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/shop/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
-                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                  <Link href="/shop/" className="inline-flex items-center gap-1 hover:text-[#8CBD7B] hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-[#8CBD7B] font-bold">›</span>
                     <span>Shop All Products</span>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/about/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
-                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                  <Link href="/about/" className="inline-flex items-center gap-1 hover:text-[#8CBD7B] hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-[#8CBD7B] font-bold">›</span>
                     <span>About Amudhasurabiy Organics</span>
                   </Link>
                 </li>
@@ -250,7 +250,7 @@ export default function Footer() {
             {/* Column 3 — EDUCATION & QUALITY */}
             <div>
               <div className="flex items-center gap-2 mb-5">
-                <span className="h-1.5 w-1.5 rounded-full bg-moss-green" />
+                <span className="h-1.5 w-1.5 rounded-full bg-[#8CBD7B]" />
                 <h4 className="font-heading text-[11px] font-bold uppercase tracking-widest text-cream-dark/70">
                   EDUCATION & QUALITY
                 </h4>
@@ -258,32 +258,32 @@ export default function Footer() {
 
               <ul className="flex flex-col gap-3.5 font-body text-xs text-cream-dark/85">
                 <li>
-                  <Link href="/recipes/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
-                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                  <Link href="/recipes/" className="inline-flex items-center gap-1 hover:text-[#8CBD7B] hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-[#8CBD7B] font-bold">›</span>
                     <span>Health Drink Recipes</span>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/health-library/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
-                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                  <Link href="/health-library/" className="inline-flex items-center gap-1 hover:text-[#8CBD7B] hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-[#8CBD7B] font-bold">›</span>
                     <span>Health Library & Blogs</span>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/quality-and-trust/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
-                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                  <Link href="/quality-and-trust/" className="inline-flex items-center gap-1 hover:text-[#8CBD7B] hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-[#8CBD7B] font-bold">›</span>
                     <span>Quality & Trust Hub</span>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/our-process/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
-                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                  <Link href="/our-process/" className="inline-flex items-center gap-1 hover:text-[#8CBD7B] hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-[#8CBD7B] font-bold">›</span>
                     <span>Manufacturing Process</span>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/ingredients/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
-                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                  <Link href="/ingredients/" className="inline-flex items-center gap-1 hover:text-[#8CBD7B] hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-[#8CBD7B] font-bold">›</span>
                     <span>Ingredient Philosophy</span>
                   </Link>
                 </li>
@@ -293,7 +293,7 @@ export default function Footer() {
             {/* Column 4 — CUSTOMER SUPPORT & CONTACT */}
             <div>
               <div className="flex items-center gap-2 mb-5">
-                <span className="h-1.5 w-1.5 rounded-full bg-moss-green" />
+                <span className="h-1.5 w-1.5 rounded-full bg-[#8CBD7B]" />
                 <h4 className="font-heading text-[11px] font-bold uppercase tracking-widest text-cream-dark/70">
                   CUSTOMER SUPPORT & CONTACT
                 </h4>
@@ -301,32 +301,32 @@ export default function Footer() {
 
               <ul className="flex flex-col gap-3.5 font-body text-xs text-cream-dark/85">
                 <li>
-                  <Link href="/contact/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
-                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                  <Link href="/contact/" className="inline-flex items-center gap-1 hover:text-[#8CBD7B] hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-[#8CBD7B] font-bold">›</span>
                     <span>Contact Us & Wholesale</span>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/privacy-policy-2/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
-                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                  <Link href="/privacy-policy-2/" className="inline-flex items-center gap-1 hover:text-[#8CBD7B] hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-[#8CBD7B] font-bold">›</span>
                     <span>Privacy Policy</span>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/shipping-policy/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
-                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                  <Link href="/shipping-policy/" className="inline-flex items-center gap-1 hover:text-[#8CBD7B] hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-[#8CBD7B] font-bold">›</span>
                     <span>Shipping Policy</span>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/return-refund-policy/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
-                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                  <Link href="/return-refund-policy/" className="inline-flex items-center gap-1 hover:text-[#8CBD7B] hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-[#8CBD7B] font-bold">›</span>
                     <span>Return & Refund Policy</span>
                   </Link>
                 </li>
                 <li>
-                  <Link href="/terms-conditions/" className="inline-flex items-center gap-1 hover:text-moss-green hover:translate-x-1.5 transition-all duration-300 group">
-                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-moss-green font-bold">›</span>
+                  <Link href="/terms-conditions/" className="inline-flex items-center gap-1 hover:text-[#8CBD7B] hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-[#8CBD7B] font-bold">›</span>
                     <span>Terms & Conditions</span>
                   </Link>
                 </li>
@@ -338,7 +338,7 @@ export default function Footer() {
       </div>
 
       {/* SECTION 5 — Copyright Bar */}
-      <div className="border-t border-white/10 py-6 bg-[#281B12] text-xs text-cream-dark/70 font-body">
+      <div className="border-t border-white/10 py-6 bg-[#281B12] text-xs text-cream-dark/75 font-body">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-center md:text-left">
             © 2026 Amudhasurabiy Organics. All rights reserved. Blovit is a registered consumer brand of Amudhasurabiy Organics.

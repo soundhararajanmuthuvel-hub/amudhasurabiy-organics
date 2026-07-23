@@ -52,13 +52,13 @@ export default function Header() {
             {/* Corporate Logo: Amudhasurabiy Organics */}
             <div className="flex items-center">
               <Link href="/" className="group flex items-center gap-3">
-                <div className="relative h-10 w-10 shrink-0 transition-transform duration-500 group-hover:scale-105">
+                <div className="relative h-10 w-10 shrink-0 bg-white p-1 rounded-xl border border-walnut-brown/15 shadow-xs transition-transform duration-500 group-hover:scale-105">
                   <Image
                     src="/images/logo.png"
                     alt="Amudhasurabiy Organics Logo"
                     width={40}
                     height={40}
-                    className="h-10 w-10 object-contain"
+                    className="h-full w-full object-contain"
                     priority
                   />
                 </div>
