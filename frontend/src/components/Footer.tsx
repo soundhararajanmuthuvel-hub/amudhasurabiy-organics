@@ -132,8 +132,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/our-brands/" className="hover:text-white transition-colors duration-300">
-                  Our Brands Portfolio
+                <Link href="/shop/" className="hover:text-white transition-colors duration-300">
+                  Shop Blovit Range
                 </Link>
               </li>
               <li>

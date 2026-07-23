@@ -87,10 +87,10 @@ export default function AboutPage() {
                 Blovit is our first consumer malt nutrition brand. Additional natural health brands are currently under development.
               </p>
               <Link
-                href="/our-brands/"
+                href="/shop/"
                 className="bg-moss-green hover:bg-white hover:text-walnut-brown text-white px-6 py-3 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all inline-block shadow-md"
               >
-                View Brand Portfolio
+                Shop Blovit Range
               </Link>
             </div>
           </div>

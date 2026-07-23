@@ -145,10 +145,10 @@ export default function Home() {
                 {/* Hero CTAs */}
                 <div className="pt-4 flex flex-wrap items-center gap-4">
                   <Link
-                    href="/our-brands/"
+                    href="/shop/"
                     className="btn-primary px-8 py-4 text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-lg"
                   >
-                    <span>Explore Our Brands</span>
+                    <span>Shop Blovit Range</span>
                     <ArrowRight className="h-4 w-4" />
                   </Link>
 
@@ -339,10 +339,10 @@ export default function Home() {
                 </h2>
               </div>
               <Link
-                href="/our-brands/"
+                href="/shop/"
                 className="font-heading text-xs font-bold text-moss-green hover:text-walnut-brown uppercase tracking-wider flex items-center gap-1 group transition-colors"
               >
-                <span>View Full Portfolio</span>
+                <span>Explore Blovit Products</span>
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
