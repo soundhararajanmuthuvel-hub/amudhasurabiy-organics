@@ -21,8 +21,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Amudhasurabiy Organics | Pure Nutrition. Naturally Crafted.",
-  description: "Official Digital Headquarters of Amudhasurabiy Organics. Crafting premium natural food and nutrition products inspired by nature, traditional wisdom, and modern quality standards.",
+  title: "Amudhasurabiy Organics (Amudhasurabi) | Blovit Natural Malt Drinks",
+  description: "Amudhasurabiy Organics (also searched as Amudhasurabi, Amuthasurabi) brings you Blovit — 100% natural malt health drinks made in Tamil Nadu.",
   metadataBase: new URL("https://amudhasurabiy.com"),
   alternates: {
     canonical: "/",
@@ -36,8 +36,8 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   openGraph: {
-    title: "Amudhasurabiy Organics | Pure Nutrition. Naturally Crafted.",
-    description: "Official Digital Headquarters of Amudhasurabiy Organics. Creators of Blovit natural malt health drinks from Kumbakonam.",
+    title: "Amudhasurabiy Organics (Amudhasurabi) | Blovit Natural Malt Drinks",
+    description: "Amudhasurabiy Organics (also searched as Amudhasurabi, Amuthasurabi) brings you Blovit — 100% natural malt health drinks made in Tamil Nadu.",
     url: "https://amudhasurabiy.com",
     siteName: "Amudhasurabiy Organics",
     images: [

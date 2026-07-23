@@ -148,7 +148,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/about/" className="hover:text-white transition-colors duration-300">
-                  About Parent Company
+                  About Amudhasurabiy Organics
                 </Link>
               </li>
             </ul>

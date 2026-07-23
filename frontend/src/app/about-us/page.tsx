@@ -3,10 +3,11 @@ import { ChevronLeft, Heart, Sparkles, Sprout } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import JsonLd from "@/components/JsonLd";
 
 export const metadata = {
-  title: "About Us | Blovit",
-  description: "Learn about Amudhasurabiy Organics, our production roots in Kumbakonam, and our organic food philosophy.",
+  title: "About Amudhasurabiy Organics (Amudhasurabi) | Blovit",
+  description: "Learn about Amudhasurabiy Organics (also searched as Amudhasurabi, Amuthasurabi), our production roots in Kumbakonam, and our organic food philosophy.",
 };
 
 export default function AboutUs() {
@@ -58,12 +59,28 @@ export default function AboutUs() {
               We stand against the massive industrialization of food where fillers like refined sugar, palm oil, and maltodextrin are marketed as healthy. Blovit is pure, honest wellness—from Kumbakonam with love.
             </p>
 
+            <h2 className="font-heading text-xl font-bold text-walnut-brown mt-8">Is it Amudhasurabiy or Amudhasurabi?</h2>
+            <p>
+              <strong>Amudhasurabiy Organics</strong> — sometimes searched as <strong>Amudhasurabi</strong> or <strong>Amuthasurabi</strong> — is the official name of our brand. All three spellings refer to our exact same brand and products.
+            </p>
+
             <p className="text-xs text-walnut-brown/50 pt-8 border-t">
               Amudhasurabiy Organics Team. Kumbakonam, Tamil Nadu, India.
             </p>
           </article>
         </div>
       </main>
+      <JsonLd
+        type="faq"
+        data={{
+          faqs: [
+            {
+              question: "Is it Amudhasurabiy or Amudhasurabi?",
+              answer: "Amudhasurabiy Organics is the official name. It's also commonly searched as Amudhasurabi or Amuthasurabi — all refer to the same brand."
+            }
+          ]
+        }}
+      />
       <WhatsAppButton />
       <Footer />
     </>

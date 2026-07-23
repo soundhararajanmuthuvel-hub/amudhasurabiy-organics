@@ -22,7 +22,7 @@ export default function JsonLd<T extends object>({ type, data }: JsonLdProps<T>)
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Amudhasurabiy Organics",
-      "alternateName": "Blovit",
+      "alternateName": ["Amudhasurabi", "Amuthasurabi", "Amudhasurabiy", "Blovit"],
       "url": "https://amudhasurabiy.com",
       "logo": "https://amudhasurabiy.com/images/logo.png",
       "contactPoint": {

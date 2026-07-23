@@ -95,8 +95,28 @@ export default function AboutPage() {
             </div>
           </div>
 
+          {/* Brand Name Spelling FAQ Section */}
+          <div className="rounded-3xl bg-white p-8 sm:p-12 border border-walnut-brown/10 shadow-sm mb-20 space-y-4">
+            <span className="font-heading text-xs font-bold text-moss-green uppercase tracking-widest block">Brand Identity FAQ</span>
+            <h3 className="font-heading text-xl font-bold text-walnut-brown">Is it Amudhasurabiy or Amudhasurabi?</h3>
+            <p className="font-body text-xs sm:text-sm text-walnut-brown/80 leading-relaxed">
+              <strong>Amudhasurabiy Organics</strong> is the official registered name. It is also commonly searched as <strong>Amudhasurabi</strong> or <strong>Amuthasurabi</strong> — all three spellings refer to our exact same brand and products.
+            </p>
+          </div>
+
         </div>
       </main>
+      <JsonLd
+        type="faq"
+        data={{
+          faqs: [
+            {
+              question: "Is it Amudhasurabiy or Amudhasurabi?",
+              answer: "Amudhasurabiy Organics is the official name. It's also commonly searched as Amudhasurabi or Amuthasurabi — all refer to the same brand."
+            }
+          ]
+        }}
+      />
       <Footer />
     </>
   );

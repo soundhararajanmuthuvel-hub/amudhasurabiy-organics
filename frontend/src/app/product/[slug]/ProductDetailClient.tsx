@@ -100,7 +100,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
               >
                 <Image
                   src={activeImage}
-                  alt={product.name}
+                  alt={`Blovit ${product.name} by Amudhasurabiy Organics`}
                   fill
                   priority
                   className="object-cover transition-transform duration-200"
@@ -117,7 +117,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
                       activeImage === thumb ? "border-moss-green scale-105" : "border-transparent opacity-75 hover:opacity-100"
                     }`}
                   >
-                    <Image src={thumb} alt={`Thumbnail ${idx}`} fill className="object-cover" />
+                    <Image src={thumb} alt={`Blovit ${product.name} by Amudhasurabiy Organics view ${idx + 1}`} fill className="object-cover" />
                   </button>
                 ))}
               </div>
@@ -236,6 +236,14 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
                     {bundleAdded ? "Bundle Added!" : "Add Bundle"}
                   </button>
                 </div>
+              </div>
+
+              {/* About the Brand Entity Block */}
+              <div className="my-6 p-4 rounded-2xl bg-cream-dark border border-walnut-brown/10 font-body text-xs text-walnut-brown/85 space-y-1">
+                <span className="font-heading font-bold text-moss-green text-[11px] uppercase tracking-wider block">About the Brand</span>
+                <p>
+                  Amudhasurabiy Organics — sometimes searched as Amudhasurabi or Amuthasurabi — is the maker of Blovit natural malt powders.
+                </p>
               </div>
 
               {/* Accordions */}

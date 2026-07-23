@@ -101,6 +101,10 @@ export default function Home() {
 
   const faqs = [
     {
+      question: "Is it Amudhasurabiy or Amudhasurabi?",
+      answer: "Amudhasurabiy Organics is the official name. It's also commonly searched as Amudhasurabi or Amuthasurabi — all refer to the same brand."
+    },
+    {
       question: "Are Blovit malts 100% natural with no preservatives?",
       answer: "Yes! All Blovit malt drink mixes by Amudhasurabiy Organics are manufactured using 100% natural, farm-sourced ingredients. We never add artificial preservatives, synthetic colors, chemical thickeners, or refined white sugar."
     },
@@ -121,6 +125,12 @@ export default function Home() {
         data={{
           name: "Amudhasurabiy Organics",
           url: "https://amudhasurabiy.com"
+        }}
+      />
+      <JsonLd
+        type="faq"
+        data={{
+          faqs
         }}
       />
 
@@ -756,6 +766,9 @@ export default function Home() {
               Official Digital Headquarters • Kumbakonam, Tamil Nadu, India.
               <br />
               Pure Nutrition. Naturally Crafted.
+            </p>
+            <p className="font-body text-xs text-cream-dark/70 max-w-lg mx-auto italic bg-cream/10 p-3 rounded-xl border border-cream/15">
+              Amudhasurabiy Organics — sometimes searched as Amudhasurabi or Amuthasurabi — is the maker of Blovit natural malt powders.
             </p>
             <div className="pt-2 flex flex-wrap justify-center gap-4">
               <Link
