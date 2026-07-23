@@ -22,7 +22,7 @@ interface ClientProps {
 }
 
 export default function ProductDetailClient({ product, relatedProducts }: ClientProps) {
-  const [activeImage, setActiveImage] = useState(product.imageUrl);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [qty, setQty] = useState(1);
   const [activeTab, setActiveTab] = useState<string | null>("benefits");
   const [bundleAdded, setBundleAdded] = useState(false);
@@ -35,6 +35,12 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
     hydrate();
     trackCustomerEvent("product_view", { productId: product.id, source: "product_detail" });
   }, [hydrate, product.id]);
+
+  const galleryImages = (product.images && product.images.length > 0)
+    ? product.images
+    : [product.imageUrl];
+
+  const activeImage = selectedImage || product.imageUrl || (galleryImages.length > 0 ? galleryImages[0] : "");
 
   const isFavorite = wishlist.includes(product.id);
 
@@ -99,7 +105,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
                 className="relative aspect-square w-full rounded-3xl overflow-hidden border border-walnut-brown/5 bg-white shadow-sm cursor-zoom-in"
               >
                 <Image
-                  src={activeImage}
+                  src={activeImage || product.imageUrl}
                   alt={`Blovit ${product.name} by Amudhasurabiy Organics`}
                   fill
                   priority
@@ -108,19 +114,21 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
                 />
               </div>
 
-              <div className="flex gap-4">
-                {[product.imageUrl, product.imageUrl].map((thumb, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setActiveImage(thumb)}
-                    className={`relative h-20 w-20 rounded-2xl overflow-hidden border-2 bg-white shadow-sm transition-all ${
-                      activeImage === thumb ? "border-moss-green scale-105" : "border-transparent opacity-75 hover:opacity-100"
-                    }`}
-                  >
-                    <Image src={thumb} alt={`Blovit ${product.name} by Amudhasurabiy Organics view ${idx + 1}`} fill className="object-cover" />
-                  </button>
-                ))}
-              </div>
+              {galleryImages.length > 1 && (
+                <div className="flex gap-3 overflow-x-auto pb-1">
+                  {galleryImages.map((thumb, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setSelectedImage(thumb)}
+                      className={`relative h-20 w-20 shrink-0 rounded-2xl overflow-hidden border-2 bg-white shadow-sm transition-all ${
+                        activeImage === thumb ? "border-moss-green scale-105" : "border-transparent opacity-75 hover:opacity-100"
+                      }`}
+                    >
+                      <Image src={thumb} alt={`Blovit ${product.name} image ${idx + 1}`} fill className="object-cover" />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Meta & Controls */}
@@ -157,12 +165,12 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
                       <Star key={i} className="h-4 w-4 fill-amber-500 stroke-none" />
                     ))}
                   </div>
-                  <span className="text-walnut-brown/70 font-semibold">(4.9/5.0)</span>
+                  <span className="text-walnut-brown/70 font-semibold">({product.rating || 4.9}/5.0)</span>
                 </div>
               </div>
 
               {/* "Who Is It For?" Target Audience Matrix */}
-              {product.whoIsItFor && (
+              {product.whoIsItFor && product.whoIsItFor.length > 0 && (
                 <div className="mb-6 bg-white p-4 rounded-2xl border border-walnut-brown/10">
                   <span className="font-heading text-[10px] font-bold uppercase tracking-wider text-moss-green block mb-2 flex items-center gap-1">
                     <UserCheck className="h-3.5 w-3.5" /> Target Audience Matrix
@@ -261,9 +269,13 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
                   <AnimatePresence>
                     {activeTab === "benefits" && (
                       <motion.ul initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="list-disc pl-5 font-body text-xs text-walnut-brown/85 space-y-2 mt-3 pb-2">
-                        {product.benefits.map((b, idx) => (
-                          <li key={idx}>{b}</li>
-                        ))}
+                        {Array.isArray(product.benefits) && product.benefits.length > 0 ? (
+                          product.benefits.map((b, idx) => (
+                            <li key={idx}>{b}</li>
+                          ))
+                        ) : (
+                          <li>100% Pure & Natural Organic Ingredients</li>
+                        )}
                       </motion.ul>
                     )}
                   </AnimatePresence>
@@ -283,19 +295,29 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
                       <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="mt-3 pb-2 flex flex-col gap-4">
                         <div>
                           <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-moss-green mb-1.5">Ingredients:</h4>
-                          <p className="font-body text-xs text-walnut-brown/85">{product.ingredients.join(", ")}</p>
+                          {Array.isArray(product.ingredients) && product.ingredients.length > 0 ? (
+                            <ul className="list-disc pl-5 font-body text-xs text-walnut-brown/85 space-y-1">
+                              {product.ingredients.map((ing, idx) => (
+                                <li key={idx}>{ing}</li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <p className="font-body text-xs text-walnut-brown/85">Sprouted grains, natural nuts, and Cardamom.</p>
+                          )}
                         </div>
-                        <div>
-                          <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-moss-green mb-1.5">Nutrition Facts (Per 100g):</h4>
-                          <div className="grid grid-cols-2 gap-2 max-w-sm">
-                            {Object.entries(product.nutritionFacts).map(([key, val]) => (
-                              <div key={key} className="flex justify-between text-xs font-body text-walnut-brown/80 border-b border-walnut-brown/5 py-1">
-                                <span className="font-medium">{key}</span>
-                                <span>{val}</span>
-                              </div>
-                            ))}
+                        {product.nutritionFacts && Object.keys(product.nutritionFacts).length > 0 && (
+                          <div>
+                            <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-moss-green mb-1.5">Nutrition Facts (Per 100g):</h4>
+                            <div className="grid grid-cols-2 gap-2 max-w-sm">
+                              {Object.entries(product.nutritionFacts).map(([key, val]) => (
+                                <div key={key} className="flex justify-between text-xs font-body text-walnut-brown/80 border-b border-walnut-brown/5 py-1">
+                                  <span className="font-medium">{key}</span>
+                                  <span>{val}</span>
+                                </div>
+                              ))}
+                            </div>
                           </div>
-                        </div>
+                        )}
                       </motion.div>
                     )}
                   </AnimatePresence>

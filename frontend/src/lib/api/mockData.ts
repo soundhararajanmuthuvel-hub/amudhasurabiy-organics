@@ -5,6 +5,7 @@ export interface Product {
   price: number;
   description: string;
   imageUrl: string;
+  images?: string[];
   benefits: string[];
   ingredients: string[];
   nutritionFacts: Record<string, string>;
@@ -82,6 +83,7 @@ export const MOCK_PRODUCTS: Product[] = [
     category: "Natural Malts",
     description: "Premium Apple, Beetroot, and Carrot health drink powder. An organic formulation crafted to improve hemoglobin levels, enhance natural skin radiance, and provide clean daily energy.",
     imageUrl: "/images/abc-malt.png",
+    images: ["/images/abc-malt.png", "/images/beetroot-malt.png"],
     benefits: [
       "Natural Immunity & Hemoglobin Booster",
       "Enhances Skin Glow & Clears Toxins",

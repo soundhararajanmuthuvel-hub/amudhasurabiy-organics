@@ -21,6 +21,20 @@ export function mapBackendProduct(raw: Record<string, unknown>): Product {
     }
   }
 
+  // Build complete gallery images array
+  const rawBaseUrl = process.env.BACKEND_API_BASE_URL || process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
+  let imagesList: string[] = [];
+
+  if (Array.isArray(raw.images) && raw.images.length > 0) {
+    imagesList = raw.images
+      .filter((img): img is string => typeof img === "string" && Boolean(img.trim()))
+      .map((img) => (img.startsWith("/") && !img.startsWith("/images/") ? `${rawBaseUrl.replace(/\/$/, "")}${img}` : img));
+  }
+
+  if (imagesList.length === 0) {
+    imagesList = [imageUrl];
+  }
+
   const benefitsList = Array.isArray(raw.benefits)
     ? (raw.benefits.filter((b): b is string => typeof b === "string"))
     : (typeof raw.benefits === "string" ? [raw.benefits] : ["100% Organic", "No Added Sugar", "Rich in Iron & Calcium"]);
@@ -45,6 +59,7 @@ export function mapBackendProduct(raw: Record<string, unknown>): Product {
     originalPrice: Number(raw.originalPrice || raw.compareAtPrice || raw.price || 0),
     description: (typeof raw.description === "string" && raw.description) || (typeof raw.shortDescription === "string" && raw.shortDescription) || "100% Natural Organic Malt Health Drink",
     imageUrl: imageUrl,
+    images: imagesList,
     benefits: benefitsList,
     ingredients: ingredientsList,
     nutritionFacts: nutritionFactsObj,
