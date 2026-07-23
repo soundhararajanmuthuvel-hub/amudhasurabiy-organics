@@ -1,5 +1,4 @@
-const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK_API === "true";
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+import { API_BASE, USE_MOCK, getApiHeaders } from "./client";
 
 export interface StateShippingRule {
   state: string;
@@ -61,7 +60,7 @@ export async function calculateShipping(pincode: string, subtotal: number): Prom
 
   const res = await fetch(`${API_BASE}/shipping/calculate`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: getApiHeaders(),
     body: JSON.stringify({ pincode, subtotal }),
   });
   if (!res.ok) throw new Error("Failed to calculate shipping");

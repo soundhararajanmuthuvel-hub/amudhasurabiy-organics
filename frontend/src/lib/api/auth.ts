@@ -13,9 +13,7 @@ import {
   mockRegister,
   mockResetPassword,
 } from "@/lib/auth/mockAuthStore";
-
-const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK_API === "true";
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+import { API_BASE, USE_MOCK, getApiHeaders } from "./client";
 
 export type { Customer, AuthResponse, RegisterPayload, LoginPayload };
 
@@ -60,7 +58,7 @@ export async function register(payload: RegisterPayload): Promise<AuthResponse> 
 
   const res = await fetch(`${API_BASE}/auth/register`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: getApiHeaders(),
     body: JSON.stringify({
       fullName: payload.fullName,
       mobile: payload.mobile,
@@ -87,7 +85,7 @@ export async function login(payload: LoginPayload): Promise<AuthResponse> {
 
   const res = await fetch(`${API_BASE}/auth/login`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: getApiHeaders(),
     body: JSON.stringify(payload),
   });
 
@@ -104,7 +102,7 @@ export async function forgotPassword(mobile: string): Promise<ForgotPasswordStep
 
   const res = await fetch(`${API_BASE}/auth/forgot-password`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: getApiHeaders(),
     body: JSON.stringify({ mobile }),
   });
 
@@ -122,7 +120,7 @@ export async function verifyForgotPasswordEmail(
 
   const res = await fetch(`${API_BASE}/auth/forgot-password`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: getApiHeaders(),
     body: JSON.stringify({ mobile, email }),
   });
 
@@ -137,7 +135,7 @@ export async function resetPassword(token: string, newPassword: string): Promise
 
   const res = await fetch(`${API_BASE}/auth/reset-password`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: getApiHeaders(),
     body: JSON.stringify({ token, newPassword }),
   });
 
@@ -150,13 +148,9 @@ export async function changePassword(oldPassword: string, newPassword: string): 
     return { success: true };
   }
 
-  const token = typeof window !== "undefined" ? localStorage.getItem("blovit_token") : "";
   const res = await fetch(`${API_BASE}/auth/change-password`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
+    headers: getApiHeaders(),
     body: JSON.stringify({ oldPassword, newPassword }),
   });
 

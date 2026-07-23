@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { getWishlist as apiGetWishlist, toggleWishlist as apiToggleWishlist } from "@/lib/api/wishlist";
 import { calculateShipping as apiCalculateShipping } from "@/lib/api/shipping";
 import { logout as apiLogout } from "@/lib/api/auth";
+import { syncCart as apiSyncCart } from "@/lib/api/cart";
 import type { Customer } from "@/lib/types/customer";
 
 export interface CartItem {
@@ -153,6 +154,10 @@ export const useCartStore = create<CartStore>((set, get) => ({
       if (customer && token) {
         window.localStorage.setItem("blovit_customer", JSON.stringify(customer));
         window.localStorage.setItem("blovit_token", token);
+        const cartItems = get().cart.map((item) => ({ productId: item.productId, qty: item.qty }));
+        if (cartItems.length > 0) {
+          apiSyncCart(cartItems).catch((err) => console.error("syncCart failed:", err));
+        }
       } else {
         window.localStorage.removeItem("blovit_customer");
         window.localStorage.removeItem("blovit_token");

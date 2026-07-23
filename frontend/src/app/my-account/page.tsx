@@ -527,6 +527,19 @@ export default function MyAccount() {
                               <div>
                                 <p className="font-bold text-walnut-brown">{ref.referredCustomerName}</p>
                                 <span className="text-[11px] text-walnut-brown/50">Mobile: {ref.referredCustomerMobile}</span>
+                                {ref.couponCode && (
+                                  <div className="mt-1 flex items-center gap-2">
+                                    <span className="font-heading text-[11px] font-bold text-moss-green bg-moss-green/10 px-2.5 py-1 rounded-full border border-moss-green/20">
+                                      Coupon: {ref.couponCode}
+                                    </span>
+                                    <button
+                                      onClick={() => handleCopyCoupon(ref.couponCode!)}
+                                      className="text-[10px] font-heading font-bold text-walnut-brown underline hover:text-moss-green"
+                                    >
+                                      {copiedCoupon === ref.couponCode ? "Copied!" : "Copy Code"}
+                                    </button>
+                                  </div>
+                                )}
                               </div>
                               <div className="flex items-center gap-3">
                                 <span className="text-[11px] text-walnut-brown/50">{new Date(ref.createdAt).toLocaleDateString()}</span>

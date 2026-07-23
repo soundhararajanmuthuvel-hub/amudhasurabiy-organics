@@ -1,15 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Star, CheckCircle, Quote } from "lucide-react";
-import { testimonials, Testimonial } from "@/lib/data/testimonials";
+import { testimonials as staticTestimonials, Testimonial } from "@/lib/data/testimonials";
+import { getTestimonials } from "@/lib/api/reviews";
 
 export default function Testimonials() {
   const [isPaused, setIsPaused] = useState(false);
+  const [items, setItems] = useState<Testimonial[]>(staticTestimonials);
 
-  // Duplicate testimonials 3 times for a seamless, continuous 60fps marquee loop
-  const marqueeItems = [...testimonials, ...testimonials, ...testimonials];
+  useEffect(() => {
+    getTestimonials().then((data) => {
+      if (data && data.length > 0) {
+        setItems(data);
+      }
+    }).catch(console.error);
+  }, []);
+
+  // Seamless marquee loop: duplicate items array so continuous motion never breaks
+  const marqueeItems = items.length > 0 ? [...items, ...items, ...items] : [];
+
+  if (items.length === 0) return null;
 
   return (
     <section className="py-20 md:py-28 bg-gradient-to-b from-cream via-cream-dark/20 to-cream border-b border-walnut-brown/10 relative overflow-hidden">
@@ -68,7 +80,7 @@ export default function Testimonials() {
         >
           {marqueeItems.map((item: Testimonial, index: number) => (
             <div
-              key={`${item.id}-${index}`}
+              key={`${item.id || index}-${index}`}
               className="w-[300px] sm:w-[360px] shrink-0 rounded-3xl bg-white p-6 sm:p-7 border border-walnut-brown/10 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group relative overflow-hidden"
             >
               {/* Subtle top border highlight */}
@@ -78,7 +90,7 @@ export default function Testimonials() {
                 {/* Header: Stars & Google Badge */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-1">
-                    {[...Array(item.rating)].map((_, s) => (
+                    {[...Array(item.rating || 5)].map((_, s) => (
                       <Star key={s} className="h-4 w-4 fill-amber-400 text-amber-400" />
                     ))}
                   </div>
@@ -119,7 +131,7 @@ export default function Testimonials() {
               <div className="pt-4 border-t border-walnut-brown/10 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="h-9 w-9 rounded-full bg-moss-green text-white font-heading text-xs font-bold flex items-center justify-center shrink-0 shadow-sm">
-                    {item.initials}
+                    {item.initials || (item.name ? item.name[0] : "C")}
                   </div>
                   <div>
                     <div className="flex items-center gap-1.5">

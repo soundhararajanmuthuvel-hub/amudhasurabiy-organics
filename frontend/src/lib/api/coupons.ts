@@ -1,7 +1,5 @@
 import { MOCK_COUPONS } from "./mockData";
-
-const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK_API === "true";
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+import { API_BASE, USE_MOCK, getApiHeaders } from "./client";
 
 export interface CouponValidationResult {
   valid: boolean;
@@ -52,7 +50,7 @@ export async function validateCoupon(code: string, subtotal: number): Promise<Co
 
   const res = await fetch(`${API_BASE}/coupons/validate`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: getApiHeaders(),
     body: JSON.stringify({ code, subtotal }),
   });
   if (!res.ok) {

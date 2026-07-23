@@ -1,4 +1,4 @@
-import type { ReferralMetrics, ReferralRecord } from "@/lib/types/customer";
+import type { Customer, ReferralMetrics, ReferralRecord } from "@/lib/types/customer";
 import {
   getMockCustomerById,
   mockGetMyReferralCode,
@@ -6,15 +6,7 @@ import {
   mockGetReferralMetrics,
   mockSubmitReferral,
 } from "@/lib/auth/mockAuthStore";
-
-const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK_API === "true";
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "";
-
-function getAuthHeaders(): HeadersInit {
-  if (typeof window === "undefined") return {};
-  const token = window.localStorage.getItem("blovit_token");
-  return token ? { Authorization: `Bearer ${token}` } : {};
-}
+import { API_BASE, USE_MOCK, getApiHeaders } from "./client";
 
 function getCustomerIdFromToken(): string | null {
   if (typeof window === "undefined") return null;
@@ -33,20 +25,30 @@ function getCustomerIdFromToken(): string | null {
 
 export async function submitReferral(
   referralCode: string,
-  newCustomerId: string
+  newCustomerId?: string
 ): Promise<{ success: boolean; status: "PENDING" }> {
   if (USE_MOCK) {
-    const customer = getMockCustomerById(newCustomerId);
-    if (!customer) throw new Error("Customer not found.");
+    const id = newCustomerId || getCustomerIdFromToken() || "guest";
+    const customer: Customer = getMockCustomerById(id) || {
+      id,
+      customerCode: "CUST-001",
+      fullName: "Customer",
+      mobileNumber: "9999999999",
+      city: "Kumbakonam",
+      state: "Tamil Nadu",
+      rewardPoints: 50,
+      walletBalance: 0,
+      isEmailVerified: true,
+      isVerified: true,
+      createdAt: new Date().toISOString(),
+      referralCode: "REF123",
+    };
     return mockSubmitReferral(referralCode, customer);
   }
 
   const res = await fetch(`${API_BASE}/referrals/submit`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...getAuthHeaders(),
-    },
+    headers: getApiHeaders(),
     body: JSON.stringify({ referralCode, newCustomerId }),
   });
 
@@ -65,10 +67,11 @@ export async function getMyReferrals(): Promise<ReferralRecord[]> {
   }
 
   const res = await fetch(`${API_BASE}/referrals/my-referrals`, {
-    headers: getAuthHeaders(),
+    headers: getApiHeaders(),
   });
   if (!res.ok) throw new Error("Failed to fetch referrals.");
-  return res.json();
+  const data = await res.json();
+  return Array.isArray(data) ? data : data.referrals || [];
 }
 
 export async function getReferralMetrics(): Promise<ReferralMetrics> {
@@ -88,9 +91,18 @@ export async function getReferralMetrics(): Promise<ReferralMetrics> {
   }
 
   const res = await fetch(`${API_BASE}/referrals/metrics`, {
-    headers: getAuthHeaders(),
+    headers: getApiHeaders(),
   });
-  if (!res.ok) throw new Error("Failed to fetch referral metrics.");
+  if (!res.ok) {
+    return {
+      invitedCount: 0,
+      pendingCount: 0,
+      approvedCount: 0,
+      totalEarned: 0,
+      availableBalance: 0,
+      withdrawnBalance: 0,
+    };
+  }
   return res.json();
 }
 
@@ -103,11 +115,11 @@ export async function getMyReferralCode(): Promise<string> {
   }
 
   const res = await fetch(`${API_BASE}/referrals/my-code`, {
-    headers: getAuthHeaders(),
+    headers: getApiHeaders(),
   });
   if (!res.ok) throw new Error("Failed to fetch referral code.");
   const data = await res.json();
-  return data.referralCode;
+  return data.referralCode || data.code || "";
 }
 
 export function getReferralShareUrl(referralCode: string): string {
@@ -118,7 +130,7 @@ export function getReferralShareUrl(referralCode: string): string {
 export function getWhatsAppShareUrl(referralCode: string): string {
   const shareUrl = getReferralShareUrl(referralCode);
   const text = encodeURIComponent(
-    `Join me on Amudhasurabiy Organics — pure natural nutrition from Kumbakonam! Earn ₹100 reward credit when you complete your first order. Use my referral code ${referralCode}: ${shareUrl}`
+    `Join me on Amudhasurabiy Organics — pure natural nutrition from Kumbakonam! Get your special discount coupon code when you sign up using my referral code ${referralCode}: ${shareUrl}`
   );
   return `https://api.whatsapp.com/send?text=${text}`;
 }

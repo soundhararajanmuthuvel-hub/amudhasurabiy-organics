@@ -1,11 +1,4 @@
-const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK_API === "true";
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "";
-
-function getAuthHeaders(): HeadersInit {
-  if (typeof window === "undefined") return {};
-  const token = window.localStorage.getItem("blovit_token");
-  return token ? { "Authorization": `Bearer ${token}` } : {};
-}
+import { API_BASE, USE_MOCK, getApiHeaders } from "./client";
 
 export interface RazorpayOrder {
   id: string;
@@ -13,22 +6,23 @@ export interface RazorpayOrder {
   currency: string;
 }
 
-export async function createRazorpayOrder(cartId: string): Promise<RazorpayOrder> {
+export async function createRazorpayOrder(
+  cartId: string,
+  items?: unknown[],
+  shippingInfo?: Record<string, unknown>
+): Promise<RazorpayOrder> {
   if (USE_MOCK) {
     console.log("[Mock Razorpay API] Creating order for cartId:", cartId);
     return Promise.resolve({
       id: `order_mock_${Math.random().toString(36).substring(2, 15)}`,
-      amount: 0, // Calculated dynamically during frontend checkout script
-      currency: "INR"
+      amount: 0,
+      currency: "INR",
     });
   }
-  const res = await fetch(`${API_BASE}/razorpay/create-order`, {
+  const res = await fetch(`${API_BASE}/orders/create-order`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...getAuthHeaders(),
-    },
-    body: JSON.stringify({ cartId }),
+    headers: getApiHeaders(),
+    body: JSON.stringify({ cartId, items, shippingInfo }),
   });
   if (!res.ok) throw new Error("Failed to create Razorpay order");
   return res.json();
@@ -43,15 +37,12 @@ export async function verifyRazorpayPayment(
     console.log("[Mock Razorpay API] Verifying payment details:", { orderId, paymentId, signature });
     return Promise.resolve({
       success: true,
-      orderNumber: `BLV-${Math.floor(10000 + Math.random() * 90000)}`
+      orderNumber: `BLV-${Math.floor(10000 + Math.random() * 90000)}`,
     });
   }
-  const res = await fetch(`${API_BASE}/razorpay/verify`, {
+  const res = await fetch(`${API_BASE}/orders/verify`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...getAuthHeaders(),
-    },
+    headers: getApiHeaders(),
     body: JSON.stringify({ orderId, paymentId, signature }),
   });
   if (!res.ok) throw new Error("Failed to verify Razorpay payment");
