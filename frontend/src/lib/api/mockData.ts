@@ -161,7 +161,7 @@ export const MOCK_PRODUCTS: Product[] = [
     originalPrice: 320,
     category: "Natural Malts",
     description: "An authentic, highly nutritious health mix prepared from raw Kerala Nendran Bananas. Rich in potassium and fibers, it is an excellent natural weight gainer for growing toddlers and energy drink for all ages.",
-    imageUrl: "/images/banana-malt.png",
+    imageUrl: "/images/nendran-banana-malt.png",
     benefits: [
       "Excellent Natural Weight Gainer for Kids",
       "Supports Bone Development & Muscle Growth",
@@ -199,8 +199,8 @@ export const MOCK_PRODUCTS: Product[] = [
     originalPrice: 269,
     category: "Natural Malts",
     description: "A powerhouse calcium and iron supplement made from 100% sprouted finger millet (Ragi). Sprouting unlocks maximum bioavailability of nutrients, making it ideal for bone development, anemia management, and sustained daily energy.",
-    imageUrl: "/images/beetroot-malt.png",
-    images: ["/images/beetroot-malt.png"],
+    imageUrl: "/images/sprouted-ragi-malt.png",
+    images: ["/images/sprouted-ragi-malt.png"],
     benefits: [
       "Maximum Calcium & Iron Bioavailability",
       "Supports Strong Bones & Teeth",
@@ -285,7 +285,7 @@ export const MOCK_RECIPES: Recipe[] = [
     title: "Nendran Banana Weight-Gainer Porridge",
     category: "Kids Nutrition",
     prepTime: "10 mins",
-    imageUrl: "/images/banana-malt.png",
+    imageUrl: "/images/nendran-banana-malt.png",
     description: "A creamy, nutrient-packed warm porridge ideal for toddlers transitioning to healthy solid nutrition.",
     ingredients: [
       "3 tbsp Blovit Nendran Banana Malt",

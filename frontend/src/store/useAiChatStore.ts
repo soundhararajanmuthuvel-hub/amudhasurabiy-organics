@@ -57,7 +57,16 @@ export const useAiChatStore = create<AiChatStore>((set, get) => ({
   isOpen: false,
   isMinimized: false,
   messages: [INITIAL_WELCOME_MSG],
-  sessionId: typeof window !== "undefined" ? localStorage.getItem("blovit_ai_session") || `ai_sess_${Date.now()}` : "ai_sess_default",
+  sessionId: typeof window !== "undefined"
+    ? (() => {
+        let id = localStorage.getItem("blovit_ai_session");
+        if (!id) {
+          id = `ai_sess_${Date.now()}`;
+          localStorage.setItem("blovit_ai_session", id);
+        }
+        return id;
+      })()
+    : "ai_sess_default",
   aiState: "Idle",
   addressDraft: DEFAULT_ADDRESS,
   selectedProductForCheckout: null,

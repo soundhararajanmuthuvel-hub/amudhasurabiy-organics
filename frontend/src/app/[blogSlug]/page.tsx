@@ -41,7 +41,7 @@ const BLOG_ARTICLES: Record<string, BlogArticle> = {
     date: "July 18, 2026",
     author: "Amudhasurabiy Nutritionist",
     readTime: "5 min read",
-    imageUrl: "/images/banana-malt.png",
+    imageUrl: "/images/nendran-banana-malt.png",
     content: [
       "When it comes to child nutrition, finding a natural, preservative-free weight gainer that kids actually enjoy is a challenge. Blovit Nendran Banana Malt is crafted specifically to meet this need. Formulated using raw Kerala Nendran bananas—sun-dried and powdered at our Kumbakonam facility—it retains all essential dietary fibers, potassium, and vitamins.",
       "Nendran Bananas are highly regarded in South Indian culture for their unique nutritional profile. Rich in complex carbohydrates, they provide a steady, sustained release of energy instead of sudden insulin spikes. This makes Nendran Banana Malt an ideal breakfast beverage to keep your children active and focused throughout school hours.",

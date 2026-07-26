@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import JsonLd from "@/components/JsonLd";
 import { getProducts } from "@/lib/api/products";
+import { notFound } from "next/navigation";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -26,8 +27,13 @@ const CATEGORY_NAMES: Record<string, { name: string; desc: string }> = {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const cat = CATEGORY_NAMES[slug];
-  const title = cat ? `${cat.name} | Blovit` : "Category | Blovit";
-  const desc = cat ? cat.desc : "Explore organic food products on Blovit.";
+  if (!cat) {
+    return {
+      title: "Category Not Found | Blovit",
+    };
+  }
+  const title = `${cat.name} | Blovit`;
+  const desc = cat.desc;
   return {
     title,
     description: desc,
@@ -40,6 +46,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function CategoryPage({ params }: PageProps) {
   const { slug } = await params;
   const cat = CATEGORY_NAMES[slug];
+  if (!cat) {
+    notFound();
+  }
   const allProducts = await getProducts();
   
   // Filter products: if 'malts', show all. If 'agricultural', we can mock raw grains

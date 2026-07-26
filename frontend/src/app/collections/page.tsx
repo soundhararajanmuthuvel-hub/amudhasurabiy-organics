@@ -26,7 +26,7 @@ export default function CollectionsPage() {
     {
       title: "Kids Nutrition & Weight Gainers",
       desc: "Wholesome, chemical-free nutrition mixes formulated for toddlers and growing children.",
-      image: "/images/banana-malt.png",
+      image: "/images/nendran-banana-malt.png",
       products: MOCK_PRODUCTS.filter(p => p.id === "nendram-banana-malt" || p.id === "abc-malt")
     }
   ];

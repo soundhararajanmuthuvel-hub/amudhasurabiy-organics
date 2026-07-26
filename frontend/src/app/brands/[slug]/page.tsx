@@ -5,12 +5,18 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ShieldCheck, Heart, Star, Award } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
   const { slug } = await params;
-  const brandName = slug === "blovit" ? "Blovit" : slug.charAt(0).toUpperCase() + slug.slice(1);
+  if (slug !== "blovit") {
+    return {
+      title: "Brand Not Found | Amudhasurabiy Organics",
+    };
+  }
+  const brandName = "Blovit";
   const title = `${brandName} — Natural Malt Nutrition Brand by Amudhasurabiy Organics`;
   const description = `Explore ${brandName}, the flagship natural malt health drink brand by Amudhasurabiy Organics. Crafted with farm-sourced fruits, sprouted grains, and raw palm sugar in Kumbakonam, Tamil Nadu.`;
   return {
@@ -28,6 +34,9 @@ export async function generateMetadata(
 
 export default async function BrandSlugPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  if (slug !== "blovit") {
+    notFound();
+  }
 
   const brandInfo = {
     name: "Blovit",
@@ -70,7 +79,7 @@ export default async function BrandSlugPage({ params }: { params: Promise<{ slug
         originalPrice: 459,
         rating: 4.92,
         reviewCount: 156,
-        image: "/images/banana-malt.png",
+        image: "/images/nendran-banana-malt.png",
         description: "Authentic Kerala Nendran banana malt powder for healthy kids growth and weight gain.",
         benefits: ["Weight Gain for Kids", "Rich Potassium", "Easy Digestion"]
       }
