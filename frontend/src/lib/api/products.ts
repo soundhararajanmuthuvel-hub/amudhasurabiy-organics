@@ -2,7 +2,7 @@ import { Product, MOCK_PRODUCTS } from "./mockData";
 import { USE_MOCK, apiFetch } from "./client";
 
 export function mapBackendProduct(raw: Record<string, unknown>): Product {
-  const defaultImage = "/images/products/sprouted-ragi-malt.png";
+  const defaultImage = "/images/abc-malt.png";
   let imageUrl = defaultImage;
 
   if (typeof raw.imageUrl === "string" && raw.imageUrl.trim()) {

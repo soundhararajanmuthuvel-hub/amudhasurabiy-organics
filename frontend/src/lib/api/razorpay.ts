@@ -1,9 +1,11 @@
 import { API_BASE, USE_MOCK, getApiHeaders } from "./client";
 
 export interface RazorpayOrder {
-  id: string;
+  orderId: string;
+  razorpayOrderId: string;
   amount: number;
   currency: string;
+  keyId: string;
 }
 
 export async function createRazorpayOrder(
@@ -14,9 +16,11 @@ export async function createRazorpayOrder(
   if (USE_MOCK) {
     console.log("[Mock Razorpay API] Creating order for cartId:", cartId);
     return Promise.resolve({
-      id: `order_mock_${Math.random().toString(36).substring(2, 15)}`,
+      orderId: `local_${Math.random().toString(36).substring(2, 15)}`,
+      razorpayOrderId: `order_mock_${Math.random().toString(36).substring(2, 15)}`,
       amount: 0,
       currency: "INR",
+      keyId: "rzp_test_mock",
     });
   }
   const res = await fetch(`${API_BASE}/orders/create-order`, {

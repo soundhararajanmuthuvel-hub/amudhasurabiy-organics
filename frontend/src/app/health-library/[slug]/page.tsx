@@ -1,8 +1,45 @@
+import { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { ArrowLeft, Clock, Calendar, User, ShieldCheck } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
+
+// Article metadata map — extend as new articles are added
+const ARTICLE_META: Record<string, { title: string; description: string }> = {
+  "why-abc-malt-is-the-ultimate-morning-drink": {
+    title: "Why ABC Malt is the Ultimate Morning Health Drink | Amudhasurabiy Health Library",
+    description: "How combining bioavailable iron from beetroots, antioxidants from carrots, and fiber from fresh apples boosts daily stamina and natural hemoglobin levels.",
+  },
+  "nendran-banana-powder-for-toddler-weight-gain": {
+    title: "Kerala Nendran Banana Powder: Natural Weight Gainer for Toddlers | Amudhasurabiy",
+    description: "Traditional South Indian wisdom recommends Nendran banana powder for growing children — calorie density, potassium benefits, and easy digestion.",
+  },
+  "dangers-of-refined-sugar-in-commercial-health-drinks": {
+    title: "The Hidden Sugar Trap: Why Raw Organic Palm Sugar Matters | Amudhasurabiy",
+    description: "Commercial malt drinks contain up to 60% refined sugar. Discover how raw palm jaggery provides clean energy without glycemic spikes.",
+  },
+};
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ slug: string }> }
+): Promise<Metadata> {
+  const { slug } = await params;
+  const meta = ARTICLE_META[slug];
+  const title = meta?.title ?? "Health Article | Amudhasurabiy Health Library";
+  const description = meta?.description ?? "Evidence-based natural nutrition articles from Amudhasurabiy Organics.";
+  return {
+    title,
+    description,
+    alternates: { canonical: `/health-library/${slug}/` },
+    openGraph: {
+      title,
+      description,
+      url: `https://amudhasurabiy.com/health-library/${slug}/`,
+      images: [{ url: "/images/logo.png", width: 512, height: 512, alt: "Amudhasurabiy Organics" }],
+    },
+  };
+}
 
 export default function HealthLibraryArticlePage() {
 

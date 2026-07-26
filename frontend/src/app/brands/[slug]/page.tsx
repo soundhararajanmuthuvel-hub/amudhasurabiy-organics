@@ -1,6 +1,4 @@
-"use client";
-
-import { use } from "react";
+import { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
@@ -8,8 +6,28 @@ import Image from "next/image";
 import { ArrowRight, ShieldCheck, Heart, Star, Award } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
 
-export default function BrandSlugPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = use(params);
+export async function generateMetadata(
+  { params }: { params: Promise<{ slug: string }> }
+): Promise<Metadata> {
+  const { slug } = await params;
+  const brandName = slug === "blovit" ? "Blovit" : slug.charAt(0).toUpperCase() + slug.slice(1);
+  const title = `${brandName} — Natural Malt Nutrition Brand by Amudhasurabiy Organics`;
+  const description = `Explore ${brandName}, the flagship natural malt health drink brand by Amudhasurabiy Organics. Crafted with farm-sourced fruits, sprouted grains, and raw palm sugar in Kumbakonam, Tamil Nadu.`;
+  return {
+    title,
+    description,
+    alternates: { canonical: `/brands/${slug}/` },
+    openGraph: {
+      title,
+      description,
+      url: `https://amudhasurabiy.com/brands/${slug}/`,
+      images: [{ url: "/images/logo.png", width: 512, height: 512, alt: `${brandName} by Amudhasurabiy Organics` }],
+    },
+  };
+}
+
+export default async function BrandSlugPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
 
   const brandInfo = {
     name: "Blovit",

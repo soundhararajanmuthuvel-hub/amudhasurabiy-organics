@@ -189,16 +189,16 @@ export default function Checkout() {
         script.async = true;
         script.onload = () => {
           const options = {
-            key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "",
+            key: rzpOrder.keyId,
             amount: grandTotal * 100,
             currency: "INR",
             name: "Blovit - Amudhasurabiy Organics",
             description: "Malt Health Drinks Order",
-            order_id: rzpOrder.id,
+            order_id: rzpOrder.razorpayOrderId,
             handler: async (response: { razorpay_payment_id: string; razorpay_signature: string }) => {
               try {
                 const verify = await verifyRazorpayPayment(
-                  rzpOrder.id,
+                  rzpOrder.orderId,
                   response.razorpay_payment_id,
                   response.razorpay_signature
                 );

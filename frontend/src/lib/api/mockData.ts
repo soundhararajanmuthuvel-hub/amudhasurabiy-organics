@@ -190,6 +190,44 @@ export const MOCK_PRODUCTS: Product[] = [
     certifications: ["FSSAI Licensed", "Zero Preservatives", "Handpicked Kerala Bananas"],
     rating: 4.92,
     reviewCount: 162
+  },
+  {
+    id: "sprouted-ragi-malt",
+    name: "Blovit Sprouted Ragi Malt",
+    slug: "sprouted-ragi-malt",
+    price: 220,
+    originalPrice: 269,
+    category: "Natural Malts",
+    description: "A powerhouse calcium and iron supplement made from 100% sprouted finger millet (Ragi). Sprouting unlocks maximum bioavailability of nutrients, making it ideal for bone development, anemia management, and sustained daily energy.",
+    imageUrl: "/images/beetroot-malt.png",
+    images: ["/images/beetroot-malt.png"],
+    benefits: [
+      "Maximum Calcium & Iron Bioavailability",
+      "Supports Strong Bones & Teeth",
+      "Natural Anemia & Fatigue Management",
+      "Gluten-Sensitive Friendly Grain"
+    ],
+    ingredients: [
+      "100% Sprouted Finger Millet (Ragi)",
+      "Premium Almonds",
+      "Raw Palm Jaggery (Nattu Sakkarai)",
+      "Green Cardamom"
+    ],
+    nutritionFacts: {
+      "Energy": "375 kcal",
+      "Carbohydrates": "78.2g",
+      "Protein": "7.4g",
+      "Fat": "1.5g",
+      "Calcium": "344mg",
+      "Iron": "3.9mg"
+    },
+    usageInstructions: "Stir 2 tablespoons of Blovit Sprouted Ragi Malt into warm milk or water. Mix until smooth. Best consumed as a breakfast drink.",
+    isBestseller: false,
+    whoIsItFor: ["Pregnant Women", "Lactating Mothers", "Children (2+ Yrs)", "Seniors", "Anemia Patients"],
+    healthGoals: ["Bone Health", "Increase Iron", "Daily Energy", "Family Wellness"],
+    certifications: ["FSSAI Licensed", "100% Sprouted Grain", "No Refined Sugar", "Lab Tested"],
+    rating: 4.8,
+    reviewCount: 74
   }
 ];
 
