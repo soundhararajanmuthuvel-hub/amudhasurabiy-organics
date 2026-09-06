@@ -1,3 +1,11 @@
+export interface ProductVariant {
+  weight: string;
+  price: number;
+  originalPrice: number;
+  sku: string;
+  inStock: boolean;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -19,6 +27,10 @@ export interface Product {
   reviewCount?: number;
   originalPrice: number;
   category: string;
+  sku?: string;
+  weight?: string;
+  inStock?: boolean;
+  variants?: ProductVariant[];
 }
 
 export interface Recipe {
@@ -51,6 +63,9 @@ export interface OrderItem {
   name: string;
   quantity: number;
   price: number;
+  weight?: string;
+  sku?: string;
+  imageUrl?: string;
 }
 
 export interface Order {
@@ -60,8 +75,11 @@ export interface Order {
   total: number;
   shippingCharge: number;
   discount: number;
-  status: 'Pending' | 'Shipped' | 'Delivered' | 'Cancelled';
+  status: 'Pending' | 'Confirmed' | 'Processing' | 'Packed' | 'Shipped' | 'Out for Delivery' | 'Delivered' | 'Cancelled';
   items: OrderItem[];
+  shippingAddress?: Address;
+  paymentMethod?: string;
+  estimatedDelivery?: string;
 }
 
 export interface Coupon {
@@ -78,6 +96,9 @@ export const MOCK_PRODUCTS: Product[] = [
     id: "abc-malt",
     name: "Blovit ABC Malt",
     slug: "abc-malt",
+    sku: "BLV-ABC-200G",
+    weight: "200g",
+    inStock: true,
     price: 250,
     originalPrice: 299,
     category: "Natural Malts",
@@ -111,14 +132,22 @@ export const MOCK_PRODUCTS: Product[] = [
     isBestseller: true,
     whoIsItFor: ["Children (3+ Yrs)", "Teenagers", "Working Adults", "Women", "Seniors"],
     healthGoals: ["Increase Iron", "Kids Growth & Nutrition", "Daily Energy", "Family Wellness", "Natural Nutrition"],
-    certifications: ["FSSAI Licensed", "100% Organic Ingredients", "No Added Chemicals", "ISO Quality Checked"],
+    certifications: ["FSSAI Licensed (22421543000120)", "100% Organic Ingredients", "No Added Chemicals", "ISO Quality Checked"],
     rating: 4.9,
-    reviewCount: 148
+    reviewCount: 148,
+    variants: [
+      { weight: "200g", price: 250, originalPrice: 299, sku: "BLV-ABC-200G", inStock: true },
+      { weight: "500g", price: 580, originalPrice: 699, sku: "BLV-ABC-500G", inStock: true },
+      { weight: "1kg", price: 1100, originalPrice: 1350, sku: "BLV-ABC-1KG", inStock: true }
+    ]
   },
   {
     id: "beetroot-malt",
     name: "Blovit Beetroot Malt",
     slug: "beetroot-malt",
+    sku: "BLV-BTR-200G",
+    weight: "200g",
+    inStock: true,
     price: 200,
     originalPrice: 249,
     category: "Natural Malts",
@@ -149,14 +178,22 @@ export const MOCK_PRODUCTS: Product[] = [
     isBestseller: false,
     whoIsItFor: ["Teenagers", "Women & Mothers", "Active Athletes", "Seniors"],
     healthGoals: ["Increase Iron", "Daily Energy", "Family Wellness", "Natural Nutrition"],
-    certifications: ["FSSAI Licensed", "No Preservatives", "Lab Tested", "Made in India"],
+    certifications: ["FSSAI Licensed (22421543000120)", "No Preservatives", "Lab Tested", "Made in Tamil Nadu"],
     rating: 4.85,
-    reviewCount: 96
+    reviewCount: 96,
+    variants: [
+      { weight: "200g", price: 200, originalPrice: 249, sku: "BLV-BTR-200G", inStock: true },
+      { weight: "500g", price: 470, originalPrice: 599, sku: "BLV-BTR-500G", inStock: true },
+      { weight: "1kg", price: 890, originalPrice: 1150, sku: "BLV-BTR-1KG", inStock: true }
+    ]
   },
   {
     id: "nendram-banana-malt",
     name: "Blovit Nendran Banana Malt",
     slug: "nendram-banana-malt",
+    sku: "BLV-NEN-200G",
+    weight: "200g",
+    inStock: true,
     price: 260,
     originalPrice: 320,
     category: "Natural Malts",
@@ -187,14 +224,22 @@ export const MOCK_PRODUCTS: Product[] = [
     isBestseller: true,
     whoIsItFor: ["Toddlers & Kids (1+ Yrs)", "Growing Children", "Sports Enthusiasts", "Underweight Adults"],
     healthGoals: ["Kids Growth & Nutrition", "Daily Energy", "Natural Nutrition"],
-    certifications: ["FSSAI Licensed", "Zero Preservatives", "Handpicked Kerala Bananas"],
+    certifications: ["FSSAI Licensed (22421543000120)", "Zero Preservatives", "Handpicked Kerala Bananas"],
     rating: 4.92,
-    reviewCount: 162
+    reviewCount: 162,
+    variants: [
+      { weight: "200g", price: 260, originalPrice: 320, sku: "BLV-NEN-200G", inStock: true },
+      { weight: "500g", price: 610, originalPrice: 750, sku: "BLV-NEN-500G", inStock: true },
+      { weight: "1kg", price: 1150, originalPrice: 1450, sku: "BLV-NEN-1KG", inStock: true }
+    ]
   },
   {
     id: "sprouted-ragi-malt",
     name: "Blovit Sprouted Ragi Malt",
     slug: "sprouted-ragi-malt",
+    sku: "BLV-RAG-200G",
+    weight: "200g",
+    inStock: true,
     price: 220,
     originalPrice: 269,
     category: "Natural Malts",
@@ -225,9 +270,14 @@ export const MOCK_PRODUCTS: Product[] = [
     isBestseller: false,
     whoIsItFor: ["Pregnant Women", "Lactating Mothers", "Children (2+ Yrs)", "Seniors", "Anemia Patients"],
     healthGoals: ["Bone Health", "Increase Iron", "Daily Energy", "Family Wellness"],
-    certifications: ["FSSAI Licensed", "100% Sprouted Grain", "No Refined Sugar", "Lab Tested"],
+    certifications: ["FSSAI Licensed (22421543000120)", "100% Sprouted Grain", "No Refined Sugar", "Lab Tested"],
     rating: 4.8,
-    reviewCount: 74
+    reviewCount: 74,
+    variants: [
+      { weight: "200g", price: 220, originalPrice: 269, sku: "BLV-RAG-200G", inStock: true },
+      { weight: "500g", price: 520, originalPrice: 650, sku: "BLV-RAG-500G", inStock: true },
+      { weight: "1kg", price: 980, originalPrice: 1250, sku: "BLV-RAG-1KG", inStock: true }
+    ]
   }
 ];
 
@@ -396,7 +446,14 @@ export const getMockOrders = (): Order[] => {
   ]);
 };
 
-export const createMockOrder = (items: OrderItem[], total: number, shippingCharge: number, discount: number): Order => {
+export const createMockOrder = (
+  items: OrderItem[],
+  total: number,
+  shippingCharge: number,
+  discount: number,
+  shippingAddress?: Address,
+  paymentMethod?: string
+): Order => {
   const current = getMockOrders();
   const newOrder: Order = {
     id: `ord_${Date.now()}`,
@@ -405,8 +462,15 @@ export const createMockOrder = (items: OrderItem[], total: number, shippingCharg
     total,
     shippingCharge,
     discount,
-    status: "Pending",
-    items
+    status: "Confirmed",
+    items,
+    shippingAddress,
+    paymentMethod: paymentMethod || "Razorpay / UPI",
+    estimatedDelivery: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "short",
+      year: "numeric"
+    })
   };
   setLocalStorage("blovit_orders", [newOrder, ...current]);
   return newOrder;

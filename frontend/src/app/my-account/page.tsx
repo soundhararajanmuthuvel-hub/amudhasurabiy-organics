@@ -315,7 +315,32 @@ export default function MyAccount() {
                               {order.status}
                             </span>
                           </div>
-                          <div className="p-5 flex flex-col gap-2.5">
+                          <div className="p-5 flex flex-col gap-3">
+                            {/* Visual Tracking Progress */}
+                            <div className="bg-cream-dark/40 p-4 rounded-xl border border-walnut-brown/5">
+                              <span className="font-heading text-[10px] font-bold uppercase tracking-wider text-walnut-brown/60 block mb-2">
+                                Fulfillment Status: {order.status}
+                              </span>
+                              <div className="grid grid-cols-4 gap-1 text-center font-heading text-[10px] font-bold text-walnut-brown/70">
+                                <div className="space-y-1">
+                                  <div className="h-1.5 w-full rounded-full bg-moss-green" />
+                                  <span>Confirmed</span>
+                                </div>
+                                <div className="space-y-1">
+                                  <div className={`h-1.5 w-full rounded-full ${order.status !== "Pending" ? "bg-moss-green" : "bg-walnut-brown/20"}`} />
+                                  <span>Packed</span>
+                                </div>
+                                <div className="space-y-1">
+                                  <div className={`h-1.5 w-full rounded-full ${order.status === "Shipped" || order.status === "Delivered" ? "bg-moss-green" : "bg-walnut-brown/20"}`} />
+                                  <span>Shipped</span>
+                                </div>
+                                <div className="space-y-1">
+                                  <div className={`h-1.5 w-full rounded-full ${order.status === "Delivered" ? "bg-moss-green" : "bg-walnut-brown/20"}`} />
+                                  <span>Delivered</span>
+                                </div>
+                              </div>
+                            </div>
+
                             {order.items.map((item, idx: number) => (
                               <div key={idx} className="flex justify-between items-center text-xs font-body">
                                 <span className="font-semibold text-walnut-brown">{item.name} (x{item.quantity})</span>

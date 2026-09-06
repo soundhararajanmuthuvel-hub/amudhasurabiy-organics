@@ -325,15 +325,56 @@ export default function Checkout() {
               </div>
             </div>
 
+            {/* Step-by-Step Order Tracking Timeline */}
+            <div className="w-full bg-cream-dark/50 p-5 rounded-2xl border border-walnut-brown/10 mb-6 text-left">
+              <span className="font-heading text-xs font-bold uppercase tracking-wider text-walnut-brown block mb-4">
+                Order Tracking Status
+              </span>
+
+              <div className="relative pl-6 space-y-4 border-l-2 border-moss-green ml-2">
+                <div className="relative">
+                  <span className="absolute -left-[31px] top-0 h-4 w-4 rounded-full bg-moss-green flex items-center justify-center text-white text-[10px] font-bold">
+                    ✓
+                  </span>
+                  <p className="font-heading text-xs font-bold text-walnut-brown">Order Confirmed</p>
+                  <p className="font-body text-[11px] text-walnut-brown/60">Payment verified & order recorded</p>
+                </div>
+
+                <div className="relative">
+                  <span className="absolute -left-[31px] top-0 h-4 w-4 rounded-full bg-moss-green/40 flex items-center justify-center text-white text-[10px]">
+                    ●
+                  </span>
+                  <p className="font-heading text-xs font-semibold text-walnut-brown">Small-Batch Packaging</p>
+                  <p className="font-body text-[11px] text-walnut-brown/60">Preparing fresh malt packs in Kumbakonam facility</p>
+                </div>
+
+                <div className="relative">
+                  <span className="absolute -left-[31px] top-0 h-4 w-4 rounded-full bg-walnut-brown/20 flex items-center justify-center text-white text-[10px]">
+                    ○
+                  </span>
+                  <p className="font-heading text-xs font-semibold text-walnut-brown/50">Dispatched via Express Courier</p>
+                  <p className="font-body text-[11px] text-walnut-brown/40">Tracking details will be shared on SMS/WhatsApp</p>
+                </div>
+
+                <div className="relative">
+                  <span className="absolute -left-[31px] top-0 h-4 w-4 rounded-full bg-walnut-brown/20 flex items-center justify-center text-white text-[10px]">
+                    ○
+                  </span>
+                  <p className="font-heading text-xs font-semibold text-walnut-brown/50">Delivered</p>
+                  <p className="font-body text-[11px] text-walnut-brown/40">Estimated within 2-4 business days</p>
+                </div>
+              </div>
+            </div>
+
             {/* Post-Checkout Guest Conversion Card */}
             {orderCompleted.isGuest && !customer && (
               <div className="w-full bg-cream p-6 rounded-2xl border border-moss-green/30 text-left mb-6">
                 <div className="flex items-center gap-2 mb-2">
                   <UserPlus className="h-5 w-5 text-moss-green" />
-                  <h3 className="font-heading text-sm font-bold text-walnut-brown">Create Account to Save Details</h3>
+                  <h3 className="font-heading text-sm font-bold text-walnut-brown">Create Account to Save Order</h3>
                 </div>
                 <p className="font-body text-xs text-walnut-brown/70 mb-4">
-                  Set a password now to create your account. Your order <strong>#{orderCompleted.orderNumber}</strong> will automatically be saved to your dashboard!
+                  Set a password now to create your account. Order <strong>#{orderCompleted.orderNumber}</strong> will automatically be saved to your dashboard!
                 </p>
 
                 {convertSuccess ? (
@@ -366,12 +407,20 @@ export default function Checkout() {
               </div>
             )}
 
-            <Link
-              href="/my-account/"
-              className="w-full bg-walnut-brown hover:bg-moss-green text-white py-3.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all shadow-md"
-            >
-              Go to Customer Dashboard
-            </Link>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
+              <Link
+                href="/my-account/"
+                className="w-full bg-walnut-brown hover:bg-moss-green text-white py-3.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all shadow-md text-center"
+              >
+                View My Orders
+              </Link>
+              <Link
+                href="/shop/"
+                className="w-full bg-cream-dark hover:bg-walnut-brown hover:text-white text-walnut-brown py-3.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all shadow-xs text-center"
+              >
+                Continue Shopping
+              </Link>
+            </div>
           </div>
         </main>
         <Footer />

@@ -11,6 +11,8 @@ export interface CartItem {
   price: number;
   qty: number;
   imageUrl: string;
+  weight?: string;
+  sku?: string;
 }
 
 export interface Coupon {
@@ -38,7 +40,10 @@ interface CartStore {
   isHydrated: boolean;
   checkoutMode: "login" | "guest" | null;
 
-  addToCart: (product: { id: string; name: string; price: number; imageUrl: string }, qty: number) => void;
+  addToCart: (
+    product: { id: string; name: string; price: number; imageUrl: string; weight?: string; sku?: string },
+    qty: number
+  ) => void;
   removeFromCart: (productId: string) => void;
   updateQty: (productId: string, qty: number) => void;
   clearCart: () => void;
@@ -73,21 +78,24 @@ export const useCartStore = create<CartStore>((set, get) => ({
 
   addToCart: (product, qty) => {
     const currentCart = get().cart;
-    const existing = currentCart.find((item) => item.productId === product.id);
+    const itemKey = product.weight ? `${product.id}-${product.weight}` : product.id;
+    const existing = currentCart.find((item) => item.productId === itemKey);
     let newCart;
     if (existing) {
       newCart = currentCart.map((item) =>
-        item.productId === product.id ? { ...item, qty: item.qty + qty } : item
+        item.productId === itemKey ? { ...item, qty: item.qty + qty } : item
       );
     } else {
       newCart = [
         ...currentCart,
         {
-          productId: product.id,
-          name: product.name,
+          productId: itemKey,
+          name: product.weight ? `${product.name} (${product.weight})` : product.name,
           price: product.price,
           qty,
           imageUrl: product.imageUrl,
+          weight: product.weight || "200g",
+          sku: product.sku,
         },
       ];
     }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit, Plus_Jakarta_Sans, Inter } from "next/font/google";
 import AIChatWidgetWrapper from "@/components/ai/AIChatWidgetWrapper";
+import MobileBottomNav from "@/components/MobileBottomNav";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -70,9 +71,10 @@ export default function RootLayout({
       lang="en"
       className={`${outfit.variable} ${plusJakartaSans.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-body bg-cream text-charcoal">
+      <body className="min-h-full flex flex-col font-body bg-cream text-charcoal pb-16 md:pb-0">
         {children}
         <AIChatWidgetWrapper />
+        <MobileBottomNav />
         {/* Service Worker registration script */}
         <script
           dangerouslySetInnerHTML={{

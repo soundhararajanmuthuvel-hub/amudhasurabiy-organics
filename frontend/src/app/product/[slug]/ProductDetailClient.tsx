@@ -3,17 +3,19 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   ChevronDown, Star, Heart, Minus, Plus, 
-  ShoppingCart, UserCheck 
+  ShoppingCart, Zap, ShieldCheck, Truck, Check 
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import JsonLd from "@/components/JsonLd";
 import { useCartStore } from "@/store/useCartStore";
-import { Product, MOCK_RECIPES, MOCK_PRODUCTS } from "@/lib/api/mockData";
+import { Product, ProductVariant, MOCK_RECIPES, MOCK_PRODUCTS } from "@/lib/api/mockData";
+import { calculateShipping, ShippingCalculation } from "@/lib/api/shipping";
 import { trackCustomerEvent } from "@/lib/api/events";
 
 interface ClientProps {
@@ -22,12 +24,28 @@ interface ClientProps {
 }
 
 export default function ProductDetailClient({ product, relatedProducts }: ClientProps) {
+  const router = useRouter();
+  const variants: ProductVariant[] = product.variants && product.variants.length > 0
+    ? product.variants
+    : [
+        { weight: product.weight || "200g", price: product.price, originalPrice: product.originalPrice, sku: product.sku || `${product.id}-200g`, inStock: true },
+        { weight: "500g", price: Math.round(product.price * 2.3), originalPrice: Math.round(product.originalPrice * 2.3), sku: `${product.id}-500g`, inStock: true },
+        { weight: "1kg", price: Math.round(product.price * 4.4), originalPrice: Math.round(product.originalPrice * 4.5), sku: `${product.id}-1kg`, inStock: true },
+      ];
+
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant>(variants[0]);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [qty, setQty] = useState(1);
   const [activeTab, setActiveTab] = useState<string | null>("benefits");
   const [bundleAdded, setBundleAdded] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [addedAnimation, setAddedAnimation] = useState(false);
+
+  // Pan-India Pincode Delivery Checker State
+  const [pincodeInput, setPincodeInput] = useState("");
+  const [pincodeStatus, setPincodeStatus] = useState<ShippingCalculation | null>(null);
+  const [isCheckingPincode, setIsCheckingPincode] = useState(false);
 
   const { addToCart, toggleWishlist, wishlist, hydrate } = useCartStore();
 
@@ -41,8 +59,11 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
     : [product.imageUrl];
 
   const activeImage = selectedImage || product.imageUrl || (galleryImages.length > 0 ? galleryImages[0] : "");
-
   const isFavorite = wishlist.includes(product.id);
+
+  const discountPercent = selectedVariant.originalPrice > selectedVariant.price
+    ? Math.round(((selectedVariant.originalPrice - selectedVariant.price) / selectedVariant.originalPrice) * 100)
+    : 0;
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
@@ -52,40 +73,105 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
   };
 
   const handleAddToCart = () => {
-    addToCart(product, qty);
+    addToCart(
+      {
+        id: product.id,
+        name: product.name,
+        price: selectedVariant.price,
+        imageUrl: product.imageUrl,
+        weight: selectedVariant.weight,
+        sku: selectedVariant.sku,
+      },
+      qty
+    );
     trackCustomerEvent("add_to_cart", { productId: product.id, quantity: qty });
+    setAddedAnimation(true);
+    setTimeout(() => setAddedAnimation(false), 1400);
+  };
+
+  const handleBuyNow = () => {
+    addToCart(
+      {
+        id: product.id,
+        name: product.name,
+        price: selectedVariant.price,
+        imageUrl: product.imageUrl,
+        weight: selectedVariant.weight,
+        sku: selectedVariant.sku,
+      },
+      qty
+    );
+    router.push("/checkout/");
+  };
+
+  // Pincode Verification Handler
+  const handlePincodeCheck = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const cleanPin = pincodeInput.trim().replace(/\D/g, "");
+    if (cleanPin.length !== 6) {
+      alert("Please enter a valid 6-digit Indian PIN code.");
+      return;
+    }
+    setIsCheckingPincode(true);
+    try {
+      const res = await calculateShipping(cleanPin, selectedVariant.price * qty);
+      setPincodeStatus(res);
+    } catch {
+      // Graceful fallback
+      setPincodeStatus({
+        shippingCharge: 110,
+        freeShippingThreshold: 999,
+        isFreeShippingEligible: false,
+        message: "Delivery available across India.",
+        stateName: "India",
+        isServiceable: true,
+        estimatedDelivery: "3 - 5 business days",
+        dispatchTime: "Dispatched in 24 hours from Kumbakonam",
+      });
+    } finally {
+      setIsCheckingPincode(false);
+    }
   };
 
   // Find complementary product for bundle offer
   const bundleProduct = relatedProducts[0] || MOCK_PRODUCTS.find(p => p.id !== product.id) || MOCK_PRODUCTS[0];
-  const bundleTotalPrice = product.price + bundleProduct.price - 40; // ₹40 discount
+  const bundleTotalPrice = selectedVariant.price + bundleProduct.price - 40;
 
   const handleAddBundle = () => {
-    addToCart(product, 1);
+    addToCart(
+      {
+        id: product.id,
+        name: product.name,
+        price: selectedVariant.price,
+        imageUrl: product.imageUrl,
+        weight: selectedVariant.weight,
+        sku: selectedVariant.sku,
+      },
+      1
+    );
     addToCart(bundleProduct, 1);
     setBundleAdded(true);
   };
 
-  // Related recipes for this product
   const productRecipes = MOCK_RECIPES.filter(r => r.recommendedProductId === product.id);
 
   const mockReviews = [
-    { name: "Suresh R.", rating: 5, date: "July 18, 2026", text: "Exceptional natural quality. Dissolves smoothly in warm milk. Knowing there are zero preservatives makes it my top choice." },
-    { name: "Priya Sundar", rating: 5, date: "July 12, 2026", text: "Noticeable improvement in digestion and stamina within two weeks. Highly recommended!" }
+    { name: "Suresh R.", rating: 5, date: "July 18, 2026", text: "Exceptional natural quality. Dissolves smoothly in warm milk. Knowing there are zero preservatives and sweetened with palm jaggery makes it my top choice." },
+    { name: "Priya Sundar", rating: 5, date: "July 12, 2026", text: "Noticeable improvement in digestion and daily stamina within two weeks. Shipped safely from Kumbakonam to Chennai!" }
   ];
 
   return (
     <>
       <JsonLd type="breadcrumb" data={{ items: [{ name: "Home", url: "/" }, { name: "Shop", url: "/shop/" }, { name: product.name, url: `/product/${product.slug}/` }] }} />
-      <JsonLd type="product" data={product} />
+      <JsonLd type="product" data={{ ...product, price: selectedVariant.price, originalPrice: selectedVariant.originalPrice, sku: selectedVariant.sku }} />
 
       <Header />
 
-      <main className="flex-grow bg-cream py-12 md:py-20">
+      <main className="flex-grow bg-cream py-8 md:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           
           {/* Breadcrumb */}
-          <div className="mb-8 text-xs font-body text-walnut-brown/60 flex items-center gap-2">
+          <div className="mb-6 text-xs font-body text-walnut-brown/60 flex items-center gap-2">
             <Link href="/" className="hover:text-moss-green transition-colors">Home</Link>
             <span>/</span>
             <Link href="/shop/" className="hover:text-moss-green transition-colors">Shop</Link>
@@ -93,23 +179,23 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
             <span className="text-walnut-brown font-semibold">{product.name}</span>
           </div>
 
-          {/* Product Hero Block */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mb-20 items-start">
+          {/* Amazon/Flipkart Dual Column Product Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mb-16 items-start">
             
-            {/* Gallery with Zoom Lens */}
+            {/* Left Column: Image Gallery with Interactive Zoom */}
             <div className="lg:col-span-6 flex flex-col gap-4">
               <div
                 onMouseEnter={() => setIsZoomed(true)}
                 onMouseLeave={() => setIsZoomed(false)}
                 onMouseMove={handleMouseMove}
-                className="relative aspect-square w-full rounded-3xl overflow-hidden border border-walnut-brown/5 bg-white shadow-sm cursor-zoom-in"
+                className="relative aspect-square w-full rounded-3xl overflow-hidden border border-walnut-brown/10 bg-white shadow-xs cursor-zoom-in"
               >
                 <Image
                   src={activeImage || product.imageUrl}
                   alt={`Blovit ${product.name} by Amudhasurabiy Organics`}
                   fill
                   priority
-                  className="object-cover transition-transform duration-200"
+                  className="object-contain p-6 transition-transform duration-200"
                   style={isZoomed ? { transformOrigin: `${mousePos.x}% ${mousePos.y}%`, transform: "scale(1.8)" } : {}}
                 />
               </div>
@@ -120,78 +206,146 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
                     <button
                       key={idx}
                       onClick={() => setSelectedImage(thumb)}
-                      className={`relative h-20 w-20 shrink-0 rounded-2xl overflow-hidden border-2 bg-white shadow-sm transition-all ${
+                      className={`relative h-20 w-20 shrink-0 rounded-2xl overflow-hidden border-2 bg-white shadow-xs transition-all ${
                         activeImage === thumb ? "border-moss-green scale-105" : "border-transparent opacity-75 hover:opacity-100"
                       }`}
                     >
-                      <Image src={thumb} alt={`Blovit ${product.name} image ${idx + 1}`} fill className="object-cover" />
+                      <Image src={thumb} alt={`Blovit ${product.name} thumbnail ${idx + 1}`} fill className="object-contain p-1" />
                     </button>
                   ))}
                 </div>
               )}
             </div>
 
-            {/* Meta & Controls */}
+            {/* Right Column: Meta, Variants, Pincode & Purchasing */}
             <div className="lg:col-span-6 flex flex-col justify-start">
               
-              <div className="flex justify-between items-start mb-3">
+              <div className="flex justify-between items-start mb-2">
                 <div>
-                  {product.isBestseller && (
-                    <span className="bg-moss-green text-cream text-[9px] font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-3 inline-block">
-                      Best Seller
+                  <div className="flex items-center gap-2 mb-2">
+                    {product.isBestseller && (
+                      <span className="bg-moss-green text-cream text-[10px] font-heading font-bold uppercase tracking-wider px-3 py-0.5 rounded-full inline-block">
+                        Best Seller
+                      </span>
+                    )}
+                    <span className="bg-cream-dark text-walnut-brown/70 text-[10px] font-heading font-semibold px-2.5 py-0.5 rounded-full uppercase">
+                      SKU: {selectedVariant.sku}
                     </span>
-                  )}
+                  </div>
+
                   <h1 className="font-heading text-3xl sm:text-4xl font-bold text-walnut-brown">
                     {product.name}
                   </h1>
                 </div>
+
                 <button
                   onClick={() => toggleWishlist(product.id)}
-                  className="p-3 rounded-full bg-white text-walnut-brown hover:text-red-500 shadow-sm border border-walnut-brown/5 transition-colors"
+                  className="p-3 rounded-full bg-white text-walnut-brown hover:text-red-500 shadow-xs border border-walnut-brown/10 transition-transform active:scale-95"
                   aria-label="Wishlist"
                 >
                   <Heart className={`h-5 w-5 ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
                 </button>
               </div>
 
-              {/* Price & Rating */}
-              <div className="flex items-center gap-6 mb-4">
-                <span className="font-heading text-3xl font-bold text-moss-green">
-                  ₹{product.price}
+              {/* Price, MRP & Rating Block */}
+              <div className="flex items-baseline gap-3 mb-2">
+                <span className="font-heading text-3xl font-bold text-walnut-brown">
+                  ₹{selectedVariant.price}
                 </span>
-                <div className="flex items-center gap-1.5 text-amber-500 font-body text-xs">
-                  <div className="flex">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-amber-500 stroke-none" />
-                    ))}
-                  </div>
-                  <span className="text-walnut-brown/70 font-semibold">({product.rating || 4.9}/5.0)</span>
+                {selectedVariant.originalPrice > selectedVariant.price && (
+                  <>
+                    <span className="font-body text-base text-walnut-brown/40 line-through">
+                      ₹{selectedVariant.originalPrice}
+                    </span>
+                    <span className="font-heading text-xs font-bold text-moss-green bg-moss-green/10 px-2.5 py-1 rounded-full">
+                      {discountPercent}% OFF (Incl. of all taxes)
+                    </span>
+                  </>
+                )}
+              </div>
+
+              <div className="flex items-center gap-2 text-amber-500 font-body text-xs mb-6">
+                <div className="flex items-center gap-0.5">
+                  <Star className="h-4 w-4 fill-amber-400 stroke-none" />
+                  <span className="text-walnut-brown font-heading font-bold text-xs">
+                    {product.rating ? product.rating.toFixed(1) : "4.9"}
+                  </span>
+                </div>
+                <span className="text-walnut-brown/50">({product.reviewCount || 42} ratings • 100% Genuine)</span>
+              </div>
+
+              {/* Weight Variant Selector Chips */}
+              <div className="mb-6 p-4 rounded-2xl bg-white border border-walnut-brown/10 shadow-xs">
+                <span className="font-heading text-xs font-bold uppercase tracking-wider text-walnut-brown/70 block mb-2">
+                  Select Pack Size / Weight:
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {variants.map((v) => (
+                    <button
+                      key={v.weight}
+                      onClick={() => setSelectedVariant(v)}
+                      className={`px-4 py-2 rounded-xl text-xs font-heading font-semibold transition-all ${
+                        selectedVariant.weight === v.weight
+                          ? "bg-moss-green text-white shadow-xs scale-102"
+                          : "bg-cream text-walnut-brown hover:bg-cream-dark"
+                      }`}
+                    >
+                      {v.weight} — ₹{v.price}
+                    </button>
+                  ))}
                 </div>
               </div>
 
-              {/* "Who Is It For?" Target Audience Matrix */}
-              {product.whoIsItFor && product.whoIsItFor.length > 0 && (
-                <div className="mb-6 bg-white p-4 rounded-2xl border border-walnut-brown/10">
-                  <span className="font-heading text-[10px] font-bold uppercase tracking-wider text-moss-green block mb-2 flex items-center gap-1">
-                    <UserCheck className="h-3.5 w-3.5" /> Target Audience Matrix
-                  </span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {product.whoIsItFor.map((aud, idx) => (
-                      <span key={idx} className="font-body text-xs font-semibold text-walnut-brown bg-cream-dark px-3 py-1 rounded-full">
-                        ✓ {aud}
-                      </span>
-                    ))}
-                  </div>
+              {/* Pan-India Pincode Delivery Checker */}
+              <div className="mb-6 p-4 rounded-2xl bg-white border border-walnut-brown/10 shadow-xs">
+                <div className="flex items-center gap-2 mb-2 font-heading text-xs font-bold text-walnut-brown uppercase tracking-wider">
+                  <Truck className="h-4 w-4 text-moss-green" />
+                  <span>Pan-India Delivery Availability</span>
                 </div>
-              )}
+                <p className="font-body text-[11px] text-walnut-brown/60 mb-3">
+                  Enter your 6-digit Indian PIN code to view delivery timeline & shipping charge.
+                </p>
+                <form onSubmit={handlePincodeCheck} className="flex gap-2">
+                  <input
+                    type="text"
+                    maxLength={6}
+                    value={pincodeInput}
+                    onChange={(e) => setPincodeInput(e.target.value.replace(/\D/g, ""))}
+                    placeholder="e.g. 612001 or 110001"
+                    className="flex-1 px-4 py-2 rounded-xl bg-cream border border-walnut-brown/15 text-xs text-walnut-brown font-heading font-medium focus:outline-none focus:border-moss-green"
+                  />
+                  <button
+                    type="submit"
+                    disabled={isCheckingPincode}
+                    className="px-5 py-2 rounded-xl bg-walnut-brown hover:bg-moss-green text-white font-heading text-xs font-bold uppercase tracking-wider transition-colors disabled:opacity-60"
+                  >
+                    {isCheckingPincode ? "Checking..." : "Check"}
+                  </button>
+                </form>
+
+                {pincodeStatus && (
+                  <div className="mt-3 p-3 rounded-xl bg-moss-green/10 border border-moss-green/20 text-xs font-body text-walnut-brown">
+                    <p className="font-bold text-moss-green flex items-center gap-1.5">
+                      <Check className="h-4 w-4 text-moss-green" /> Delivery Available to {pincodeStatus.stateName}
+                    </p>
+                    <p className="text-[11px] text-walnut-brown/80 mt-1">
+                      {pincodeStatus.message}
+                    </p>
+                    <p className="text-[10px] text-walnut-brown/60 mt-0.5">
+                      Estimated delivery: <strong>{pincodeStatus.estimatedDelivery}</strong> • {pincodeStatus.dispatchTime}
+                    </p>
+                  </div>
+                )}
+              </div>
 
               {/* Description */}
               <p className="font-body text-xs sm:text-sm text-walnut-brown/85 leading-relaxed mb-6">
                 {product.description}
               </p>
 
-              {/* Quantity Selector & Add Button */}
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+              {/* Quantity + Dual Conversion CTAs (Add to Cart + Buy Now) */}
+              <div className="flex flex-col sm:flex-row gap-3 mb-8">
+                {/* Quantity */}
                 <div className="flex items-center justify-between border border-walnut-brown/20 rounded-full px-4 py-2 w-full sm:w-32 bg-white">
                   <button
                     onClick={() => setQty(Math.max(1, qty - 1))}
@@ -208,12 +362,35 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
                   </button>
                 </div>
 
+                {/* Add to Cart */}
                 <button
                   onClick={handleAddToCart}
-                  className="flex-grow flex items-center justify-center gap-2 bg-moss-green hover:bg-walnut-brown text-white py-4 px-8 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-md hover:scale-[1.01]"
+                  className={`flex-1 flex items-center justify-center gap-2 py-3.5 px-6 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-sm border border-moss-green ${
+                    addedAnimation
+                      ? "bg-moss-green text-white"
+                      : "bg-white text-moss-green hover:bg-moss-green hover:text-white"
+                  }`}
                 >
-                  <ShoppingCart className="h-4 w-4" />
-                  Add to Cart
+                  {addedAnimation ? (
+                    <>
+                      <Check className="h-4 w-4" />
+                      <span>Added to Basket!</span>
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingCart className="h-4 w-4" />
+                      <span>Add to Basket</span>
+                    </>
+                  )}
+                </button>
+
+                {/* Buy Now (Direct to Checkout) */}
+                <button
+                  onClick={handleBuyNow}
+                  className="flex-1 flex items-center justify-center gap-2 bg-moss-green hover:bg-walnut-brown text-white py-3.5 px-6 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-md hover:scale-[1.01]"
+                >
+                  <Zap className="h-4 w-4 fill-current" />
+                  <span>Buy Now</span>
                 </button>
               </div>
 
@@ -233,7 +410,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
                     </div>
                     <div>
                       <p className="font-semibold text-walnut-brown line-clamp-1">{product.name} + {bundleProduct.name}</p>
-                      <span className="text-moss-green font-bold">Bundle Price: ₹{bundleTotalPrice} <s className="text-walnut-brown/40 text-[10px]">₹{product.price + bundleProduct.price}</s></span>
+                      <span className="text-moss-green font-bold">Bundle Price: ₹{bundleTotalPrice} <s className="text-walnut-brown/40 text-[10px]">₹{selectedVariant.price + bundleProduct.price}</s></span>
                     </div>
                   </div>
                   <button
@@ -246,11 +423,13 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
                 </div>
               </div>
 
-              {/* About the Brand Entity Block */}
-              <div className="my-6 p-4 rounded-2xl bg-cream-dark border border-walnut-brown/10 font-body text-xs text-walnut-brown/85 space-y-1">
-                <span className="font-heading font-bold text-moss-green text-[11px] uppercase tracking-wider block">About the Brand</span>
-                <p>
-                  Amudhasurabiy Organics — sometimes searched as Amudhasurabi or Amuthasurabi — is the maker of Blovit natural malt powders.
+              {/* FSSAI Verified Brand Trust Box */}
+              <div className="my-4 p-4 rounded-2xl bg-cream-dark/60 border border-walnut-brown/10 font-body text-xs text-walnut-brown/85 space-y-1">
+                <span className="font-heading font-bold text-moss-green text-[11px] uppercase tracking-wider flex items-center gap-1.5">
+                  <ShieldCheck className="h-4 w-4 text-moss-green" /> FSSAI Licensed Facility • Kumbakonam
+                </span>
+                <p className="text-[11px] text-walnut-brown/70">
+                  FSSAI Lic. No: <strong>22421543000120</strong> | GSTIN: <strong>33AAFFA9012K1Z9</strong>. 100% natural organic ingredients with zero chemicals or artificial thickeners.
                 </p>
               </div>
 
@@ -329,14 +508,15 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
                     onClick={() => setActiveTab(activeTab === "usage" ? null : "usage")}
                     className="w-full flex items-center justify-between font-heading text-base font-bold text-walnut-brown hover:text-moss-green transition-colors"
                   >
-                    <span>How to Prepare</span>
+                    <span>How to Prepare & Storage</span>
                     <ChevronDown className={`h-5 w-5 transition-transform ${activeTab === "usage" ? "rotate-180" : ""}`} />
                   </button>
                   <AnimatePresence>
                     {activeTab === "usage" && (
-                      <motion.p initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="font-body text-xs text-walnut-brown/85 mt-3 pb-2 leading-relaxed">
-                        {product.usageInstructions}
-                      </motion.p>
+                      <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="font-body text-xs text-walnut-brown/85 mt-3 pb-2 space-y-2">
+                        <p>{product.usageInstructions}</p>
+                        <p className="text-walnut-brown/70 italic">Store in an airtight container in a cool, dry place after opening.</p>
+                      </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
@@ -348,11 +528,11 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
 
           {/* Deep Recipe Interlinking Section */}
           {productRecipes.length > 0 && (
-            <section className="border-t border-walnut-brown/10 pt-16 mb-20">
-              <h2 className="font-heading text-2xl font-bold text-walnut-brown mb-8">Recipes Made with {product.name}</h2>
+            <section className="border-t border-walnut-brown/10 pt-12 mb-16">
+              <h2 className="font-heading text-2xl font-bold text-walnut-brown mb-6">Recipes Made with {product.name}</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {productRecipes.map((r) => (
-                  <div key={r.id} className="bg-white border border-walnut-brown/5 rounded-3xl p-6 shadow-sm flex items-center gap-4">
+                  <div key={r.id} className="bg-white border border-walnut-brown/10 rounded-3xl p-6 shadow-xs flex items-center gap-4">
                     <div className="relative h-20 w-20 rounded-2xl overflow-hidden bg-cream shrink-0">
                       <Image src={r.imageUrl} alt={r.title} fill className="object-cover" />
                     </div>
@@ -360,7 +540,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
                       <h4 className="font-heading text-base font-bold text-walnut-brown">{r.title}</h4>
                       <p className="font-body text-xs text-walnut-brown/70 line-clamp-2 mt-1">{r.description}</p>
                       <Link href={`/recipes/${r.slug}/`} className="font-heading text-xs font-bold text-moss-green uppercase tracking-wider hover:underline mt-2 block">
-                        View Recipe ➔
+                        View Recipe →
                       </Link>
                     </div>
                   </div>
@@ -369,20 +549,20 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
             </section>
           )}
 
-          {/* Customer Reviews */}
-          <section className="border-t border-walnut-brown/10 pt-16 mb-20">
-            <h2 className="font-heading text-2xl font-bold text-walnut-brown mb-8">Customer Reviews ({product.reviewCount || 100})</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Customer Reviews Section */}
+          <section className="border-t border-walnut-brown/10 pt-12 mb-16">
+            <h2 className="font-heading text-2xl font-bold text-walnut-brown mb-6">Customer Reviews ({product.reviewCount || 100})</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {mockReviews.map((rev, idx) => (
-                <div key={idx} className="bg-white border border-walnut-brown/5 rounded-3xl p-6 shadow-sm">
-                  <div className="flex justify-between items-center mb-4">
+                <div key={idx} className="bg-white border border-walnut-brown/10 rounded-3xl p-6 shadow-xs">
+                  <div className="flex justify-between items-center mb-3">
                     <div>
                       <h4 className="font-heading text-sm font-bold text-walnut-brown">{rev.name}</h4>
-                      <span className="font-body text-xs text-walnut-brown/50">{rev.date} • Verified Buyer</span>
+                      <span className="font-body text-[11px] text-walnut-brown/50">{rev.date} • Verified Buyer</span>
                     </div>
                     <div className="flex text-amber-500">
                       {[...Array(rev.rating)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-amber-500 stroke-none" />
+                        <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
                       ))}
                     </div>
                   </div>
@@ -397,24 +577,33 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
         </div>
       </main>
 
-      {/* Sticky Mobile Bottom Buy Bar */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-walnut-brown/10 p-4 shadow-lg flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="relative h-10 w-10 rounded-lg overflow-hidden bg-cream border">
-            <Image src={product.imageUrl} alt={product.name} fill className="object-cover" />
+      {/* Sticky Mobile Bottom Buy Dock */}
+      <div className="lg:hidden fixed bottom-14 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-walnut-brown/10 p-3 shadow-lg flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="relative h-10 w-10 rounded-lg overflow-hidden bg-cream border border-walnut-brown/10 shrink-0">
+            <Image src={product.imageUrl} alt={product.name} fill className="object-contain p-1" />
           </div>
-          <div>
-            <h4 className="font-heading text-xs font-bold text-walnut-brown line-clamp-1">{product.name}</h4>
-            <span className="font-heading text-xs font-semibold text-moss-green">₹{product.price}</span>
+          <div className="min-w-0">
+            <p className="font-heading text-xs font-bold text-walnut-brown truncate">{product.name}</p>
+            <p className="font-heading text-xs font-bold text-moss-green">₹{selectedVariant.price} ({selectedVariant.weight})</p>
           </div>
         </div>
-        <button
-          onClick={handleAddToCart}
-          className="bg-moss-green hover:bg-walnut-brown text-white text-xs font-heading font-semibold uppercase tracking-wider py-3 px-5 rounded-full flex items-center gap-1.5 transition-colors shadow-sm"
-        >
-          <ShoppingCart className="h-3.5 w-3.5" />
-          Add to Cart
-        </button>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            onClick={handleAddToCart}
+            className="py-2.5 px-3.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider bg-white border border-moss-green text-moss-green hover:bg-moss-green hover:text-white transition-all shadow-xs"
+          >
+            Add
+          </button>
+          <button
+            onClick={handleBuyNow}
+            className="py-2.5 px-4 rounded-full font-heading text-xs font-bold uppercase tracking-wider bg-moss-green hover:bg-walnut-brown text-white transition-all shadow-xs flex items-center gap-1"
+          >
+            <Zap className="h-3.5 w-3.5 fill-current" />
+            <span>Buy Now</span>
+          </button>
+        </div>
       </div>
 
       <WhatsAppButton />

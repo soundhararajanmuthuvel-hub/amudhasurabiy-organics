@@ -43,12 +43,15 @@ export default function JsonLd<T extends object>({ type, data }: JsonLdProps<T>)
     };
   } else if (type === "product") {
     const additional = (d.additional as Record<string, unknown>) || {};
+    const sku = (d.sku as string) || `BLV-${String(d.slug || d.id).toUpperCase()}-200G`;
     schema = {
       "@context": "https://schema.org",
       "@type": "Product",
       "name": d.name,
       "image": `https://amudhasurabiy.com${d.imageUrl}`,
       "description": d.description,
+      "sku": sku,
+      "mpn": sku,
       "brand": {
         "@type": "Brand",
         "name": "Blovit",
@@ -62,13 +65,45 @@ export default function JsonLd<T extends object>({ type, data }: JsonLdProps<T>)
         "price": d.price,
         "priceCurrency": "INR",
         "availability": "https://schema.org/InStock",
+        "itemCondition": "https://schema.org/NewCondition",
         "url": `https://amudhasurabiy.com/product/${d.slug}/`,
-        "priceValidUntil": "2030-01-01"
+        "priceValidUntil": "2030-01-01",
+        "seller": {
+          "@type": "Organization",
+          "name": "Amudhasurabiy Organics"
+        },
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": "60",
+            "currency": "INR"
+          },
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "IN"
+          },
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "handlingTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 0,
+              "maxValue": 1,
+              "unitCode": "d"
+            },
+            "transitTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 1,
+              "maxValue": 4,
+              "unitCode": "d"
+            }
+          }
+        }
       },
       "aggregateRating": d.rating ? {
         "@type": "AggregateRating",
         "ratingValue": d.rating,
-        "reviewCount": d.reviewCount || 120
+        "reviewCount": d.reviewCount || 42
       } : undefined,
       ...additional
     };

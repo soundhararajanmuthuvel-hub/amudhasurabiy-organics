@@ -69,6 +69,14 @@ export function mapBackendProduct(raw: Record<string, unknown>): Product {
     healthGoals: healthGoalsList,
     rating: Number(raw.rating || 4.9),
     reviewCount: Number(raw.reviewCount || 42),
+    sku: typeof raw.sku === "string" ? raw.sku : `BLV-${String(raw.slug || raw.id).toUpperCase().slice(0, 3)}-200G`,
+    weight: typeof raw.weight === "string" ? raw.weight : "200g",
+    inStock: raw.inStock !== undefined ? Boolean(raw.inStock) : true,
+    variants: Array.isArray(raw.variants) ? raw.variants : [
+      { weight: "200g", price: Number(raw.price || 250), originalPrice: Number(raw.originalPrice || 299), sku: `BLV-${String(raw.slug || raw.id).toUpperCase().slice(0, 3)}-200G`, inStock: true },
+      { weight: "500g", price: Math.round(Number(raw.price || 250) * 2.3), originalPrice: Math.round(Number(raw.originalPrice || 299) * 2.3), sku: `BLV-${String(raw.slug || raw.id).toUpperCase().slice(0, 3)}-500G`, inStock: true },
+      { weight: "1kg", price: Math.round(Number(raw.price || 250) * 4.4), originalPrice: Math.round(Number(raw.originalPrice || 299) * 4.5), sku: `BLV-${String(raw.slug || raw.id).toUpperCase().slice(0, 3)}-1KG`, inStock: true }
+    ],
   };
 }
 
