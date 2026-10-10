@@ -14,11 +14,18 @@ export interface WholesaleEnquiryPayload {
   estimatedQuantity: string;
   requiredPackSizes: string[];
   additionalRequirements?: string;
+  botField?: string;
 }
 
 export async function POST(req: NextRequest) {
   try {
     const data: WholesaleEnquiryPayload = await req.json();
+
+    // Anti-spam honeypot detection
+    if (data.botField) {
+      console.warn("[Wholesale Enquiry] Bot spam rejected via honeypot.");
+      return NextResponse.json({ success: true, enquiryId: "ENQ-BOT" });
+    }
 
     // Required Field Validation
     if (!data.businessName?.trim()) {
@@ -27,10 +34,11 @@ export async function POST(req: NextRequest) {
     if (!data.contactPerson?.trim()) {
       return NextResponse.json({ success: false, message: "Contact person's name is required." }, { status: 400 });
     }
-    if (!data.mobile?.trim() || data.mobile.replace(/\D/g, "").length < 10) {
-      return NextResponse.json({ success: false, message: "A valid 10-digit mobile number is required." }, { status: 400 });
+    const cleanMobile = data.mobile?.replace(/\D/g, "") || "";
+    if (cleanMobile.length < 10 || cleanMobile.length > 13) {
+      return NextResponse.json({ success: false, message: "A valid Indian mobile number (at least 10 digits) is required." }, { status: 400 });
     }
-    if (!data.email?.trim() || !data.email.includes("@")) {
+    if (!data.email?.trim() || !data.email.includes("@") || !data.email.includes(".")) {
       return NextResponse.json({ success: false, message: "A valid business email address is required." }, { status: 400 });
     }
     if (!data.city?.trim() || !data.state?.trim()) {
@@ -39,6 +47,20 @@ export async function POST(req: NextRequest) {
 
     const enquiryId = `ENQ-${Date.now().toString().slice(-6)}`;
     const receivedAt = new Date().toISOString();
+
+    // Durable forwarder to webhook or ERP endpoint if configured
+    const webhookUrl = process.env.ENQUIRY_WEBHOOK_URL || process.env.LEADS_WEBHOOK_URL;
+    if (webhookUrl) {
+      try {
+        await fetch(webhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ enquiryId, receivedAt, ...data }),
+        });
+      } catch (err) {
+        console.error("[Wholesale Webhook Forwarding Warning]", err);
+      }
+    }
 
     console.log(`[Wholesale/Private-Label Enquiry Received - ${enquiryId}]`, {
       enquiryId,

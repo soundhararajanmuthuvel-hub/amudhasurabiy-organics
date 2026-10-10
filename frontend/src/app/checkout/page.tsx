@@ -14,7 +14,7 @@ import { useCartStore } from "@/store/useCartStore";
 import { getAddresses, createAddress } from "@/lib/api/addresses";
 import { createRazorpayOrder, verifyRazorpayPayment } from "@/lib/api/razorpay";
 import { placeMockOrder } from "@/lib/api/orders";
-import { guestCheckout, convertGuestToAccount } from "@/lib/api/checkout";
+import { convertGuestToAccount } from "@/lib/api/checkout";
 import { trackCustomerEvent } from "@/lib/api/events";
 
 interface SavedAddress {
@@ -26,6 +26,7 @@ interface SavedAddress {
   state: string;
   pincode: string;
   phone: string;
+  email?: string;
 }
 
 interface CompletedOrder {
@@ -135,6 +136,7 @@ export default function Checkout() {
       if (selected) return selected;
     }
     return {
+      id: "addr_guest_" + (newPhone || Date.now()),
       name: newName || "Guest",
       line1: newLine1,
       line2: newLine2,
@@ -194,31 +196,14 @@ export default function Checkout() {
 
     // 2. PRE-PAID RAZORPAY ORDER PATH
     try {
-      if (!customer) {
-        // Guest checkout call
-        const guestRes = await guestCheckout({
-          cartId: `cart_${Date.now()}`,
-          shippingAddress: activeAddr,
-          items: cart.map((c) => ({ productId: c.productId, name: c.name, qty: c.qty, price: c.price })),
-          subtotal,
-          shippingCharge,
-          discount,
-          walletDeduction,
-        });
-
-        setOrderCompleted({
-          orderNumber: guestRes.orderNumber,
-          total: grandTotal,
-          guestPhone: activeAddr.phone,
-          isGuest: true,
-          paymentMethod: "Online Payment (Razorpay)",
-        });
-        clearCart();
-        setIsProcessing(false);
-        return;
-      }
-
-      const rzpOrder = await createRazorpayOrder(`cart_${Date.now()}`);
+      const items = cart.map((c) => ({ productId: c.productId, name: c.name, qty: c.qty, price: c.price }));
+      const rzpOrder = await createRazorpayOrder(`cart_${Date.now()}`, items, {
+        address: activeAddr,
+        customerName: activeAddr.name,
+        customerPhone: activeAddr.phone,
+        customerEmail: activeAddr.email || newEmail || "",
+        isGuest: !customer,
+      });
 
       if (isMock) {
         setShowMockPaymentModal(true);
@@ -233,7 +218,7 @@ export default function Checkout() {
             amount: grandTotal * 100,
             currency: "INR",
             name: "Blovit - Amudhasurabiy Organics",
-            description: "Malt Health Drinks Order",
+            description: "Natural Malt Health Drinks Order",
             order_id: rzpOrder.razorpayOrderId,
             handler: async (response: { razorpay_payment_id: string; razorpay_signature: string }) => {
               try {
@@ -244,34 +229,49 @@ export default function Checkout() {
                 );
                 if (verify.success) {
                   trackCustomerEvent("payment_success", { metadata: { amount: grandTotal } });
+                  trackCustomerEvent("checkout_completed", { metadata: { orderNumber: verify.orderNumber, paymentMethod: "Razorpay" } });
                   setOrderCompleted({
                     orderNumber: verify.orderNumber,
                     total: grandTotal,
-                    isGuest: false,
+                    isGuest: !customer,
+                    guestPhone: activeAddr.phone,
+                    paymentMethod: "Prepaid via Razorpay",
                   });
                   clearCart();
                 } else {
-                  alert("Payment verification failed.");
+                  alert("Payment verification failed. If your account was debited, please contact our Kumbakonam support team on WhatsApp.");
                 }
               } catch (err) {
                 console.error(err);
+                alert("Payment verification encountered an issue. Please contact support.");
+              } finally {
+                setIsProcessing(false);
               }
+            },
+            modal: {
+              ondismiss: () => {
+                setIsProcessing(false);
+              },
             },
             prefill: {
               name: activeAddr.name,
               contact: activeAddr.phone,
+              email: activeAddr.email || "",
             },
             theme: { color: "#2E5A44" },
           };
           const rzp = new (window as unknown as { Razorpay: new (opts: unknown) => { open: () => void } }).Razorpay(options);
           rzp.open();
+        };
+        script.onerror = () => {
+          alert("Failed to load Razorpay payment gateway. Please check your internet connection or choose Cash on Delivery (COD).");
           setIsProcessing(false);
         };
         document.body.appendChild(script);
       }
     } catch (err) {
       console.error(err);
-      alert("Error initiating payment.");
+      alert("Error initiating payment. Please try again or select Cash on Delivery (COD).");
       setIsProcessing(false);
     }
   };

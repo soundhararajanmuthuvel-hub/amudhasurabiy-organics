@@ -36,7 +36,7 @@ export default function AIChatWidget() {
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.95 }}
             onClick={toggleOpen}
-            className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 bg-walnut-brown hover:bg-moss-green text-white px-5 py-3.5 rounded-full shadow-2xl border border-white/20 transition-all group"
+            className="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 z-50 flex items-center gap-2.5 bg-[#5A3B28] hover:bg-[#2E5A44] text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-full shadow-2xl border border-white/20 transition-all group"
             aria-label="Open Blovit AI Assistant"
           >
             <div className="relative">
@@ -71,7 +71,7 @@ export default function AIChatWidget() {
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
               className={`fixed z-50 flex flex-col bg-white rounded-3xl shadow-2xl border border-walnut-brown/15 overflow-hidden transition-all duration-300 ${
                 isMinimized
-                  ? "bottom-6 right-6 w-80 h-16"
+                  ? "bottom-20 right-4 sm:bottom-6 sm:right-6 w-80 h-16"
                   : "bottom-0 right-0 left-0 top-0 sm:top-auto sm:left-auto sm:bottom-6 sm:right-6 sm:w-[420px] sm:h-[620px] rounded-none sm:rounded-3xl"
               }`}
             >

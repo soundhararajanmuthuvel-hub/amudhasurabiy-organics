@@ -4,16 +4,35 @@ export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
   try {
-    const { email } = await req.json();
+    const { email, botField } = await req.json();
 
-    if (!email || typeof email !== "string" || !email.includes("@") || !email.includes(".")) {
+    if (botField) {
+      console.warn("[Newsletter] Bot spam rejected.");
+      return NextResponse.json({ success: true });
+    }
+
+    if (!email || typeof email !== "string" || !email.includes("@") || !email.includes(".") || email.length > 120) {
       return NextResponse.json(
         { success: false, message: "Please enter a valid email address." },
         { status: 400 }
       );
     }
 
-    console.log(`[Newsletter Subscription] ${email.trim()} registered.`);
+    const cleanEmail = email.trim().toLowerCase();
+    console.log(`[Newsletter Subscription] ${cleanEmail} registered.`);
+
+    const webhookUrl = process.env.NEWSLETTER_WEBHOOK_URL;
+    if (webhookUrl) {
+      try {
+        await fetch(webhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: cleanEmail, subscribedAt: new Date().toISOString() }),
+        });
+      } catch (err) {
+        console.error("[Newsletter Webhook Warning]", err);
+      }
+    }
 
     return NextResponse.json({
       success: true,

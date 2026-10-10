@@ -90,7 +90,7 @@ export default function ShopClient({ initialProducts }: ShopClientProps) {
     }
 
     return result;
-  }, [products, debouncedSearch, selectedGoal, selectedPriceMax, sortBy]);
+  }, [products, debouncedSearch, selectedGoal, selectedPriceMax, sortBy, onlyInStock]);
 
   const clearAllFilters = () => {
     setSearchTerm("");

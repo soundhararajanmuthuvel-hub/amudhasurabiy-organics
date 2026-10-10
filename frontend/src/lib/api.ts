@@ -47,9 +47,10 @@ export async function apiFetch<T>(endpoint: string, options: ApiFetchOptions = {
     const apiKey =
       process.env.WEBSITE_API_KEY ||
       process.env.STOREFRONT_API_KEY ||
-      process.env.BLO_WEBSITE_API_KEY ||
-      "blovit_live_sec_99382174620091823746";
-    headers["X-API-Key"] = apiKey;
+      process.env.BLO_WEBSITE_API_KEY;
+    if (apiKey) {
+      headers["X-API-Key"] = apiKey;
+    }
   }
 
   let attempt = 0;

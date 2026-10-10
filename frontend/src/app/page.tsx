@@ -4,10 +4,10 @@ import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { 
-  ArrowRight, ShieldCheck, Heart, Leaf, Award, 
-  ChevronDown, Activity, Sparkles, Truck, Check,
-  Clock, Package, Building2, Flame, Droplets, Star,
-  PhoneCall, CheckCircle2
+  ArrowRight, ShieldCheck, Leaf, Award, 
+  ChevronDown, Sparkles, Truck, Check,
+  Clock, Building2, Flame, Droplets,
+  PhoneCall
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";

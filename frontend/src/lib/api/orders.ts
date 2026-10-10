@@ -1,4 +1,4 @@
-import { Order, getMockOrders, createMockOrder, OrderItem } from "./mockData";
+import { Order, getMockOrders, createMockOrder, OrderItem, Address } from "./mockData";
 import { API_BASE, USE_MOCK, getApiHeaders } from "./client";
 
 export async function getOrders(): Promise<Order[]> {
@@ -33,7 +33,7 @@ export async function placeMockOrder(
   total: number,
   shippingCharge: number,
   discount: number,
-  shippingAddress?: any,
+  shippingAddress?: Address,
   paymentMethod?: string
 ): Promise<Order> {
   const order = createMockOrder(items, total, shippingCharge, discount, shippingAddress, paymentMethod);

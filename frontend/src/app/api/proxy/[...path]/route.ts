@@ -42,13 +42,14 @@ async function handleProxy(
     const cookie = request.headers.get("cookie");
     if (cookie) headers["Cookie"] = cookie;
 
-    // Attach server-only secret API Key (NEVER exposed to browser)
+    // Attach server-only secret API Key if present in environment (NEVER hardcoded in source)
     const apiKey =
       process.env.WEBSITE_API_KEY ||
       process.env.STOREFRONT_API_KEY ||
-      process.env.BLO_WEBSITE_API_KEY ||
-      "blovit_live_sec_99382174620091823746";
-    headers["X-API-Key"] = apiKey;
+      process.env.BLO_WEBSITE_API_KEY;
+    if (apiKey) {
+      headers["X-API-Key"] = apiKey;
+    }
 
     const init: RequestInit = {
       method: request.method,
@@ -68,11 +69,8 @@ async function handleProxy(
 
     const resContentType = backendRes.headers.get("content-type") || "";
     const bodyText = await backendRes.text();
-    const preview = bodyText.substring(0, 300);
 
     console.log("[AO ERP Proxy] HTTP Status:", backendRes.status);
-    console.log("[AO ERP Proxy] Response Content-Type:", resContentType);
-    console.log("[AO ERP Proxy] Response Body Preview (300 chars):", preview);
 
     if (backendRes.redirected) {
       console.warn("[AO ERP Proxy] Backend redirected to:", backendRes.url);
@@ -82,15 +80,12 @@ async function handleProxy(
     const isJson = resContentType.includes("application/json") || bodyText.trim().startsWith("{") || bodyText.trim().startsWith("[");
 
     if (!isJson) {
-      console.error("[AO ERP Proxy Error] Non-JSON response received from targetUrl:", targetUrl);
+      console.error("[AO ERP Proxy Error] Non-JSON response received from upstream backend");
       return NextResponse.json(
         {
           success: false,
-          error: "Backend returned HTML/Non-JSON response",
-          targetUrl,
+          error: "Upstream service temporarily unavailable",
           status: backendRes.status,
-          contentType: resContentType,
-          preview: preview,
         },
         { status: 502 }
       );

@@ -18,7 +18,7 @@ export default function WhatsAppButton() {
       href="https://api.whatsapp.com/send?phone=917010602115&text=Hello!%20I%20am%20interested%20in%20Blovit%20Organic%20Malt%20drinks.%20Please%20help%20me%20place%20an%20order."
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-40 flex items-center justify-center h-14 w-14 rounded-full bg-[#25D366] text-white shadow-lg hover:shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 group"
+      className="fixed bottom-20 left-4 sm:bottom-6 sm:left-6 z-40 flex items-center justify-center h-13 w-13 sm:h-14 sm:w-14 rounded-full bg-[#25D366] text-white shadow-lg hover:shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 group"
       aria-label="Contact on WhatsApp"
     >
       {/* Pulse background ring */}

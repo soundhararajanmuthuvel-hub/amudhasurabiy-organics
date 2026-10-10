@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { 
-  Building2, ShieldCheck, CheckCircle2, Send, 
+  Building2, CheckCircle2, Send, 
   Phone, Mail, MapPin, Package, Award, Sparkles, MessageSquare
 } from "lucide-react";
 import Header from "@/components/Header";
@@ -350,7 +348,7 @@ export default function WholesaleClient() {
                         <button
                           key={item.id}
                           type="button"
-                          onClick={() => setFormData({ ...formData, enquiryType: item.id as any })}
+                          onClick={() => setFormData({ ...formData, enquiryType: item.id as "wholesale" | "distribution" | "white_label" | "cafe_bulk" })}
                           className={`p-3 rounded-2xl text-xs font-heading font-semibold border transition-all text-center ${
                             formData.enquiryType === item.id
                               ? "bg-[#2E5A44] text-white border-[#2E5A44] shadow-sm"
