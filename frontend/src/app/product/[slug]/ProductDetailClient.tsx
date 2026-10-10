@@ -188,31 +188,49 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
                 onMouseEnter={() => setIsZoomed(true)}
                 onMouseLeave={() => setIsZoomed(false)}
                 onMouseMove={handleMouseMove}
-                className="relative aspect-square w-full rounded-3xl overflow-hidden border border-walnut-brown/10 bg-white shadow-xs cursor-zoom-in"
+                className="relative aspect-square w-full rounded-3xl overflow-hidden border border-[#5A3B28]/10 bg-[#FDFBF7] shadow-xs cursor-zoom-in"
               >
                 <Image
                   src={activeImage || product.imageUrl}
-                  alt={`Blovit ${product.name} by Amudhasurabiy Organics`}
+                  alt={`Blovit ${product.name} genuine packaging - Amudhasurabiy Organics`}
                   fill
                   priority
                   className="object-contain p-6 transition-transform duration-200"
                   style={isZoomed ? { transformOrigin: `${mousePos.x}% ${mousePos.y}%`, transform: "scale(1.8)" } : {}}
                 />
+
+                <div className="absolute top-3 left-3 z-10">
+                  <span className="bg-white/90 backdrop-blur-xs text-[#5A3B28] text-[10px] font-heading font-semibold px-2.5 py-1 rounded-full border border-[#5A3B28]/10 shadow-2xs">
+                    Original Farm Pouch
+                  </span>
+                </div>
+
+                <div className="absolute bottom-3 right-3 z-10 pointer-events-none">
+                  <span className="bg-white/80 backdrop-blur-xs text-[#5A3B28]/70 text-[9px] font-body px-2 py-0.5 rounded-full border border-[#5A3B28]/10">
+                    Hover to zoom
+                  </span>
+                </div>
               </div>
 
-              {galleryImages.length > 1 && (
-                <div className="flex gap-3 overflow-x-auto pb-1">
+              {galleryImages.length > 0 && (
+                <div className="flex gap-3 overflow-x-auto pb-1 items-center">
                   {galleryImages.map((thumb, idx) => (
                     <button
                       key={idx}
                       onClick={() => setSelectedImage(thumb)}
                       className={`relative h-20 w-20 shrink-0 rounded-2xl overflow-hidden border-2 bg-white shadow-xs transition-all ${
-                        activeImage === thumb ? "border-moss-green scale-105" : "border-transparent opacity-75 hover:opacity-100"
+                        activeImage === thumb ? "border-[#2E5A44] scale-105" : "border-transparent opacity-75 hover:opacity-100"
                       }`}
+                      title={`View photo ${idx + 1}`}
                     >
-                      <Image src={thumb} alt={`Blovit ${product.name} thumbnail ${idx + 1}`} fill className="object-contain p-1" />
+                      <Image src={thumb} alt={`Blovit ${product.name} view ${idx + 1}`} fill className="object-contain p-1.5" />
                     </button>
                   ))}
+                  {galleryImages.length === 1 && (
+                    <div className="text-[11px] font-body text-[#5A3B28]/60 pl-2">
+                      Front packaging pouch view • Genuine photo
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -220,12 +238,22 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
             {/* Right Column: Meta, Variants, Pincode & Purchasing */}
             <div className="lg:col-span-6 flex flex-col justify-start">
               
-              <div className="flex justify-between items-start mb-2">
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
+              <div className="flex justify-between items-start mb-3">
+                <div className="w-full">
+                  <div className="flex items-center flex-wrap gap-2 mb-2.5">
                     {product.isBestseller && (
-                      <span className="bg-moss-green text-cream text-[10px] font-heading font-bold uppercase tracking-wider px-3 py-0.5 rounded-full inline-block">
+                      <span className="bg-moss-green text-cream text-[10px] font-heading font-bold uppercase tracking-wider px-3 py-0.5 rounded-full inline-block shadow-2xs">
                         Best Seller
+                      </span>
+                    )}
+                    {selectedVariant.inStock !== false ? (
+                      <span className="inline-flex items-center gap-1.5 bg-[#2E5A44]/10 text-[#2E5A44] text-[10px] font-heading font-semibold px-2.5 py-0.5 rounded-full border border-[#2E5A44]/20">
+                        <span className="h-1.5 w-1.5 rounded-full bg-[#2E5A44] animate-pulse"></span>
+                        In Stock
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5 bg-red-50 text-red-700 text-[10px] font-heading font-semibold px-2.5 py-0.5 rounded-full border border-red-200">
+                        Out of Stock
                       </span>
                     )}
                     <span className="bg-cream-dark text-walnut-brown/70 text-[10px] font-heading font-semibold px-2.5 py-0.5 rounded-full uppercase">
@@ -233,7 +261,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
                     </span>
                   </div>
 
-                  <h1 className="font-heading text-3xl sm:text-4xl font-bold text-walnut-brown">
+                  <h1 className="font-heading text-3xl sm:text-4xl font-bold text-walnut-brown leading-tight">
                     {product.name}
                   </h1>
                 </div>

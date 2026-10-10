@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import JsonLd from "@/components/JsonLd";
+import ProductCard from "@/components/ProductCard";
 import { MOCK_PRODUCTS } from "@/lib/api/mockData";
 
 export default function CollectionsPage() {
@@ -75,18 +76,9 @@ export default function CollectionsPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 border-t border-walnut-brown/5 pt-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 border-t border-walnut-brown/5 pt-8">
                   {col.products.map((p) => (
-                    <div key={p.id} className="p-4 rounded-2xl bg-cream border border-walnut-brown/5 flex flex-col justify-between">
-                      <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-white mb-4 flex items-center justify-center">
-                        <Image src={p.imageUrl} alt={p.name} fill className="object-contain p-2" />
-                      </div>
-                      <h4 className="font-heading text-sm font-bold text-walnut-brown mb-1">{p.name}</h4>
-                      <span className="font-heading text-xs font-semibold text-moss-green mb-4">₹{p.price}</span>
-                      <Link href={`/product/${p.slug}/`} className="w-full bg-white hover:bg-moss-green hover:text-white text-walnut-brown border border-walnut-brown/10 text-[10px] font-heading font-bold uppercase tracking-wider py-2.5 rounded-full text-center transition-colors">
-                        View Product
-                      </Link>
-                    </div>
+                    <ProductCard key={p.id} product={p} />
                   ))}
                 </div>
               </div>

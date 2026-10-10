@@ -13,19 +13,33 @@ export function mapBackendProduct(raw: Record<string, unknown>): Product {
     imageUrl = raw.images;
   }
 
-  // Convert relative /uploads paths to absolute backend URL
-  if (imageUrl.startsWith("/")) {
-    const rawBaseUrl = process.env.BACKEND_API_BASE_URL || process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
-    if (!imageUrl.startsWith("/images/")) {
-      imageUrl = `${rawBaseUrl.replace(/\/$/, "")}${imageUrl}`;
-    }
+  const slugStr = String(raw.slug || raw.id || "").toLowerCase();
+  const nameStr = String(raw.name || "").toLowerCase();
+
+  // Primary supplied packaging photograph matching
+  if (slugStr.includes("abc") || nameStr.includes("abc")) {
+    imageUrl = "/images/abc-malt.png";
+  } else if (slugStr.includes("beet") || nameStr.includes("beet")) {
+    imageUrl = "/images/beetroot-malt.png";
+  } else if (slugStr.includes("banana") || slugStr.includes("nendr") || nameStr.includes("banana") || nameStr.includes("nendr")) {
+    imageUrl = "/images/nendran-banana-malt.png";
+  } else if (slugStr.includes("ragi") || nameStr.includes("ragi")) {
+    imageUrl = "/images/sprouted-ragi-malt.png";
   }
 
   // Build complete gallery images array
-  const rawBaseUrl = process.env.BACKEND_API_BASE_URL || process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
   let imagesList: string[] = [];
 
-  if (Array.isArray(raw.images) && raw.images.length > 0) {
+  if (slugStr.includes("abc") || nameStr.includes("abc")) {
+    imagesList = ["/images/abc-malt.png"];
+  } else if (slugStr.includes("beet") || nameStr.includes("beet")) {
+    imagesList = ["/images/beetroot-malt.png"];
+  } else if (slugStr.includes("banana") || slugStr.includes("nendr") || nameStr.includes("banana") || nameStr.includes("nendr")) {
+    imagesList = ["/images/nendran-banana-malt.png"];
+  } else if (slugStr.includes("ragi") || nameStr.includes("ragi")) {
+    imagesList = ["/images/sprouted-ragi-malt.png"];
+  } else if (Array.isArray(raw.images) && raw.images.length > 0) {
+    const rawBaseUrl = process.env.BACKEND_API_BASE_URL || process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
     imagesList = raw.images
       .filter((img): img is string => typeof img === "string" && Boolean(img.trim()))
       .map((img) => (img.startsWith("/") && !img.startsWith("/images/") ? `${rawBaseUrl.replace(/\/$/, "")}${img}` : img));

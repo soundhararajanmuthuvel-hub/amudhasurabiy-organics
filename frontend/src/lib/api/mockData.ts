@@ -104,7 +104,7 @@ export const MOCK_PRODUCTS: Product[] = [
     category: "Natural Malts",
     description: "Premium Apple, Beetroot, and Carrot health drink powder. An organic formulation crafted to improve hemoglobin levels, enhance natural skin radiance, and provide clean daily energy.",
     imageUrl: "/images/abc-malt.png",
-    images: ["/images/abc-malt.png", "/images/beetroot-malt.png"],
+    images: ["/images/abc-malt.png"],
     benefits: [
       "Natural Immunity & Hemoglobin Booster",
       "Enhances Skin Glow & Clears Toxins",
@@ -153,6 +153,7 @@ export const MOCK_PRODUCTS: Product[] = [
     category: "Natural Malts",
     description: "Packed with the natural goodness of iron-rich beetroots, sprouted grains, and premium nuts. Specially designed to boost stamina, improve circulation, and manage anemia naturally.",
     imageUrl: "/images/beetroot-malt.png",
+    images: ["/images/beetroot-malt.png"],
     benefits: [
       "Combats Anemia & Boosts Iron Counts",
       "Improves Stamina & Physical Endurance",
@@ -199,6 +200,7 @@ export const MOCK_PRODUCTS: Product[] = [
     category: "Natural Malts",
     description: "An authentic, highly nutritious health mix prepared from raw Kerala Nendran Bananas. Rich in potassium and fibers, it is an excellent natural weight gainer for growing toddlers and energy drink for all ages.",
     imageUrl: "/images/nendran-banana-malt.png",
+    images: ["/images/nendran-banana-malt.png"],
     benefits: [
       "Excellent Natural Weight Gainer for Kids",
       "Supports Bone Development & Muscle Growth",

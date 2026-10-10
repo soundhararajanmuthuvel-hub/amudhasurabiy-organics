@@ -11,9 +11,14 @@ import { useCartStore } from "@/store/useCartStore";
 interface ProductCardProps {
   product: Product;
   priority?: boolean;
+  onBuyNow?: (product: Product) => void;
 }
 
-export default function ProductCard({ product, priority = false }: ProductCardProps) {
+export default function ProductCard({
+  product,
+  priority = false,
+  onBuyNow,
+}: ProductCardProps) {
   const router = useRouter();
   const { addToCart, toggleWishlist, wishlist } = useCartStore();
 
@@ -65,7 +70,11 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
       },
       1
     );
-    router.push("/checkout/");
+    if (onBuyNow) {
+      onBuyNow(product);
+    } else {
+      router.push("/checkout/");
+    }
   };
 
   const handleWishlistToggle = (e: React.MouseEvent) => {
@@ -75,73 +84,89 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
   };
 
   return (
-    <div className="group relative flex flex-col justify-between rounded-3xl bg-white border border-walnut-brown/10 p-5 shadow-xs hover:shadow-xl transition-all duration-300">
-      <div>
-        {/* Visual Media Container */}
-        <div className="relative h-56 w-full rounded-2xl bg-cream-dark/30 mb-4 overflow-hidden flex items-center justify-center p-4">
-          <Link href={`/product/${product.slug}/`} className="relative h-full w-full flex items-center justify-center">
+    <div className="group relative flex flex-col justify-between rounded-3xl bg-white border border-[#5A3B28]/12 p-4 sm:p-5 shadow-xs hover:shadow-xl transition-all duration-300 h-full">
+      <div className="flex flex-col">
+        {/* 1. PRODUCT IMAGE AREA */}
+        <div className="relative h-52 sm:h-56 w-full rounded-2xl bg-[#FDFBF7] border border-[#5A3B28]/8 mb-3.5 overflow-hidden flex items-center justify-center p-3">
+          <Link
+            href={`/product/${product.slug}/`}
+            className="relative h-full w-full flex items-center justify-center"
+            title={`View ${product.name}`}
+          >
             <Image
               src={product.imageUrl}
-              alt={`Blovit ${product.name} by Amudhasurabiy Organics`}
-              width={220}
-              height={220}
+              alt={`Blovit ${product.name} packaging - Amudhasurabiy Organics`}
+              width={240}
+              height={240}
               priority={priority}
-              className="h-48 w-auto object-contain transition-transform duration-500 group-hover:scale-105"
+              className="h-44 sm:h-48 w-auto max-w-full object-contain transition-transform duration-500 group-hover:scale-105"
             />
           </Link>
 
-          {/* Top Badges */}
-          <div className="absolute top-3 left-3 flex flex-col gap-1 z-10">
-            {product.isBestseller && (
-              <span className="bg-moss-green text-white text-[10px] font-heading font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
-                Best Seller
-              </span>
-            )}
-            <span className="bg-white/90 text-walnut-brown text-[10px] font-body font-semibold px-2 py-0.5 rounded-full backdrop-blur-xs border border-walnut-brown/10">
-              In Stock
-            </span>
-          </div>
-
-          {/* Wishlist Heart Toggle */}
+          {/* Quick Wishlist Toggle */}
           <button
             onClick={handleWishlistToggle}
-            className="absolute top-3 right-3 p-2 rounded-full bg-white/90 text-walnut-brown hover:text-red-500 shadow-xs transition-transform hover:scale-110 active:scale-95 z-10"
+            className="absolute top-2.5 right-2.5 p-2 rounded-full bg-white/95 text-[#5A3B28] hover:text-red-500 shadow-xs border border-[#5A3B28]/10 transition-transform hover:scale-110 active:scale-95 z-10"
             aria-label="Add to Wishlist"
           >
             <Heart
               className={`h-4 w-4 transition-colors ${
-                isFavorite ? "fill-red-500 text-red-500" : "text-walnut-brown/70"
+                isFavorite ? "fill-red-500 text-red-500" : "text-[#5A3B28]/70"
               }`}
             />
           </button>
         </div>
 
-        {/* Rating & Review Count */}
-        <div className="flex items-center gap-1.5 text-xs mb-1.5">
-          <div className="flex items-center gap-0.5 text-amber-500">
-            <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-            <span className="font-heading font-bold text-walnut-brown text-xs">
-              {product.rating ? product.rating.toFixed(1) : "4.9"}
+        {/* 2. BADGES ROW (Neatly separated from image and product title) */}
+        <div className="flex items-center flex-wrap gap-2 mb-2">
+          {product.isBestseller && (
+            <span className="inline-flex items-center bg-[#2E5A44] text-white text-[10px] font-heading font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-2xs">
+              Best Seller
             </span>
-          </div>
-          <span className="text-walnut-brown/50 font-body text-[11px]">
-            ({product.reviewCount || 42} reviews)
+          )}
+
+          {selectedVariant.inStock !== false ? (
+            <span className="inline-flex items-center gap-1.5 bg-[#2E5A44]/10 text-[#2E5A44] text-[10px] font-heading font-semibold px-2.5 py-0.5 rounded-full border border-[#2E5A44]/20">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#2E5A44] animate-pulse"></span>
+              In Stock
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-1.5 bg-red-50 text-red-700 text-[10px] font-heading font-semibold px-2.5 py-0.5 rounded-full border border-red-200">
+              Out of Stock
+            </span>
+          )}
+
+          <span className="text-[10px] font-body text-[#5A3B28]/60 ml-auto hidden xs:inline-block">
+            Cauvery Delta
           </span>
         </div>
 
-        {/* Product Title */}
-        <h3 className="font-heading text-lg font-bold text-walnut-brown mb-1.5 group-hover:text-moss-green transition-colors line-clamp-1">
+        {/* 3. PRODUCT TITLE */}
+        <h3 className="font-heading text-base sm:text-lg font-bold text-[#5A3B28] leading-snug mb-1 group-hover:text-[#2E5A44] transition-colors line-clamp-1">
           <Link href={`/product/${product.slug}/`}>{product.name}</Link>
         </h3>
 
-        {/* Short Description */}
-        <p className="font-body text-xs text-walnut-brown/70 leading-relaxed mb-4 line-clamp-2">
+        {/* 4. RATING & REVIEWS */}
+        <div className="flex items-center gap-1.5 text-xs mb-2">
+          <div className="flex items-center gap-0.5 text-amber-500">
+            <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+            <span className="font-heading font-bold text-[#5A3B28] text-xs">
+              {product.rating ? product.rating.toFixed(1) : "4.9"}
+            </span>
+          </div>
+          <span className="text-[#5A3B28]/50 font-body text-[11px]">
+            ({product.reviewCount || 148} reviews)
+          </span>
+        </div>
+
+        {/* Short Product Description */}
+        <p className="font-body text-xs text-[#5A3B28]/70 leading-relaxed mb-3 line-clamp-2 min-h-[2rem]">
           {product.description}
         </p>
 
-        {/* Weight Selector Chips */}
-        <div className="mb-4">
-          <span className="text-[10px] font-heading font-bold uppercase tracking-wider text-walnut-brown/60 block mb-1.5">
+        {/* 5. PACK-SIZE SELECTORS */}
+        <div className="mb-3">
+          <span className="text-[10px] font-heading font-bold uppercase tracking-wider text-[#5A3B28]/60 block mb-1.5">
             Select Pack Size:
           </span>
           <div className="flex flex-wrap gap-1.5">
@@ -155,8 +180,8 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
                 }}
                 className={`px-3 py-1 rounded-full text-xs font-heading font-semibold transition-all ${
                   selectedVariant.weight === v.weight
-                    ? "bg-moss-green text-white shadow-xs scale-102"
-                    : "bg-cream-dark/70 text-walnut-brown/80 hover:bg-cream-dark"
+                    ? "bg-[#2E5A44] text-white shadow-xs scale-102"
+                    : "bg-[#FDFBF7] text-[#5A3B28]/80 hover:bg-[#F4EFEA] border border-[#5A3B28]/15"
                 }`}
               >
                 {v.weight}
@@ -166,32 +191,32 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
         </div>
       </div>
 
-      {/* Pricing & Actions */}
-      <div className="pt-3 border-t border-walnut-brown/10 space-y-3">
+      {/* 6. PRICE & 7. ACTION BUTTONS */}
+      <div className="pt-3 border-t border-[#5A3B28]/10 space-y-3 mt-auto">
         <div className="flex items-baseline gap-2">
-          <span className="font-heading text-xl font-bold text-walnut-brown">
+          <span className="font-heading text-xl sm:text-2xl font-bold text-[#5A3B28]">
             ₹{selectedVariant.price}
           </span>
           {selectedVariant.originalPrice > selectedVariant.price && (
             <>
-              <span className="font-body text-xs text-walnut-brown/40 line-through">
+              <span className="font-body text-xs text-[#5A3B28]/40 line-through">
                 ₹{selectedVariant.originalPrice}
               </span>
-              <span className="font-heading text-xs font-bold text-moss-green bg-moss-green/10 px-2 py-0.5 rounded-full">
+              <span className="font-heading text-xs font-bold text-[#2E5A44] bg-[#2E5A44]/10 px-2 py-0.5 rounded-full">
                 {discountPercent}% OFF
               </span>
             </>
           )}
         </div>
 
-        {/* Amazon/Flipkart Dual CTAs */}
+        {/* Responsive Dual Action Buttons */}
         <div className="grid grid-cols-2 gap-2">
           <button
             onClick={handleAddToCart}
-            className={`flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all duration-300 border border-moss-green ${
+            className={`flex items-center justify-center gap-1.5 py-2.5 px-2.5 sm:px-3 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all duration-300 border border-[#2E5A44] ${
               addedAnimation
-                ? "bg-moss-green text-white"
-                : "bg-white text-moss-green hover:bg-moss-green hover:text-white"
+                ? "bg-[#2E5A44] text-white"
+                : "bg-white text-[#2E5A44] hover:bg-[#2E5A44] hover:text-white"
             }`}
           >
             {addedAnimation ? (
@@ -209,7 +234,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
 
           <button
             onClick={handleBuyNow}
-            className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-full font-heading text-xs font-bold uppercase tracking-wider bg-moss-green hover:bg-walnut-brown text-white transition-all duration-300 shadow-xs hover:shadow-md"
+            className="flex items-center justify-center gap-1.5 py-2.5 px-2.5 sm:px-3 rounded-full font-heading text-xs font-bold uppercase tracking-wider bg-[#2E5A44] hover:bg-[#5A3B28] text-white transition-all duration-300 shadow-xs hover:shadow-md"
           >
             <Zap className="h-3.5 w-3.5 fill-current" />
             <span>Buy Now</span>
