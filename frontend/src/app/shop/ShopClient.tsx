@@ -25,6 +25,7 @@ export default function ShopClient({ initialProducts }: ShopClientProps) {
   const [selectedGoal, setSelectedGoal] = useState("all");
   const [sortBy, setSortBy] = useState("default");
   const [selectedPriceMax, setSelectedPriceMax] = useState<number>(1500);
+  const [onlyInStock, setOnlyInStock] = useState(false);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   const healthGoals = [
@@ -69,6 +70,11 @@ export default function ShopClient({ initialProducts }: ShopClientProps) {
       );
     }
 
+    // Filter by availability
+    if (onlyInStock) {
+      result = result.filter((p) => p.inStock !== false);
+    }
+
     // Filter by price range
     result = result.filter((p) => p.price <= selectedPriceMax);
 
@@ -91,6 +97,7 @@ export default function ShopClient({ initialProducts }: ShopClientProps) {
     setDebouncedSearch("");
     setSelectedGoal("all");
     setSelectedPriceMax(1500);
+    setOnlyInStock(false);
     setSortBy("default");
   };
 
@@ -222,6 +229,19 @@ export default function ShopClient({ initialProducts }: ShopClientProps) {
                   <span>₹200</span>
                   <span>₹1500</span>
                 </div>
+              </div>
+
+              {/* In-Stock Availability Filter */}
+              <div className="pt-2 border-t border-walnut-brown/10">
+                <label className="flex items-center gap-2.5 text-xs font-heading font-semibold text-walnut-brown cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={onlyInStock}
+                    onChange={(e) => setOnlyInStock(e.target.checked)}
+                    className="h-4 w-4 rounded text-moss-green focus:ring-moss-green"
+                  />
+                  <span>In Stock Only</span>
+                </label>
               </div>
 
               {/* Authentic Trust Note */}

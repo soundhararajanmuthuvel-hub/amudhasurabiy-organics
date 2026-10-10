@@ -78,8 +78,8 @@ export default function CollectionsPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 border-t border-walnut-brown/5 pt-8">
                   {col.products.map((p) => (
                     <div key={p.id} className="p-4 rounded-2xl bg-cream border border-walnut-brown/5 flex flex-col justify-between">
-                      <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-white mb-4">
-                        <Image src={p.imageUrl} alt={p.name} fill className="object-cover" />
+                      <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-white mb-4 flex items-center justify-center">
+                        <Image src={p.imageUrl} alt={p.name} fill className="object-contain p-2" />
                       </div>
                       <h4 className="font-heading text-sm font-bold text-walnut-brown mb-1">{p.name}</h4>
                       <span className="font-heading text-xs font-semibold text-moss-green mb-4">₹{p.price}</span>

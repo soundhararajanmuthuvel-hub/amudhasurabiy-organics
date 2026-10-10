@@ -9,12 +9,34 @@ import { ArrowRight, ShieldCheck, Lock, Award, Heart, Leaf } from "lucide-react"
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email.trim()) {
-      setSubscribed(true);
-      setEmail("");
+    setErrorMessage("");
+    if (!email.trim() || !email.includes("@")) {
+      setErrorMessage("Please enter a valid email address.");
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setSubscribed(true);
+        setEmail("");
+      } else {
+        setErrorMessage(data.message || "Subscription failed. Please try again.");
+      }
+    } catch {
+      setErrorMessage("Network error. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -89,11 +111,11 @@ export default function Footer() {
 
             <div>
               {subscribed ? (
-                <div className="p-4 rounded-full bg-moss-green/20 border border-moss-green/30 text-white font-medium text-xs flex items-center justify-center gap-2 shadow-sm">
+                <div className="p-4 rounded-2xl bg-moss-green/30 border border-moss-green/40 text-white font-medium text-xs flex items-center justify-center gap-2 shadow-sm">
                   <span>✓</span> Thank you for subscribing to the Amudhasurabiy Organics Circle!
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="w-full max-w-md">
+                <form onSubmit={handleSubmit} className="w-full max-w-md space-y-2">
                   <div className="relative flex items-center rounded-full bg-white/10 border border-white/20 p-1.5 focus-within:border-[#8CBD7B] focus-within:ring-2 focus-within:ring-[#8CBD7B]/30 transition-all shadow-inner">
                     <input
                       type="email"
@@ -101,18 +123,23 @@ export default function Footer() {
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Enter your email address"
                       className="w-full rounded-full bg-transparent px-5 py-3 text-white placeholder-cream-dark/50 text-xs focus:outline-none"
+                      disabled={isSubmitting}
                       required
                     />
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       type="submit"
-                      className="shrink-0 flex items-center gap-1.5 bg-white hover:bg-cream text-walnut-brown px-6 py-3 rounded-full font-heading text-[10px] font-bold uppercase tracking-wider transition-all shadow-md group"
+                      disabled={isSubmitting}
+                      className="shrink-0 flex items-center gap-1.5 bg-white hover:bg-cream text-walnut-brown px-6 py-3 rounded-full font-heading text-[10px] font-bold uppercase tracking-wider transition-all shadow-md group disabled:opacity-50"
                     >
-                      <span>SUBSCRIBE</span>
+                      <span>{isSubmitting ? "JOINING..." : "SUBSCRIBE"}</span>
                       <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
                     </motion.button>
                   </div>
+                  {errorMessage && (
+                    <p className="text-xs text-red-300 font-medium pl-3">{errorMessage}</p>
+                  )}
                 </form>
               )}
             </div>
@@ -301,9 +328,15 @@ export default function Footer() {
 
               <ul className="flex flex-col gap-3.5 font-body text-xs text-cream-dark/85">
                 <li>
+                  <Link href="/wholesale/" className="inline-flex items-center gap-1 hover:text-[#8CBD7B] hover:translate-x-1.5 transition-all duration-300 group">
+                    <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-[#8CBD7B] font-bold">›</span>
+                    <span>Wholesale & Private Label</span>
+                  </Link>
+                </li>
+                <li>
                   <Link href="/contact/" className="inline-flex items-center gap-1 hover:text-[#8CBD7B] hover:translate-x-1.5 transition-all duration-300 group">
                     <span className="opacity-0 -ml-3 group-hover:opacity-100 group-hover:ml-0 transition-all text-[#8CBD7B] font-bold">›</span>
-                    <span>Contact Us & Wholesale</span>
+                    <span>Contact & Helpline (+91 70106 02115)</span>
                   </Link>
                 </li>
                 <li>

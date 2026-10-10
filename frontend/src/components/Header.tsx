@@ -102,9 +102,10 @@ export default function Header() {
     { name: "Home", href: "/" },
     { name: "Shop", href: "/shop/", hasMega: true },
     { name: "Collections", href: "/collections/" },
+    { name: "Our Story", href: "/our-story/" },
     { name: "Recipes", href: "/recipes/" },
-    { name: "Health Library", href: "/health-library/" },
-    { name: "Quality & Trust", href: "/quality-and-trust/" },
+    { name: "Quality", href: "/quality-and-trust/" },
+    { name: "Wholesale", href: "/wholesale/" },
     { name: "Contact", href: "/contact/" },
   ];
 

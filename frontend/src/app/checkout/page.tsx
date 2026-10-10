@@ -33,6 +33,7 @@ interface CompletedOrder {
   total: number;
   isGuest: boolean;
   guestPhone?: string;
+  paymentMethod?: string;
 }
 
 export default function Checkout() {
@@ -53,6 +54,7 @@ export default function Checkout() {
   const [newEmail, setNewEmail] = useState("");
 
   // Payment State
+  const [paymentMethod, setPaymentMethod] = useState<"razorpay" | "cod">("razorpay");
   const [isProcessing, setIsProcessing] = useState(false);
   const [showMockPaymentModal, setShowMockPaymentModal] = useState(false);
   const [orderCompleted, setOrderCompleted] = useState<CompletedOrder | null>(null);
@@ -147,13 +149,50 @@ export default function Checkout() {
   const handlePlaceOrder = async () => {
     const activeAddr = getActiveShippingAddress();
     if (!activeAddr.line1 || !activeAddr.city || !activeAddr.pincode || !activeAddr.phone) {
-      alert("Please provide a valid delivery address and phone number.");
+      alert("Please provide a valid delivery address and 10-digit mobile number.");
       return;
     }
 
     setIsProcessing(true);
     const isMock = process.env.NEXT_PUBLIC_USE_MOCK_API === "true";
 
+    // 1. CASH ON DELIVERY (COD) ORDER PATH
+    if (paymentMethod === "cod") {
+      try {
+        const items = cart.map((c) => ({
+          productId: c.productId,
+          name: c.name,
+          price: c.price,
+          quantity: c.qty,
+        }));
+        const savedOrder = await placeMockOrder(
+          items,
+          grandTotal,
+          shippingCharge,
+          discount,
+          activeAddr,
+          "Cash on Delivery (COD)"
+        );
+        trackCustomerEvent("checkout_completed", { metadata: { orderNumber: savedOrder.orderNumber, paymentMethod: "COD" } });
+        setOrderCompleted({
+          orderNumber: savedOrder.orderNumber,
+          total: grandTotal,
+          guestPhone: activeAddr.phone,
+          isGuest: !customer,
+          paymentMethod: "Cash on Delivery (COD)",
+        });
+        clearCart();
+        setIsProcessing(false);
+        return;
+      } catch (err) {
+        console.error(err);
+        alert("Failed to record COD order. Please try again or WhatsApp our Kumbakonam desk at +91 70106 02115.");
+        setIsProcessing(false);
+        return;
+      }
+    }
+
+    // 2. PRE-PAID RAZORPAY ORDER PATH
     try {
       if (!customer) {
         // Guest checkout call
@@ -172,6 +211,7 @@ export default function Checkout() {
           total: grandTotal,
           guestPhone: activeAddr.phone,
           isGuest: true,
+          paymentMethod: "Online Payment (Razorpay)",
         });
         clearCart();
         setIsProcessing(false);
@@ -314,14 +354,31 @@ export default function Checkout() {
               Thank you for your order! Your organic malts are being packed with care in Kumbakonam.
             </p>
 
-            <div className="bg-cream-dark p-4 rounded-2xl w-full mb-6 font-body text-xs text-left flex flex-col gap-2 border border-walnut-brown/10">
-              <div className="flex justify-between">
-                <span className="text-walnut-brown/60">Order Number:</span>
-                <span className="font-bold text-walnut-brown">{orderCompleted.orderNumber}</span>
+            <div className="bg-cream-dark p-5 rounded-2xl w-full mb-6 font-body text-xs text-left flex flex-col gap-2.5 border border-walnut-brown/10 shadow-xs">
+              <div className="flex justify-between items-center pb-2 border-b border-walnut-brown/10">
+                <span className="text-walnut-brown/70">Order Number:</span>
+                <span className="font-heading font-bold text-walnut-brown text-sm">{orderCompleted.orderNumber}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-walnut-brown/60">Total Paid:</span>
-                <span className="font-bold text-moss-green">₹{orderCompleted.total}</span>
+              <div className="flex justify-between items-center">
+                <span className="text-walnut-brown/70">Payment Mode:</span>
+                <span className="font-heading font-semibold text-moss-green bg-moss-green/10 px-2.5 py-0.5 rounded-full text-[11px]">
+                  {orderCompleted.paymentMethod || "Pre-paid"}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-walnut-brown/70">Total Amount:</span>
+                <span className="font-heading font-bold text-walnut-brown text-base">₹{orderCompleted.total}</span>
+              </div>
+              <div className="pt-2 border-t border-walnut-brown/10 flex items-center justify-between text-[11px] text-walnut-brown/80">
+                <span>Dispatch: Kumbakonam facility</span>
+                <a
+                  href={`https://wa.me/917010602115?text=Hello%20Amudhasurabiy%20Organics,%20I%20have%20placed%20order%20${orderCompleted.orderNumber}%20and%20would%20like%20to%20confirm%20tracking.`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-heading font-bold text-moss-green hover:underline flex items-center gap-1"
+                >
+                  WhatsApp Order Help →
+                </a>
               </div>
             </div>
 
@@ -634,7 +691,62 @@ export default function Checkout() {
                     </div>
                   </div>
 
-                  <div className="flex justify-between items-center py-6">
+                  {/* Payment Method Selector */}
+                  <div className="mb-6 space-y-3">
+                    <span className="font-heading text-xs font-bold text-walnut-brown uppercase tracking-wider block">
+                      Select Payment Method:
+                    </span>
+                    
+                    <label
+                      className={`flex items-start gap-3 p-3.5 rounded-2xl border-2 cursor-pointer transition-all ${
+                        paymentMethod === "razorpay"
+                          ? "border-moss-green bg-moss-green/5"
+                          : "border-walnut-brown/10 hover:border-walnut-brown/20 bg-white"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="payment_choice"
+                        checked={paymentMethod === "razorpay"}
+                        onChange={() => setPaymentMethod("razorpay")}
+                        className="mt-0.5 text-moss-green focus:ring-moss-green"
+                      />
+                      <div className="font-body text-xs">
+                        <p className="font-heading font-bold text-walnut-brown flex items-center gap-1.5">
+                          <span>Online Payment (UPI / Cards / NetBanking)</span>
+                        </p>
+                        <p className="text-[11px] text-walnut-brown/70 mt-0.5">
+                          Secured by Razorpay • Instant confirmation
+                        </p>
+                      </div>
+                    </label>
+
+                    <label
+                      className={`flex items-start gap-3 p-3.5 rounded-2xl border-2 cursor-pointer transition-all ${
+                        paymentMethod === "cod"
+                          ? "border-moss-green bg-moss-green/5"
+                          : "border-walnut-brown/10 hover:border-walnut-brown/20 bg-white"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="payment_choice"
+                        checked={paymentMethod === "cod"}
+                        onChange={() => setPaymentMethod("cod")}
+                        className="mt-0.5 text-moss-green focus:ring-moss-green"
+                      />
+                      <div className="font-body text-xs">
+                        <p className="font-heading font-bold text-walnut-brown">
+                          Cash on Delivery (COD)
+                        </p>
+                        <p className="text-[11px] text-walnut-brown/70 mt-0.5">
+                          Pay in cash when package arrives at your address
+                        </p>
+                      </div>
+                    </label>
+                  </div>
+
+                  <div className="flex justify-between items-center py-4 border-t border-walnut-brown/10 mb-4">
                     <span className="font-heading text-base font-bold text-walnut-brown">Total to Pay</span>
                     <span className="font-heading text-2xl font-bold text-moss-green">₹{grandTotal}</span>
                   </div>
@@ -645,7 +757,11 @@ export default function Checkout() {
                     className="w-full flex items-center justify-center gap-2 bg-moss-green hover:bg-walnut-brown text-white py-4 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-md disabled:opacity-50 group"
                   >
                     <CreditCard className="h-4.5 w-4.5" />
-                    {isProcessing ? "Processing..." : `Pay ₹${grandTotal} via Razorpay`}
+                    {isProcessing
+                      ? "Processing Order..."
+                      : paymentMethod === "cod"
+                      ? `Confirm COD Order (₹${grandTotal})`
+                      : `Pay ₹${grandTotal} via Razorpay`}
                   </button>
                 </div>
               </div>

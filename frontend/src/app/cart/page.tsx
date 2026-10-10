@@ -165,8 +165,8 @@ export default function Cart() {
                     key={item.productId}
                     className="flex flex-col sm:flex-row items-center gap-4 py-4 border-b border-walnut-brown/5 last:border-0 last:pb-0"
                   >
-                    <div className="relative h-20 w-20 rounded-2xl overflow-hidden bg-cream-dark border border-walnut-brown/10 shrink-0">
-                      <Image src={item.imageUrl} alt={item.name} fill className="object-cover" />
+                    <div className="relative h-20 w-20 rounded-2xl overflow-hidden bg-cream-dark border border-walnut-brown/10 shrink-0 flex items-center justify-center">
+                      <Image src={item.imageUrl} alt={item.name} fill className="object-contain p-1.5" />
                     </div>
 
                     <div className="flex-grow text-center sm:text-left">

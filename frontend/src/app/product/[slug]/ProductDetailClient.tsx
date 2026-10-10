@@ -401,12 +401,12 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
                 </span>
                 <div className="flex items-center justify-between gap-4 font-body text-xs">
                   <div className="flex items-center gap-2">
-                    <div className="relative h-12 w-12 rounded-xl overflow-hidden bg-cream border">
-                      <Image src={product.imageUrl} alt={product.name} fill className="object-cover" />
+                    <div className="relative h-12 w-12 rounded-xl overflow-hidden bg-cream border flex items-center justify-center">
+                      <Image src={product.imageUrl} alt={product.name} fill className="object-contain p-1" />
                     </div>
                     <span className="font-bold text-walnut-brown">+</span>
-                    <div className="relative h-12 w-12 rounded-xl overflow-hidden bg-cream border">
-                      <Image src={bundleProduct.imageUrl} alt={bundleProduct.name} fill className="object-cover" />
+                    <div className="relative h-12 w-12 rounded-xl overflow-hidden bg-cream border flex items-center justify-center">
+                      <Image src={bundleProduct.imageUrl} alt={bundleProduct.name} fill className="object-contain p-1" />
                     </div>
                     <div>
                       <p className="font-semibold text-walnut-brown line-clamp-1">{product.name} + {bundleProduct.name}</p>

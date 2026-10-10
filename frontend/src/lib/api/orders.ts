@@ -32,11 +32,10 @@ export async function placeMockOrder(
   items: OrderItem[],
   total: number,
   shippingCharge: number,
-  discount: number
+  discount: number,
+  shippingAddress?: any,
+  paymentMethod?: string
 ): Promise<Order> {
-  if (USE_MOCK) {
-    const order = createMockOrder(items, total, shippingCharge, discount);
-    return Promise.resolve(order);
-  }
-  throw new Error("Only available in mock mode");
+  const order = createMockOrder(items, total, shippingCharge, discount, shippingAddress, paymentMethod);
+  return Promise.resolve(order);
 }
