@@ -15,6 +15,9 @@
   --color-cream-dark: #F4EFEA;
   --color-moss-green: #2E5A44;
   --color-forest-green: #2E5A44;
+  --color-deep-green: #0B351C;
+  --color-botanical-green: #E8F0E3;
+  --color-muted-sage: #B9CBB5;
   --color-nature-green: #2E5A44;
   --color-gold: #C9A227;
   --color-success: #2E7D32;
@@ -22,8 +25,8 @@
   --color-error: #D32F2F;
   --color-charcoal: #1B1B1B;
   
-  --font-heading: var(--font-plus-jakarta-sans), sans-serif;
-  --font-body: var(--font-inter), sans-serif;
+  --font-heading: var(--font-outfit), sans-serif;
+  --font-body: var(--font-plus-jakarta-sans), sans-serif;
   
   --animate-ken-burns: kenburns 40s ease infinite alternate;
   --animate-fade-in-up: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;

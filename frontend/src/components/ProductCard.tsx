@@ -84,10 +84,10 @@ export default function ProductCard({
   };
 
   return (
-    <div className="group relative flex flex-col justify-between rounded-3xl bg-white border border-[#5A3B28]/12 p-4 sm:p-5 shadow-xs hover:shadow-xl transition-all duration-300 h-full">
+    <div className="group relative flex flex-col justify-between rounded-2xl sm:rounded-3xl bg-white border border-[#5A3B28]/12 p-3 sm:p-5 shadow-xs hover:shadow-xl transition-all duration-300 h-full">
       <div className="flex flex-col">
         {/* 1. PRODUCT IMAGE AREA */}
-        <div className="relative h-52 sm:h-56 w-full rounded-2xl bg-[#FDFBF7] border border-[#5A3B28]/8 mb-3.5 overflow-hidden flex items-center justify-center p-3">
+        <div className="relative h-40 sm:h-56 w-full rounded-xl sm:rounded-2xl bg-[#FDFBF7] border border-[#5A3B28]/8 mb-2.5 sm:mb-3.5 overflow-hidden flex items-center justify-center p-2 sm:p-3">
           <Link
             href={`/product/${product.slug}/`}
             className="relative h-full w-full flex items-center justify-center"
@@ -99,77 +99,73 @@ export default function ProductCard({
               width={240}
               height={240}
               priority={priority}
-              className="h-44 sm:h-48 w-auto max-w-full object-contain transition-transform duration-500 group-hover:scale-105"
+              className="h-32 sm:h-48 w-auto max-w-full object-contain transition-transform duration-500 group-hover:scale-105"
             />
           </Link>
 
           {/* Quick Wishlist Toggle */}
           <button
             onClick={handleWishlistToggle}
-            className="absolute top-2.5 right-2.5 p-2 rounded-full bg-white/95 text-[#5A3B28] hover:text-red-500 shadow-xs border border-[#5A3B28]/10 transition-transform hover:scale-110 active:scale-95 z-10"
+            className="absolute top-2 right-2 p-1.5 sm:p-2 rounded-full bg-white/95 text-[#5A3B28] hover:text-red-500 shadow-xs border border-[#5A3B28]/10 transition-transform hover:scale-110 active:scale-95 z-10"
             aria-label="Add to Wishlist"
           >
             <Heart
-              className={`h-4 w-4 transition-colors ${
+              className={`h-3.5 w-3.5 sm:h-4 sm:w-4 transition-colors ${
                 isFavorite ? "fill-red-500 text-red-500" : "text-[#5A3B28]/70"
               }`}
             />
           </button>
         </div>
 
-        {/* 2. BADGES ROW (Neatly separated from image and product title) */}
-        <div className="flex items-center flex-wrap gap-2 mb-2">
+        {/* 2. BADGES ROW */}
+        <div className="flex items-center flex-wrap gap-1 sm:gap-2 mb-1.5 sm:mb-2">
           {product.isBestseller && (
-            <span className="inline-flex items-center bg-[#2E5A44] text-white text-[10px] font-heading font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-2xs">
+            <span className="inline-flex items-center bg-[#2E5A44] text-white text-[9px] sm:text-[10px] font-heading font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-2xs">
               Best Seller
             </span>
           )}
 
           {selectedVariant.inStock !== false ? (
-            <span className="inline-flex items-center gap-1.5 bg-[#2E5A44]/10 text-[#2E5A44] text-[10px] font-heading font-semibold px-2.5 py-0.5 rounded-full border border-[#2E5A44]/20">
+            <span className="inline-flex items-center gap-1 bg-[#2E5A44]/10 text-[#2E5A44] text-[9px] sm:text-[10px] font-heading font-semibold px-2 py-0.5 rounded-full border border-[#2E5A44]/20">
               <span className="h-1.5 w-1.5 rounded-full bg-[#2E5A44] animate-pulse"></span>
               In Stock
             </span>
           ) : (
-            <span className="inline-flex items-center gap-1.5 bg-red-50 text-red-700 text-[10px] font-heading font-semibold px-2.5 py-0.5 rounded-full border border-red-200">
+            <span className="inline-flex items-center gap-1 bg-red-50 text-red-700 text-[9px] sm:text-[10px] font-heading font-semibold px-2 py-0.5 rounded-full border border-red-200">
               Out of Stock
             </span>
           )}
-
-          <span className="text-[10px] font-body text-[#5A3B28]/60 ml-auto hidden xs:inline-block">
-            Cauvery Delta
-          </span>
         </div>
 
         {/* 3. PRODUCT TITLE */}
-        <h3 className="font-heading text-base sm:text-lg font-bold text-[#5A3B28] leading-snug mb-1 group-hover:text-[#2E5A44] transition-colors line-clamp-1">
+        <h3 className="font-heading text-xs sm:text-base md:text-lg font-bold text-[#5A3B28] leading-tight mb-1 group-hover:text-[#2E5A44] transition-colors line-clamp-1">
           <Link href={`/product/${product.slug}/`}>{product.name}</Link>
         </h3>
 
         {/* 4. RATING & REVIEWS */}
-        <div className="flex items-center gap-1.5 text-xs mb-2">
+        <div className="flex items-center gap-1 text-[11px] sm:text-xs mb-1.5 sm:mb-2">
           <div className="flex items-center gap-0.5 text-amber-500">
-            <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-            <span className="font-heading font-bold text-[#5A3B28] text-xs">
+            <Star className="h-3 w-3 sm:h-3.5 sm:w-3.5 fill-amber-400 text-amber-400" />
+            <span className="font-heading font-bold text-[#5A3B28] text-[11px] sm:text-xs">
               {product.rating ? product.rating.toFixed(1) : "4.9"}
             </span>
           </div>
-          <span className="text-[#5A3B28]/50 font-body text-[11px]">
-            ({product.reviewCount || 148} reviews)
+          <span className="text-[#5A3B28]/50 font-body text-[10px] sm:text-[11px] truncate">
+            ({product.reviewCount || 148})
           </span>
         </div>
 
-        {/* Short Product Description */}
-        <p className="font-body text-xs text-[#5A3B28]/70 leading-relaxed mb-3 line-clamp-2 min-h-[2rem]">
+        {/* Short Product Description (Hidden on compact mobile cards to keep height balanced) */}
+        <p className="font-body text-xs text-[#5A3B28]/70 leading-relaxed mb-2.5 line-clamp-2 hidden sm:block">
           {product.description}
         </p>
 
         {/* 5. PACK-SIZE SELECTORS */}
-        <div className="mb-3">
-          <span className="text-[10px] font-heading font-bold uppercase tracking-wider text-[#5A3B28]/60 block mb-1.5">
-            Select Pack Size:
+        <div className="mb-2 sm:mb-3">
+          <span className="text-[9px] sm:text-[10px] font-heading font-bold uppercase tracking-wider text-[#5A3B28]/60 block mb-1">
+            Size:
           </span>
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex flex-wrap gap-1">
             {variants.map((v) => (
               <button
                 key={v.weight}
@@ -178,7 +174,7 @@ export default function ProductCard({
                   e.stopPropagation();
                   setSelectedVariant(v);
                 }}
-                className={`px-3 py-1 rounded-full text-xs font-heading font-semibold transition-all ${
+                className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-heading font-semibold transition-all ${
                   selectedVariant.weight === v.weight
                     ? "bg-[#2E5A44] text-white shadow-xs scale-102"
                     : "bg-[#FDFBF7] text-[#5A3B28]/80 hover:bg-[#F4EFEA] border border-[#5A3B28]/15"
@@ -192,17 +188,17 @@ export default function ProductCard({
       </div>
 
       {/* 6. PRICE & 7. ACTION BUTTONS */}
-      <div className="pt-3 border-t border-[#5A3B28]/10 space-y-3 mt-auto">
-        <div className="flex items-baseline gap-2">
-          <span className="font-heading text-xl sm:text-2xl font-bold text-[#5A3B28]">
+      <div className="pt-2 sm:pt-3 border-t border-[#5A3B28]/10 space-y-2 sm:space-y-3 mt-auto">
+        <div className="flex items-baseline gap-1.5 flex-wrap">
+          <span className="font-heading text-base sm:text-xl md:text-2xl font-bold text-[#5A3B28]">
             ₹{selectedVariant.price}
           </span>
           {selectedVariant.originalPrice > selectedVariant.price && (
             <>
-              <span className="font-body text-xs text-[#5A3B28]/40 line-through">
+              <span className="font-body text-[10px] sm:text-xs text-[#5A3B28]/40 line-through">
                 ₹{selectedVariant.originalPrice}
               </span>
-              <span className="font-heading text-xs font-bold text-[#2E5A44] bg-[#2E5A44]/10 px-2 py-0.5 rounded-full">
+              <span className="font-heading text-[9px] sm:text-xs font-bold text-[#2E5A44] bg-[#2E5A44]/10 px-1.5 py-0.2 rounded-full">
                 {discountPercent}% OFF
               </span>
             </>
@@ -210,10 +206,10 @@ export default function ProductCard({
         </div>
 
         {/* Responsive Dual Action Buttons */}
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-1.5">
           <button
             onClick={handleAddToCart}
-            className={`flex items-center justify-center gap-1.5 py-2.5 px-2.5 sm:px-3 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all duration-300 border border-[#2E5A44] ${
+            className={`flex items-center justify-center gap-1 py-1.5 sm:py-2.5 px-1 sm:px-3 rounded-full font-heading text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all duration-300 border border-[#2E5A44] ${
               addedAnimation
                 ? "bg-[#2E5A44] text-white"
                 : "bg-white text-[#2E5A44] hover:bg-[#2E5A44] hover:text-white"
@@ -221,12 +217,12 @@ export default function ProductCard({
           >
             {addedAnimation ? (
               <>
-                <Check className="h-3.5 w-3.5" />
-                <span>Added!</span>
+                <Check className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                <span className="hidden xs:inline">Added!</span>
               </>
             ) : (
               <>
-                <ShoppingCart className="h-3.5 w-3.5" />
+                <ShoppingCart className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                 <span>Add</span>
               </>
             )}
@@ -234,10 +230,10 @@ export default function ProductCard({
 
           <button
             onClick={handleBuyNow}
-            className="flex items-center justify-center gap-1.5 py-2.5 px-2.5 sm:px-3 rounded-full font-heading text-xs font-bold uppercase tracking-wider bg-[#2E5A44] hover:bg-[#5A3B28] text-white transition-all duration-300 shadow-xs hover:shadow-md"
+            className="flex items-center justify-center gap-1 py-1.5 sm:py-2.5 px-1 sm:px-3 rounded-full font-heading text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-[#2E5A44] hover:bg-[#5A3B28] text-white transition-all duration-300 shadow-xs hover:shadow-md"
           >
-            <Zap className="h-3.5 w-3.5 fill-current" />
-            <span>Buy Now</span>
+            <Zap className="h-3 w-3 sm:h-3.5 sm:w-3.5 fill-current" />
+            <span>Buy</span>
           </button>
         </div>
       </div>

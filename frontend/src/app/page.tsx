@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { 
-  ArrowRight, ShieldCheck, Leaf, Award, 
+  ArrowRight, ShieldCheck, Leaf, 
   ChevronDown, Sparkles, Truck, Check,
-  Clock, Building2, Flame, Droplets,
-  PhoneCall
+  Clock, Flame, Droplets, Heart,
+  Coffee, Package
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -22,107 +22,135 @@ import { trackCustomerEvent } from "@/lib/api/events";
 export default function Home() {
   const [products, setProducts] = useState<Product[]>(MOCK_PRODUCTS);
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
-  const [selectedGoal, setSelectedGoal] = useState<string>("all");
 
   useEffect(() => {
     getProducts().then(setProducts).catch(() => setProducts(MOCK_PRODUCTS));
     trackCustomerEvent("page_view", { source: "homepage" });
   }, []);
 
-  const healthGoals = [
-    { id: "all", name: "All Formulations", tag: "All" },
-    { id: "Increase Iron", name: "🩸 Iron & Hemoglobin", tag: "Iron" },
-    { id: "Kids Growth & Nutrition", name: "👶 Kids Growth & Weight", tag: "Kids" },
-    { id: "Daily Energy", name: "⚡ Daily Stamina & Vitality", tag: "Energy" },
-    { id: "Family Wellness", name: "🛡️ Family Overall Wellness", tag: "Wellness" },
+  const trustPoints = [
+    {
+      title: "100% Farm-Sourced",
+      desc: "Pure fruits & sprouted millets, sweetened only with unbleached country jaggery.",
+      icon: Leaf,
+    },
+    {
+      title: "FSSAI Licensed Facility",
+      desc: "Small-batch roasted in Kumbakonam, Tamil Nadu (Lic No: 22421543000120).",
+      icon: ShieldCheck,
+    },
+    {
+      title: "Pan-India Express Delivery",
+      desc: "Direct dispatch from Kumbakonam to all Indian pincodes with real-time tracking.",
+      icon: Truck,
+    },
+    {
+      title: "Direct Customer Care",
+      desc: "Friendly assistance via WhatsApp and phone direct from our Kumbakonam team.",
+      icon: Heart,
+    },
   ];
-
-  const filteredGoalProducts = useMemo(() => {
-    if (selectedGoal === "all") return products;
-    return products.filter((p) =>
-      Array.isArray(p.healthGoals) &&
-      p.healthGoals.some((g) => g.toLowerCase().includes(selectedGoal.toLowerCase()))
-    );
-  }, [products, selectedGoal]);
 
   const ingredientsShowcase = [
     {
       title: "Farm Beetroots & Apples",
-      origin: "Direct from fresh regional harvests",
-      benefit: "Naturally boosts hemoglobin and circulation with bioavailable iron and Vitamin C.",
-      icon: Droplets,
+      origin: "Fresh Regional Harvests",
+      benefit: "Naturally rich in bioavailable iron, folate, and Vitamin C for healthy hemoglobin and daily vitality.",
       malt: "Blovit ABC & Beetroot Malt",
+      slug: "abc-malt",
+      icon: Droplets,
     },
     {
-      title: "Raw Kerala Nendran Bananas",
-      origin: "Sun-dried Kerala plantation harvest",
-      benefit: "Clean, natural calories and potassium for healthy weight gain and toddler development.",
-      icon: Sparkles,
+      title: "Sun-Dried Kerala Nendran Bananas",
+      origin: "Kerala Plantation Harvest",
+      benefit: "Clean, natural calories, potassium, and dietary fiber supporting healthy weight and active energy.",
       malt: "Blovit Nendran Banana Malt",
+      slug: "nendram-banana-malt",
+      icon: Sparkles,
     },
     {
       title: "Sprouted Finger Millet (Ragi)",
-      origin: "Traditional slow sprouting process",
-      benefit: "Sprouting triples mineral absorption for strong bone density and daily stamina.",
-      icon: Leaf,
+      origin: "Traditional Germination Method",
+      benefit: "Sprouting triples mineral absorption, providing natural calcium for bone density and sustained stamina.",
       malt: "Blovit Sprouted Ragi Malt",
+      slug: "sprouted-ragi-malt",
+      icon: Leaf,
     },
     {
-      title: "Raw Organic Palm Jaggery",
-      origin: "Pure Nattu Sakkarai without bleaching",
-      benefit: "Natural slow-burning sweetness rich in micro-minerals with zero refined white sugar spikes.",
-      icon: Flame,
+      title: "Pure Country Jaggery (Nattu Sakkarai)",
+      origin: "Unbleached Native Cane Sugar",
+      benefit: "Micro-mineral-rich slow-burning sweetness. Zero refined white sugar spikes, artificial syrups, or fillers.",
       malt: "Present in all Blovit Malts",
+      slug: "abc-malt",
+      icon: Flame,
     },
   ];
 
-  const qualityStandards = [
+  const whyChoosePoints = [
     {
-      title: "FSSAI Licensed Facility",
-      desc: "Licensed small-batch manufacturing unit in Kumbakonam, Thanjavur District (Lic No: 22421543000120).",
+      title: "Transparent Ingredients",
+      desc: "100% natural farm ingredients. Zero refined white sugar, zero chemical preservatives, zero artificial food coloring.",
+      icon: Leaf,
+    },
+    {
+      title: "2-Minute Preparation",
+      desc: "Blends smoothly with warm milk or boiled water. Naturally sweetened, requiring no additional sugar or sweetener.",
+      icon: Coffee,
+    },
+    {
+      title: "Flexible Pack Sizes",
+      desc: "Available in 200g trial pouches, 500g family packs, and 1kg value sizes to match your family routine.",
+      icon: Package,
+    },
+    {
+      title: "Resealable Food-Grade Pouches",
+      desc: "Airtight multi-layer barrier packaging protects delicate phytonutrients and keeps out humidity naturally.",
       icon: ShieldCheck,
     },
+  ];
+
+  const prepSteps = [
     {
-      title: "Zero Preservatives or Chemicals",
-      desc: "Never contains sodium benzoate, artificial food colorants, synthetic emulsifiers, or maltodextrin fillers.",
-      icon: Award,
+      step: "01",
+      title: "Add 2 Heaped Spoons",
+      desc: "Scoop approximately 15g - 20g of Blovit Malt powder into a clean glass or cup.",
     },
     {
-      title: "Traditional Slow Roasting",
-      desc: "Ingredients are roasted at controlled temperatures to preserve delicate phytonutrients and natural aroma.",
-      icon: Flame,
+      step: "02",
+      title: "Pour Warm Milk or Water",
+      desc: "Add 150ml - 200ml of hot or warm milk (cow milk or plant milk) or boiled water.",
     },
     {
-      title: "Pan-India Fresh Dispatch",
-      desc: "Airtight food-grade seal packaging dispatched directly from Kumbakonam to your doorstep across India.",
-      icon: Truck,
+      step: "03",
+      title: "Stir Smoothly & Enjoy",
+      desc: "Stir until dissolved. No refined white sugar needed—it is already naturally sweetened with country jaggery.",
     },
   ];
 
   const faqs = [
     {
-      question: "Is it Amudhasurabiy or Amudhasurabi?",
-      answer: "Amudhasurabiy Organics is the official registered brand name. It is also commonly searched as Amudhasurabi or Amuthasurabi — all refer to the same brand based in Kumbakonam, Tamil Nadu."
+      question: "What makes Blovit Malts different from commercial health drink powders?",
+      answer: "Unlike mass-market health drinks that often contain up to 50% refined sugar, maltodextrin fillers, and synthetic flavoring, Blovit malts by Amudhasurabiy Organics are made exclusively from real sun-dried farm produce, sprouted native grains, and unbleached country jaggery (nattu sakkarai). We never use chemical preservatives, artificial colors, or artificial thickeners."
     },
     {
-      question: "Are Blovit malts 100% natural with no preservatives?",
-      answer: "Yes! All Blovit malt drink mixes by Amudhasurabiy Organics are manufactured using 100% natural, farm-sourced ingredients. We never add artificial preservatives, synthetic colors, chemical thickeners, or refined white sugar."
-    },
-    {
-      question: "Which malt is best for children and healthy weight gain?",
-      answer: "Blovit Nendran Banana Malt and Blovit ABC Malt are exceptional for children. Nendran Banana powder provides clean healthy calories and potassium for healthy weight gain and bone strength."
-    },
-    {
-      question: "Do you deliver pan-India to all Indian pincodes?",
-      answer: "Yes! We ship across India. Free shipping is unlocked for Tamil Nadu orders above ₹499, and for Rest of India orders above ₹999. All packages are dispatched directly from our Kumbakonam facility."
+      question: "Which Blovit malt is best suited for children and toddlers?",
+      answer: "Blovit Nendran Banana Malt and Blovit ABC Malt are customer favorites for children. Nendran banana provides clean healthy calories and potassium for healthy weight gain and natural growth, while ABC Malt provides essential dietary iron and vitamins."
     },
     {
       question: "How do I prepare Blovit malt drinks?",
-      answer: "Simply mix 2-3 tablespoons (approx 15-20g) of Blovit malt into a cup of warm milk or boiling water. Stir well. Since every mix is already naturally sweetened with raw organic palm jaggery (nattu sakkarai), there is no need to add white sugar."
+      answer: "Mix 2 heaped tablespoons (approx 15-20g) of Blovit malt into a cup (150-200ml) of warm milk or boiled water. Stir well. Since every mix is already naturally sweetened with unrefined country jaggery, you do not need to add any sugar."
+    },
+    {
+      question: "What pack sizes are available and what is the shelf life?",
+      answer: "Our products are available in 200g, 500g, and 1kg airtight resealable pouches. Store in a cool, dry place away from direct sunlight. Once opened, seal the pouch tightly or transfer to an airtight container. The shelf life is 9 months from the date of manufacture."
+    },
+    {
+      question: "Do you ship Pan-India and what are the delivery charges?",
+      answer: "Yes, we ship across India to all serviceable pincodes. Orders within Tamil Nadu enjoy free delivery on orders above ₹499. Orders across the Rest of India qualify for free shipping above ₹999. All packages are dispatched directly from our licensed facility in Kumbakonam."
     },
     {
       question: "Where are Amudhasurabiy Organics products manufactured?",
-      answer: "Our products are manufactured in our licensed FSSAI facility in Kumbakonam, Thanjavur District, Tamil Nadu (FSSAI Lic No: 22421543000120), adhering to strict sanitary and small-batch roasting standards."
+      answer: "Our products are manufactured in our licensed FSSAI facility in Kumbakonam, Thanjavur District, Tamil Nadu (FSSAI Lic No: 22421543000120), adhering to rigorous food safety, hygienic handling, and small-batch roasting protocols."
     }
   ];
 
@@ -146,311 +174,245 @@ export default function Home() {
 
       <main className="min-h-screen bg-[#FDFBF7] text-[#1B1B1B]">
         
-        {/* 1. HERO SECTION (Editorial D2C Natural Nutrition Entrance) */}
-        <section className="relative overflow-hidden pt-10 pb-16 md:pt-16 md:pb-24 border-b border-[#5A3B28]/10 bg-gradient-to-b from-[#FDFBF7] via-[#F4EFEA]/60 to-[#FDFBF7]">
-          {/* Subtle Ambient Background Grain/Glow */}
-          <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#2E5A44]/5 rounded-full blur-3xl pointer-events-none -z-0" />
-          <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-[#5A3B28]/5 rounded-full blur-3xl pointer-events-none -z-0" />
-
-          <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+        {/* =========================================================================
+            SECTION A — IMMERSIVE HERO (Reference 1 Aesthetic Direction)
+            Large rounded hero composition framed by deep forest-green surroundings,
+            natural warm-cream panel, packaging focal point, and clear calls to action.
+            ========================================================================= */}
+        <section className="bg-[#0B351C] px-3 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-10 sm:pb-16 md:pb-20">
+          <div className="mx-auto max-w-7xl">
+            <div className="relative overflow-hidden rounded-3xl lg:rounded-[2.5rem] bg-[#FDFBF7] border border-white/20 shadow-2xl p-6 sm:p-10 lg:p-16">
               
-              {/* Left Column: Brand Story & Conversion CTAs */}
-              <div className="lg:col-span-7 space-y-6 text-left">
+              {/* Subtle Botanical Ambient Accents */}
+              <div className="absolute top-0 right-0 w-96 h-96 bg-[#E8F0E3] rounded-full blur-3xl pointer-events-none -z-0 opacity-70" />
+              <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#B9CBB5]/20 rounded-full blur-3xl pointer-events-none -z-0" />
+
+              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
                 
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#2E5A44]/10 text-[#2E5A44] font-heading text-xs font-bold uppercase tracking-widest">
-                  <Sparkles className="h-3.5 w-3.5 text-[#2E5A44]" />
-                  <span>Amudhasurabiy Organics • Direct from Kumbakonam</span>
-                </div>
-
-                <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[#5A3B28] leading-[1.12]">
-                  Pure natural nutrition for <br />
-                  <span className="text-[#2E5A44] italic font-serif">everyday family wellness.</span>
-                </h1>
-
-                <p className="font-body text-base sm:text-lg text-[#5A3B28]/85 max-w-2xl leading-relaxed">
-                  Crafted with traditional Tamil wisdom and modern FSSAI quality standards. 100% natural health drink powders made from real apples, beetroots, carrots, Kerala Nendran bananas, and sprouted grains—purely sweetened with raw organic palm sugar (nattu sakkarai).
-                </p>
-
-                {/* Hero CTAs */}
-                <div className="pt-2 flex flex-wrap items-center gap-4">
-                  <Link
-                    href="/shop/"
-                    className="bg-[#2E5A44] hover:bg-[#5A3B28] text-white px-8 py-4 rounded-full font-heading text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300"
-                  >
-                    <span>Shop Blovit Malts</span>
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-
-                  <Link
-                    href="/collections/"
-                    className="border-2 border-[#5A3B28]/30 hover:border-[#5A3B28] text-[#5A3B28] hover:bg-[#5A3B28] hover:text-white px-8 py-4 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all duration-300"
-                  >
-                    <span>Explore Collections</span>
-                  </Link>
-
-                  <Link
-                    href="/wholesale/"
-                    className="text-xs font-heading font-semibold uppercase tracking-wider text-[#2E5A44] hover:text-[#5A3B28] underline underline-offset-4 py-2 px-1"
-                  >
-                    Wholesale & Private Label →
-                  </Link>
-                </div>
-
-                {/* Trust Badges */}
-                <div className="pt-6 border-t border-[#5A3B28]/10 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs font-body text-[#5A3B28]/85">
-                  <div className="flex items-center gap-2">
-                    <Check className="h-4 w-4 text-[#2E5A44] shrink-0" />
-                    <span className="font-semibold">100% Natural Farm Sourced</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="h-4 w-4 text-[#2E5A44] shrink-0" />
-                    <span className="font-semibold">Zero Preservatives</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="h-4 w-4 text-[#2E5A44] shrink-0" />
-                    <span className="font-semibold">FSSAI Certified Unit</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="h-4 w-4 text-[#2E5A44] shrink-0" />
-                    <span className="font-semibold">Pan-India Delivery</span>
-                  </div>
-                </div>
-
-              </div>
-
-              {/* Right Column: Hero Visual Product Pouch Showcase */}
-              <div className="lg:col-span-5 relative">
-                <div className="relative mx-auto max-w-md lg:max-w-none">
-                  <div className="absolute -inset-4 rounded-3xl bg-[#2E5A44]/10 blur-2xl -z-10" />
+                {/* Left Column: Editorial Headline & Actions */}
+                <div className="lg:col-span-7 space-y-6 text-left">
                   
-                  <div className="rounded-3xl bg-white p-6 sm:p-8 border border-[#5A3B28]/10 shadow-2xl relative">
-                    <div className="relative h-72 sm:h-80 w-full rounded-2xl bg-[#F4EFEA]/60 overflow-hidden flex items-center justify-center p-4">
-                      <Image
-                        src="/images/abc-malt.png"
-                        alt="Blovit ABC Malt by Amudhasurabiy Organics"
-                        width={280}
-                        height={280}
-                        className="h-64 w-auto object-contain transition-transform duration-700 hover:scale-105"
-                        priority
-                      />
-                      <span className="absolute top-4 left-4 bg-[#2E5A44] text-white text-[10px] font-heading font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-xs">
-                        Flagship Bestseller
-                      </span>
-                      <span className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-xs text-[#5A3B28] text-[10px] font-heading font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-[#5A3B28]/10">
-                        Sweetened with Nattu Sakkarai
-                      </span>
-                    </div>
+                  {/* Brand Tagline Badge */}
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E8F0E3] text-[#2E5A44] font-heading text-xs font-bold uppercase tracking-widest border border-[#B9CBB5]/50">
+                    <Sparkles className="h-3.5 w-3.5 text-[#2E5A44]" />
+                    <span>Amudhasurabiy Organics &bull; Kumbakonam</span>
+                  </div>
 
-                    <div className="mt-6 flex items-center justify-between">
-                      <div>
-                        <span className="font-heading text-xs font-bold text-[#2E5A44] uppercase tracking-wider">
-                          Apple • Beetroot • Carrot
-                        </span>
-                        <h3 className="font-heading text-xl font-bold text-[#5A3B28]">
-                          Blovit ABC Malt (200g)
-                        </h3>
-                        <div className="flex items-baseline gap-2 mt-1">
-                          <span className="font-heading text-lg font-bold text-[#5A3B28]">₹250</span>
-                          <span className="font-body text-xs text-[#5A3B28]/40 line-through">₹299</span>
-                          <span className="font-heading text-xs font-bold text-[#2E5A44] bg-[#2E5A44]/10 px-2 py-0.5 rounded-full">
-                            16% OFF
-                          </span>
-                        </div>
-                      </div>
-                      <Link
-                        href="/product/abc-malt/"
-                        className="p-3.5 rounded-full bg-[#2E5A44] hover:bg-[#5A3B28] text-white transition-all shadow-md hover:scale-105"
-                        aria-label="View Product Details"
-                      >
-                        <ArrowRight className="h-5 w-5" />
-                      </Link>
+                  {/* Headline from Prompt */}
+                  <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#0B351C] leading-[1.12]">
+                    Everyday Nutrition, <br />
+                    <span className="text-[#2E5A44] font-serif italic">Rooted in Nature.</span>
+                  </h1>
+
+                  {/* Supporting Copy from Prompt */}
+                  <p className="font-body text-base sm:text-lg text-[#5A3B28] max-w-xl leading-relaxed">
+                    Discover thoughtfully crafted malt blends inspired by natural ingredients and everyday family routines. Purely sweetened with unbleached country jaggery.
+                  </p>
+
+                  {/* Primary & Secondary CTAs from Prompt */}
+                  <div className="pt-2 flex flex-wrap items-center gap-3.5">
+                    <Link
+                      href="/shop/"
+                      className="bg-[#2E5A44] hover:bg-[#0B351C] text-white px-8 py-3.5 sm:py-4 rounded-full font-heading text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-102"
+                    >
+                      <span>Shop Blovit</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+
+                    <Link
+                      href="/our-story/"
+                      className="border-2 border-[#5A3B28]/30 hover:border-[#5A3B28] text-[#5A3B28] hover:bg-[#5A3B28] hover:text-white px-7 py-3.5 sm:py-4 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all duration-300"
+                    >
+                      <span>Discover Our Story</span>
+                    </Link>
+                  </div>
+
+                  {/* Key Editorial Trust Highlights */}
+                  <div className="pt-6 border-t border-[#5A3B28]/10 grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs font-body text-[#5A3B28]">
+                    <div className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-[#2E5A44] shrink-0" />
+                      <span className="font-semibold">Zero Refined Sugar</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-[#2E5A44] shrink-0" />
+                      <span className="font-semibold">Zero Preservatives</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-[#2E5A44] shrink-0" />
+                      <span className="font-semibold">Pan-India Delivery</span>
                     </div>
                   </div>
+
                 </div>
+
+                {/* Right Column: Authentic Packaging Focal Point */}
+                <div className="lg:col-span-5 relative">
+                  <div className="relative mx-auto max-w-sm lg:max-w-none">
+                    
+                    {/* Packaging Display Card */}
+                    <div className="rounded-3xl bg-white p-5 sm:p-7 border border-[#5A3B28]/10 shadow-xl relative">
+                      
+                      {/* Pouch Container */}
+                      <div className="relative h-64 sm:h-76 w-full rounded-2xl bg-[#FDFBF7] border border-[#5A3B28]/8 overflow-hidden flex items-center justify-center p-3">
+                        <Image
+                          src="/images/abc-malt.png"
+                          alt="Blovit ABC Malt natural health drink packaging by Amudhasurabiy Organics"
+                          width={260}
+                          height={260}
+                          className="h-56 sm:h-68 w-auto object-contain transition-transform duration-700 hover:scale-105"
+                          priority
+                        />
+                        <span className="absolute top-3 left-3 bg-[#2E5A44] text-white text-[10px] font-heading font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-xs">
+                          Flagship Blend
+                        </span>
+                        <span className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-xs text-[#5A3B28] text-[9px] sm:text-[10px] font-heading font-bold px-2.5 py-1 rounded-full uppercase tracking-wider border border-[#5A3B28]/10">
+                          Apple &bull; Beet &bull; Carrot
+                        </span>
+                      </div>
+
+                      {/* Product Card Details */}
+                      <div className="mt-5 flex items-center justify-between">
+                        <div>
+                          <span className="font-heading text-[11px] font-bold text-[#2E5A44] uppercase tracking-wider block">
+                            Blovit Natural Malts
+                          </span>
+                          <h2 className="font-heading text-lg sm:text-xl font-bold text-[#5A3B28]">
+                            Blovit ABC Malt (200g)
+                          </h2>
+                          <div className="flex items-baseline gap-2 mt-1">
+                            <span className="font-heading text-lg font-bold text-[#5A3B28]">₹250</span>
+                            <span className="font-body text-xs text-[#5A3B28]/40 line-through">₹299</span>
+                            <span className="font-heading text-[10px] font-bold text-[#2E5A44] bg-[#2E5A44]/10 px-2 py-0.5 rounded-full">
+                              16% OFF
+                            </span>
+                          </div>
+                        </div>
+
+                        <Link
+                          href="/product/abc-malt/"
+                          className="p-3 rounded-full bg-[#2E5A44] hover:bg-[#0B351C] text-white transition-all shadow-md hover:scale-105"
+                          aria-label="View Blovit ABC Malt"
+                        >
+                          <ArrowRight className="h-4 w-4" />
+                        </Link>
+                      </div>
+
+                    </div>
+
+                  </div>
+                </div>
+
               </div>
 
             </div>
           </div>
         </section>
 
-        {/* 2. CATEGORY QUICK DISCOVERY RAIL */}
-        <section className="py-8 bg-white border-b border-[#5A3B28]/10">
+        {/* =========================================================================
+            SECTION B — TRUST STRIP
+            Concise trust points with simple line icons and verified details.
+            ========================================================================= */}
+        <section className="py-8 sm:py-10 bg-white border-b border-[#5A3B28]/10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-4 sm:gap-8 overflow-x-auto pb-2 scrollbar-none justify-start sm:justify-center">
-              {[
-                { name: "ABC Malt", slug: "abc-malt", img: "/images/abc-malt.png", desc: "Apple • Beet • Carrot" },
-                { name: "Beetroot Malt", slug: "beetroot-malt", img: "/images/beetroot-malt.png", desc: "Iron & Stamina" },
-                { name: "Nendran Banana", slug: "nendram-banana-malt", img: "/images/nendran-banana-malt.png", desc: "Kids Growth Weight" },
-                { name: "Sprouted Ragi", slug: "sprouted-ragi-malt", img: "/images/sprouted-ragi-malt.png", desc: "Bioavailable Calcium" },
-                { name: "All Collections", slug: "../collections/", img: "/images/logo.png", desc: "View Full Range" },
-              ].map((cat) => (
-                <Link
-                  key={cat.name}
-                  href={`/product/${cat.slug}/`}
-                  className="flex flex-col items-center gap-2 shrink-0 group"
-                >
-                  <div className="h-16 w-16 sm:h-20 sm:w-20 rounded-2xl bg-[#FDFBF7] border border-[#5A3B28]/10 p-2 flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:border-[#2E5A44] group-hover:shadow-md">
-                    <Image src={cat.img} alt={cat.name} width={50} height={50} className="object-contain max-h-full" />
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+              {trustPoints.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div key={item.title} className="flex items-start gap-3.5">
+                    <div className="h-10 w-10 rounded-xl bg-[#E8F0E3] text-[#2E5A44] flex items-center justify-center shrink-0 border border-[#B9CBB5]/40">
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-heading text-xs sm:text-sm font-bold text-[#5A3B28]">
+                        {item.title}
+                      </h3>
+                      <p className="font-body text-[11px] sm:text-xs text-[#5A3B28]/70 mt-0.5 leading-relaxed">
+                        {item.desc}
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-center">
-                    <span className="font-heading text-xs font-semibold text-[#5A3B28] group-hover:text-[#2E5A44] transition-colors block">
-                      {cat.name}
-                    </span>
-                    <span className="text-[10px] font-body text-[#5A3B28]/60 block hidden sm:block">
-                      {cat.desc}
-                    </span>
-                  </div>
-                </Link>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>
 
-        {/* 3. BESTSELLERS / FLAGSHIP STOREFRONT */}
-        <section className="py-16 md:py-24 bg-[#FDFBF7] border-b border-[#5A3B28]/10">
+        {/* =========================================================================
+            SECTION C — SHOP THE BLOVIT RANGE
+            4-column desktop, 2-column mobile responsive product collection grid.
+            ========================================================================= */}
+        <section className="py-14 sm:py-20 md:py-24 bg-[#FDFBF7] border-b border-[#5A3B28]/10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
+            
+            {/* Section Header */}
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 gap-4">
               <div>
-                <span className="font-heading text-xs font-bold text-[#2E5A44] uppercase tracking-widest">
-                  Direct From Our Kumbakonam Facility
+                <span className="font-heading text-xs font-bold text-[#2E5A44] uppercase tracking-widest block mb-1">
+                  Small-Batch Formulations &bull; Kumbakonam
                 </span>
-                <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#5A3B28] tracking-tight mt-1">
-                  Blovit Natural Malt Health Drinks
+                <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-[#5A3B28] tracking-tight">
+                  Shop the Blovit Range
                 </h2>
-                <p className="font-body text-xs sm:text-sm text-[#5A3B28]/70 mt-1">
-                  Select pack size (200g, 500g, 1kg) with transparent pricing and pan-India express delivery.
+                <p className="font-body text-xs sm:text-sm text-[#5A3B28]/70 mt-1 max-w-xl">
+                  Thoughtfully crafted natural malt health drink mixes for the whole family, made with sun-dried fruits, sprouted millets, and unbleached country jaggery.
                 </p>
               </div>
 
               <Link
                 href="/shop/"
-                className="font-heading text-xs font-bold text-[#2E5A44] hover:text-[#5A3B28] uppercase tracking-wider flex items-center gap-1 group transition-colors shrink-0"
+                className="font-heading text-xs font-bold text-[#2E5A44] hover:text-[#0B351C] uppercase tracking-wider flex items-center gap-1 group transition-colors shrink-0"
               >
-                <span>View Full Catalog</span>
+                <span>View All Products</span>
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Responsive Product Grid: 4-col desktop, 2-col mobile */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
               {products.map((p, idx) => (
                 <ProductCard key={p.id} product={p} priority={idx < 2} />
               ))}
             </div>
+
           </div>
         </section>
 
-        {/* 4. BRAND STORY — TRADITIONAL TAMIL FOOD WISDOM & KAUVERY DELTA HERITAGE */}
-        <section className="py-16 md:py-24 bg-white border-b border-[#5A3B28]/10">
+        {/* =========================================================================
+            SECTION D — INGREDIENT-LED STORYTELLING
+            Editorial storytelling explaining the real ingredients across the range.
+            ========================================================================= */}
+        <section className="py-14 sm:py-20 md:py-24 bg-white border-b border-[#5A3B28]/10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-              
-              <div className="lg:col-span-6 space-y-6">
-                <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#2E5A44]/10 text-[#2E5A44] font-heading text-xs font-bold uppercase tracking-widest">
-                  <Leaf className="h-3.5 w-3.5" />
-                  <span>The Amudhasurabiy Heritage</span>
-                </span>
-
-                <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-[#5A3B28] tracking-tight leading-tight">
-                  Rooted in Kumbakonam’s agricultural wisdom.
-                </h2>
-
-                <p className="font-body text-sm sm:text-base text-[#5A3B28]/85 leading-relaxed">
-                  For centuries, the Cauvery Delta around Kumbakonam has been renowned for rich agricultural traditions, natural harvest preservation, and nutrient-dense traditional food preparations.
-                </p>
-
-                <p className="font-body text-sm sm:text-base text-[#5A3B28]/80 leading-relaxed">
-                  At Amudhasurabiy Organics, we refuse commercial shortcuts. We never use refined white sugar, maltodextrin thickeners, synthetic vitamins, or chemical preservatives. Every spoonful of Blovit natural malt is crafted from sun-ripened farm produce, sprouted native millets, and unbleached palm jaggery (nattu sakkarai).
-                </p>
-
-                <div className="grid grid-cols-2 gap-6 pt-4 border-t border-[#5A3B28]/10">
-                  <div className="space-y-1">
-                    <span className="font-heading text-2xl font-bold text-[#2E5A44]">100%</span>
-                    <p className="font-body text-xs text-[#5A3B28]/70">Pure natural farm-sourced ingredients</p>
-                  </div>
-                  <div className="space-y-1">
-                    <span className="font-heading text-2xl font-bold text-[#2E5A44]">0%</span>
-                    <p className="font-body text-xs text-[#5A3B28]/70">Refined sugar, artificial colors & chemicals</p>
-                  </div>
-                </div>
-
-                <div className="pt-2">
-                  <Link
-                    href="/our-story/"
-                    className="inline-flex items-center gap-2 font-heading text-xs font-bold uppercase tracking-wider text-[#2E5A44] hover:text-[#5A3B28] transition-colors"
-                  >
-                    <span>Read Our Complete Founding Story</span>
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </div>
-              </div>
-
-              <div className="lg:col-span-6 relative">
-                <div className="relative rounded-3xl overflow-hidden border border-[#5A3B28]/10 shadow-xl bg-[#FDFBF7] p-8 space-y-6">
-                  <div className="relative h-64 sm:h-72 w-full rounded-2xl overflow-hidden">
-                    <Image
-                      src="/images/hero-bg.png"
-                      alt="Raw natural ingredients on rustic wooden table"
-                      fill
-                      className="object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#5A3B28]/80 via-transparent to-transparent flex items-end p-6">
-                      <p className="text-white font-heading text-sm font-bold uppercase tracking-wider">
-                        Pure Farm Harvests • Sprouted Millets • Nattu Sakkarai
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="p-4 rounded-2xl bg-[#F4EFEA] border border-[#5A3B28]/10 flex items-center gap-4">
-                    <div className="h-10 w-10 rounded-xl bg-[#2E5A44] text-white flex items-center justify-center shrink-0">
-                      <ShieldCheck className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <h4 className="font-heading text-xs font-bold text-[#5A3B28] uppercase">FSSAI Licensed Facility</h4>
-                      <p className="font-body text-[11px] text-[#5A3B28]/70">
-                        License No: 22421543000120 | Kumbakonam, Tamil Nadu
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </section>
-
-        {/* 5. INGREDIENT-LED VISUAL STORYTELLING */}
-        <section className="py-16 md:py-24 bg-[#F4EFEA]/40 border-b border-[#5A3B28]/10">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-              <span className="font-heading text-xs font-bold text-[#2E5A44] uppercase tracking-widest">
+            
+            <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 space-y-2.5">
+              <span className="font-heading text-xs font-bold text-[#2E5A44] uppercase tracking-widest block">
                 Ingredient Integrity
               </span>
-              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#5A3B28] tracking-tight">
-                What Goes Into Every Pouch of Blovit
+              <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-[#5A3B28] tracking-tight">
+                Rooted in Real, Wholesome Ingredients
               </h2>
               <p className="font-body text-xs sm:text-sm text-[#5A3B28]/75">
-                Every single ingredient is selected for bioavailability, wholesome nutrition, and natural purity.
+                Every Blovit recipe is built around regional farm produce and traditional sprouting, with zero fillers or artificial chemicals.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
               {ingredientsShowcase.map((item) => {
                 const Icon = item.icon;
                 return (
                   <div
                     key={item.title}
-                    className="rounded-3xl bg-white p-7 border border-[#5A3B28]/10 shadow-xs hover:shadow-md transition-shadow space-y-4 flex flex-col justify-between"
+                    className="rounded-2xl sm:rounded-3xl bg-[#FDFBF7] p-6 sm:p-7 border border-[#5A3B28]/10 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
                   >
                     <div className="space-y-4">
-                      <div className="h-12 w-12 rounded-2xl bg-[#2E5A44]/10 text-[#2E5A44] flex items-center justify-center">
+                      <div className="h-12 w-12 rounded-2xl bg-[#E8F0E3] text-[#2E5A44] flex items-center justify-center border border-[#B9CBB5]/40">
                         <Icon className="h-6 w-6" />
                       </div>
                       <div>
                         <span className="text-[10px] font-heading font-bold text-[#2E5A44] uppercase tracking-wider block mb-1">
                           {item.origin}
                         </span>
-                        <h3 className="font-heading text-lg font-bold text-[#5A3B28]">
+                        <h3 className="font-heading text-base sm:text-lg font-bold text-[#5A3B28]">
                           {item.title}
                         </h3>
                       </div>
@@ -459,130 +421,244 @@ export default function Home() {
                       </p>
                     </div>
 
-                    <div className="pt-3 border-t border-[#5A3B28]/10 text-[11px] font-heading font-semibold text-[#5A3B28]/70">
-                      Found in: <span className="text-[#2E5A44]">{item.malt}</span>
+                    <div className="pt-4 mt-4 border-t border-[#5A3B28]/10">
+                      <Link
+                        href={`/product/${item.slug}/`}
+                        className="text-[11px] font-heading font-semibold text-[#2E5A44] hover:text-[#0B351C] inline-flex items-center gap-1 group"
+                      >
+                        <span>Found in {item.malt}</span>
+                        <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
+                      </Link>
                     </div>
                   </div>
                 );
               })}
             </div>
+
           </div>
         </section>
 
-        {/* 6. QUALITY, SAFETY & MANUFACTURING STANDARDS */}
-        <section className="py-16 md:py-24 bg-white border-b border-[#5A3B28]/10">
+        {/* =========================================================================
+            SECTION E — OUR STORY
+            Parent brand Amudhasurabiy Organics and Blovit malt brand editorial split.
+            ========================================================================= */}
+        <section className="py-14 sm:py-20 md:py-24 bg-[#E8F0E3]/40 border-b border-[#5A3B28]/10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-              <span className="font-heading text-xs font-bold text-[#2E5A44] uppercase tracking-widest">
-                Manufacturing Excellence
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+              
+              {/* Left Column: Visual Heritage Panel */}
+              <div className="lg:col-span-6 relative">
+                <div className="relative rounded-3xl overflow-hidden border border-[#5A3B28]/10 shadow-xl bg-white p-6 sm:p-8 space-y-6">
+                  <div className="relative h-64 sm:h-76 w-full rounded-2xl overflow-hidden">
+                    <Image
+                      src="/images/hero-bg.png"
+                      alt="Traditional natural ingredients and rustic grains of Amudhasurabiy Organics"
+                      fill
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0B351C]/90 via-[#0B351C]/30 to-transparent flex items-end p-6">
+                      <p className="text-white font-heading text-xs sm:text-sm font-bold uppercase tracking-wider">
+                        Cauvery Delta Agriculture &bull; Kumbakonam, Tamil Nadu
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-[#FDFBF7] border border-[#5A3B28]/10 flex items-center gap-4">
+                    <div className="h-10 w-10 rounded-xl bg-[#2E5A44] text-white flex items-center justify-center shrink-0">
+                      <ShieldCheck className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-heading text-xs font-bold text-[#5A3B28] uppercase">
+                        FSSAI Licensed Facility
+                      </h4>
+                      <p className="font-body text-[11px] text-[#5A3B28]/70">
+                        Lic No: 22421543000120 &bull; Licensed small-batch facility in Kumbakonam
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: Editorial Narrative */}
+              <div className="lg:col-span-6 space-y-6">
+                <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E8F0E3] text-[#2E5A44] font-heading text-xs font-bold uppercase tracking-widest border border-[#B9CBB5]/50">
+                  <Leaf className="h-3.5 w-3.5" />
+                  <span>The Amudhasurabiy Heritage</span>
+                </span>
+
+                <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-[#0B351C] tracking-tight leading-tight">
+                  Rooted in Kumbakonam’s agricultural traditions.
+                </h2>
+
+                <p className="font-body text-sm sm:text-base text-[#5A3B28]/90 leading-relaxed">
+                  Amudhasurabiy Organics is founded in Kumbakonam, in the heart of Tamil Nadu’s historic Cauvery Delta. For generations, this region has celebrated natural food preparations that nourish the body without relying on synthetic shortcuts.
+                </p>
+
+                <p className="font-body text-sm sm:text-base text-[#5A3B28]/85 leading-relaxed">
+                  Through our consumer product brand, <strong>Blovit Natural Malts</strong>, we bring traditional wholesome nourishment into modern family homes. We use zero refined white sugar, zero maltodextrin fillers, and zero chemical preservatives—relying solely on slow-roasted grains, farm fruits, and native palm jaggery.
+                </p>
+
+                <div className="grid grid-cols-2 gap-6 pt-4 border-t border-[#5A3B28]/10">
+                  <div className="space-y-1">
+                    <span className="font-heading text-2xl font-bold text-[#2E5A44]">100%</span>
+                    <p className="font-body text-xs text-[#5A3B28]/70">Farm-sourced natural ingredients</p>
+                  </div>
+                  <div className="space-y-1">
+                    <span className="font-heading text-2xl font-bold text-[#2E5A44]">0%</span>
+                    <p className="font-body text-xs text-[#5A3B28]/70">Refined sugar & chemical preservatives</p>
+                  </div>
+                </div>
+
+                <div className="pt-2">
+                  <Link
+                    href="/our-story/"
+                    className="inline-flex items-center gap-2 bg-[#2E5A44] hover:bg-[#0B351C] text-white px-7 py-3 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all shadow-sm"
+                  >
+                    <span>Discover Our Story</span>
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        {/* =========================================================================
+            SECTION F — WHY CHOOSE BLOVIT?
+            Balanced grid of verified product & service information.
+            ========================================================================= */}
+        <section className="py-14 sm:py-20 md:py-24 bg-white border-b border-[#5A3B28]/10">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            
+            <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 space-y-2.5">
+              <span className="font-heading text-xs font-bold text-[#2E5A44] uppercase tracking-widest block">
+                The Blovit Difference
               </span>
-              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#5A3B28] tracking-tight">
-                Modern Quality Standards. Traditional Care.
+              <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-[#5A3B28] tracking-tight">
+                Why Families Choose Blovit
               </h2>
               <p className="font-body text-xs sm:text-sm text-[#5A3B28]/70">
-                Processed in our dedicated clean-room facility adhering to rigorous food safety protocols.
+                Crafted with care, packaged with integrity, and delivered fresh across India.
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {qualityStandards.map((std) => {
-                const Icon = std.icon;
+              {whyChoosePoints.map((item) => {
+                const Icon = item.icon;
                 return (
                   <div
-                    key={std.title}
-                    className="rounded-3xl bg-[#FDFBF7] p-7 border border-[#5A3B28]/10 space-y-3"
+                    key={item.title}
+                    className="rounded-2xl sm:rounded-3xl bg-[#FDFBF7] p-6 sm:p-7 border border-[#5A3B28]/10 space-y-3.5 hover:shadow-sm transition-all"
                   >
-                    <div className="h-10 w-10 rounded-2xl bg-[#2E5A44]/10 text-[#2E5A44] flex items-center justify-center">
+                    <div className="h-11 w-11 rounded-2xl bg-[#E8F0E3] text-[#2E5A44] flex items-center justify-center border border-[#B9CBB5]/40">
                       <Icon className="h-5 w-5" />
                     </div>
                     <h3 className="font-heading text-base font-bold text-[#5A3B28]">
-                      {std.title}
+                      {item.title}
                     </h3>
                     <p className="font-body text-xs text-[#5A3B28]/75 leading-relaxed">
-                      {std.desc}
+                      {item.desc}
                     </p>
                   </div>
                 );
               })}
             </div>
+
           </div>
         </section>
 
-        {/* 7. INTENT-BASED HEALTH GOAL MATCHING */}
-        <section className="py-16 md:py-24 bg-[#FDFBF7] border-b border-[#5A3B28]/10">
+        {/* =========================================================================
+            SECTION G — HOW TO PREPARE
+            Clear, genuine 3-step ritual using verified instructions.
+            ========================================================================= */}
+        <section className="py-14 sm:py-20 md:py-24 bg-[#FDFBF7] border-b border-[#5A3B28]/10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-10 space-y-3">
-              <span className="font-heading text-xs font-bold text-[#2E5A44] uppercase tracking-widest">
-                Targeted Family Nutrition
+            
+            <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 space-y-2.5">
+              <span className="font-heading text-xs font-bold text-[#2E5A44] uppercase tracking-widest block">
+                Daily Ritual
               </span>
-              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#5A3B28] tracking-tight">
-                Find Nutrition That Matches Your Health Goals
+              <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-[#5A3B28] tracking-tight">
+                How to Prepare Your Blovit Drink
               </h2>
               <p className="font-body text-xs sm:text-sm text-[#5A3B28]/70">
-                Filter our small-batch malt health drink range by intended family wellness benefit.
+                Ready in under 2 minutes. Naturally sweetened with country jaggery.
               </p>
             </div>
 
-            {/* Health Goal Filter Chips */}
-            <div className="flex flex-wrap justify-center gap-2.5 mb-10">
-              {healthGoals.map((g) => (
-                <button
-                  key={g.id}
-                  onClick={() => setSelectedGoal(g.id)}
-                  className={`px-5 py-2.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all shadow-xs ${
-                    selectedGoal === g.id
-                      ? "bg-[#2E5A44] text-white shadow-md scale-102"
-                      : "bg-white text-[#5A3B28] hover:bg-[#F4EFEA] border border-[#5A3B28]/10"
-                  }`}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+              {prepSteps.map((step) => (
+                <div
+                  key={step.step}
+                  className="rounded-2xl sm:rounded-3xl bg-white p-7 sm:p-8 border border-[#5A3B28]/10 shadow-xs relative flex flex-col justify-between"
                 >
-                  {g.name}
-                </button>
+                  <div className="space-y-4">
+                    <span className="font-heading text-3xl sm:text-4xl font-bold text-[#2E5A44]/30 block">
+                      {step.step}
+                    </span>
+                    <h3 className="font-heading text-lg font-bold text-[#5A3B28]">
+                      {step.title}
+                    </h3>
+                    <p className="font-body text-xs sm:text-sm text-[#5A3B28]/75 leading-relaxed">
+                      {step.desc}
+                    </p>
+                  </div>
+                  <div className="pt-6 mt-4 border-t border-[#5A3B28]/5 flex items-center gap-2 text-xs font-heading font-semibold text-[#2E5A44]">
+                    <Check className="h-4 w-4" />
+                    <span>Simple &bull; Wholesome &bull; Delicious</span>
+                  </div>
+                </div>
               ))}
             </div>
 
-            {/* Filtered Result Product Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredGoalProducts.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
-            </div>
           </div>
         </section>
 
-        {/* 8. RECIPES & PREPARATION RITUALS */}
-        <section className="py-16 md:py-24 bg-white border-b border-[#5A3B28]/10">
+        {/* =========================================================================
+            SECTION H — CUSTOMER REVIEWS
+            Authentic customer reviews with rating metrics and verified purchaser tags.
+            ========================================================================= */}
+        <Testimonials />
+
+        {/* =========================================================================
+            SECTION I — RECIPES AND LEARNING
+            Editorial content grid for verified recipes linking to valid pages.
+            ========================================================================= */}
+        <section className="py-14 sm:py-20 md:py-24 bg-white border-b border-[#5A3B28]/10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
+            
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 gap-4">
               <div>
-                <span className="font-heading text-xs font-bold text-[#2E5A44] uppercase tracking-widest">
-                  Daily Nourishment
+                <span className="font-heading text-xs font-bold text-[#2E5A44] uppercase tracking-widest block mb-1">
+                  Kitchen Inspiration
                 </span>
-                <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#5A3B28] tracking-tight mt-1">
-                  How Families Enjoy Blovit Malts
+                <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-[#5A3B28] tracking-tight">
+                  Recipes &amp; Everyday Nutrition
                 </h2>
                 <p className="font-body text-xs sm:text-sm text-[#5A3B28]/70 mt-1">
-                  Ready in under 2 minutes. Naturally sweetened — simply mix with warm milk or water.
+                  Discover simple, wholesome recipes using Blovit natural malts for breakfast and evening routines.
                 </p>
               </div>
 
               <Link
                 href="/recipes/"
-                className="font-heading text-xs font-bold text-[#2E5A44] hover:text-[#5A3B28] uppercase tracking-wider flex items-center gap-1 group transition-colors shrink-0"
+                className="font-heading text-xs font-bold text-[#2E5A44] hover:text-[#0B351C] uppercase tracking-wider flex items-center gap-1 group transition-colors shrink-0"
               >
                 <span>Browse All Recipes</span>
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
               {MOCK_RECIPES.map((recipe) => (
                 <div
                   key={recipe.id}
-                  className="rounded-3xl bg-[#FDFBF7] border border-[#5A3B28]/10 p-7 shadow-xs space-y-4 flex flex-col justify-between"
+                  className="rounded-2xl sm:rounded-3xl bg-[#FDFBF7] border border-[#5A3B28]/10 p-6 sm:p-7 shadow-xs space-y-4 flex flex-col justify-between hover:shadow-md transition-shadow"
                 >
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <span className="px-3 py-1 rounded-full bg-[#2E5A44]/10 text-[#2E5A44] text-[10px] font-heading font-bold uppercase tracking-wider">
+                      <span className="px-3 py-1 rounded-full bg-[#E8F0E3] text-[#2E5A44] text-[10px] font-heading font-bold uppercase tracking-wider">
                         {recipe.category}
                       </span>
                       <span className="text-[11px] font-body text-[#5A3B28]/60 flex items-center gap-1">
@@ -590,7 +666,7 @@ export default function Home() {
                       </span>
                     </div>
 
-                    <h3 className="font-heading text-lg font-bold text-[#5A3B28] leading-snug">
+                    <h3 className="font-heading text-base sm:text-lg font-bold text-[#5A3B28] leading-snug">
                       {recipe.title}
                     </h3>
 
@@ -599,78 +675,43 @@ export default function Home() {
                     </p>
 
                     <div className="pt-2 text-xs font-body text-[#5A3B28]/80">
-                      <strong>Key ingredients:</strong> {recipe.ingredients.slice(0, 3).join(", ")}
+                      <strong>Ingredients:</strong> {recipe.ingredients.slice(0, 3).join(", ")}
                     </div>
                   </div>
 
                   <Link
                     href={`/recipes/${recipe.slug}/`}
-                    className="inline-flex items-center gap-1 text-xs font-heading font-bold text-[#2E5A44] uppercase tracking-wider hover:text-[#5A3B28] pt-4 border-t border-[#5A3B28]/10"
+                    className="inline-flex items-center gap-1 text-xs font-heading font-bold text-[#2E5A44] uppercase tracking-wider hover:text-[#0B351C] pt-4 border-t border-[#5A3B28]/10"
                   >
-                    <span>View Recipe Steps</span>
+                    <span>View Recipe Details</span>
                     <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
                 </div>
               ))}
             </div>
+
           </div>
         </section>
 
-        {/* 9. TESTIMONIALS */}
-        <Testimonials />
-
-        {/* 10. WHOLESALE & PRIVATE-LABEL ENQUIRY BANNER */}
-        <section className="py-16 bg-[#5A3B28] text-white">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-8 space-y-4">
-                <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 text-[#FDFBF7] font-heading text-xs font-bold uppercase tracking-widest">
-                  <Building2 className="h-3.5 w-3.5" />
-                  <span>Wholesale, Retail Distribution & Private-Label</span>
-                </span>
-                <h2 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight text-white">
-                  Looking for bulk supply or custom private-label manufacturing?
-                </h2>
-                <p className="font-body text-xs sm:text-sm text-white/85 leading-relaxed max-w-2xl">
-                  We supply natural food retailers, supermarkets, organic stores, Ayurveda clinics, and consumer brands with genuine small-batch malt formulations from our Kumbakonam licensed unit.
-                </p>
-              </div>
-
-              <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
-                <Link
-                  href="/wholesale/"
-                  className="bg-[#2E5A44] hover:bg-white hover:text-[#2E5A44] text-white px-8 py-4 rounded-full font-heading text-xs font-bold uppercase tracking-wider text-center transition-all shadow-md flex items-center justify-center gap-2"
-                >
-                  <span>Submit Wholesale Enquiry</span>
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <a
-                  href="https://wa.me/917010602115?text=Hello%20Amudhasurabiy%20Organics,%20I%20would%20like%20to%20discuss%20wholesale%20distribution%20opportunities."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="border border-white/40 hover:bg-white/10 text-white px-8 py-4 rounded-full font-heading text-xs font-bold uppercase tracking-wider text-center transition-all flex items-center justify-center gap-2"
-                >
-                  <PhoneCall className="h-4 w-4" />
-                  <span>WhatsApp +91 70106 02115</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 11. FAQ ACCORDION SECTION */}
-        <section className="py-16 md:py-24 bg-[#FDFBF7] border-b border-[#5A3B28]/10">
+        {/* =========================================================================
+            SECTION J — FAQ ACCORDION
+            Answers to practical questions about sizes, ingredients, storage, shipping.
+            ========================================================================= */}
+        <section className="py-14 sm:py-20 md:py-24 bg-[#FDFBF7] border-b border-[#5A3B28]/10">
           <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 space-y-8">
-            <div className="text-center space-y-3">
-              <span className="font-heading text-xs font-bold text-[#2E5A44] uppercase tracking-widest">
-                Frequently Asked Questions
+            <div className="text-center space-y-2.5">
+              <span className="font-heading text-xs font-bold text-[#2E5A44] uppercase tracking-widest block">
+                Got Questions?
               </span>
-              <h2 className="font-heading text-3xl font-bold text-[#5A3B28]">
-                Everything You Need to Know
+              <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-[#5A3B28]">
+                Frequently Asked Questions
               </h2>
+              <p className="font-body text-xs sm:text-sm text-[#5A3B28]/70">
+                Clear answers regarding our ingredients, preparation, delivery, and policies.
+              </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3.5">
               {faqs.map((faq, index) => {
                 const isOpen = activeFaq === index;
                 return (
@@ -680,17 +721,17 @@ export default function Home() {
                   >
                     <button
                       onClick={() => setActiveFaq(isOpen ? null : index)}
-                      className="w-full p-6 text-left font-heading text-sm font-bold text-[#5A3B28] flex items-center justify-between gap-4"
+                      className="w-full p-5 sm:p-6 text-left font-heading text-sm font-bold text-[#5A3B28] flex items-center justify-between gap-4"
                     >
                       <span>{faq.question}</span>
                       <ChevronDown
-                        className={`h-5 w-5 text-[#2E5A44] transition-transform duration-300 shrink-0 ${
+                        className={`h-4 w-4 text-[#2E5A44] transition-transform duration-300 shrink-0 ${
                           isOpen ? "rotate-180" : ""
                         }`}
                       />
                     </button>
                     {isOpen && (
-                      <div className="px-6 pb-6 pt-2 font-body text-xs text-[#5A3B28]/85 leading-relaxed border-t border-[#5A3B28]/5">
+                      <div className="px-5 sm:px-6 pb-5 sm:pb-6 pt-1 font-body text-xs sm:text-sm text-[#5A3B28]/85 leading-relaxed border-t border-[#5A3B28]/5">
                         {faq.answer}
                       </div>
                     )}
@@ -703,6 +744,10 @@ export default function Home() {
 
       </main>
 
+      {/* =========================================================================
+          SECTION K — NEWSLETTER AND FOOTER
+          Clean verified newsletter subscription and comprehensive footer links.
+          ========================================================================= */}
       <Footer />
       <WhatsAppButton />
     </>

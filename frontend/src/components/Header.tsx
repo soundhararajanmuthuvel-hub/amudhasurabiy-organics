@@ -17,7 +17,6 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isShopMenuOpen, setIsShopMenuOpen] = useState(false);
-  const [tickerIndex, setTickerIndex] = useState(0);
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState<Product[]>([]);
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
@@ -40,20 +39,6 @@ export default function Header() {
     hydrate();
     getProducts().then(setAllProducts).catch(() => setAllProducts(MOCK_PRODUCTS));
   }, [hydrate]);
-
-  // Rotate announcement bar every 4 seconds
-  const tickerMessages = [
-    "🚀 Pan-India Delivery | Dispatched directly from Kumbakonam, Tamil Nadu",
-    "🛡️ 100% Preservative-Free Malts Naturally Sweetened with Nattu Sakkarai",
-    "✨ Free Express Delivery on Orders Above ₹499 (Tamil Nadu) & ₹999 (Pan-India)",
-  ];
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTickerIndex((prev) => (prev + 1) % tickerMessages.length);
-    }, 4500);
-    return () => clearInterval(timer);
-  }, [tickerMessages.length]);
 
   // Click outside to close search dropdown
   useEffect(() => {
@@ -103,19 +88,19 @@ export default function Header() {
     { name: "Shop", href: "/shop/", hasMega: true },
     { name: "Collections", href: "/collections/" },
     { name: "Our Story", href: "/our-story/" },
-    { name: "Recipes", href: "/recipes/" },
+    { name: "Ingredients", href: "/ingredients/" },
     { name: "Quality", href: "/quality-and-trust/" },
-    { name: "Wholesale", href: "/wholesale/" },
+    { name: "Recipes", href: "/recipes/" },
     { name: "Contact", href: "/contact/" },
   ];
 
   return (
     <>
-      {/* 1. Dynamic Rotating Announcement Ticker */}
-      <div className="bg-moss-green text-cream py-2 px-4 text-center text-xs font-body tracking-wider flex justify-center items-center gap-2 overflow-hidden transition-all">
-        <ShieldCheck className="h-3.5 w-3.5 text-cream/90 shrink-0" />
-        <span className="animate-fade-in transition-all duration-500 font-medium">
-          {tickerMessages[tickerIndex]}
+      {/* 1. Compact Verified Announcement Bar */}
+      <div className="bg-[#0B351C] text-[#FDFBF7] py-2 px-4 text-center text-xs font-body tracking-wider flex justify-center items-center gap-2 border-b border-white/10">
+        <ShieldCheck className="h-3.5 w-3.5 text-[#B9CBB5] shrink-0" />
+        <span className="font-medium text-[11px] sm:text-xs">
+          Authentic Blovit Natural Malts &bull; Pan-India Express Delivery Direct from Kumbakonam &bull; Free Shipping Above ₹499
         </span>
       </div>
 
@@ -343,6 +328,14 @@ export default function Header() {
                 {isHydrated && user && (
                   <span className="absolute top-1 right-1 h-2.5 w-2.5 rounded-full bg-moss-green border-2 border-cream" />
                 )}
+              </Link>
+
+              {/* Prominent Desktop "Shop Blovit" Pill Button */}
+              <Link
+                href="/shop/"
+                className="hidden sm:inline-flex items-center justify-center px-4 py-2 rounded-full bg-[#2E5A44] hover:bg-[#0B351C] text-white font-heading text-xs font-bold uppercase tracking-wider shadow-sm hover:shadow transition-all hover:scale-105"
+              >
+                Shop Blovit
               </Link>
 
               {/* Mobile Menu Toggle Button */}
