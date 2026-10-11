@@ -143,7 +143,7 @@ export default function Header() {
                   onFocus={() => {
                     if (searchInput.trim()) setShowSearchDropdown(true);
                   }}
-                  placeholder="Search malts (ABC Malt, Beetroot, Banana, Ragi)..."
+                  placeholder="Search malts (ABC Malt, Beetroot, Banana)..."
                   className="w-full pl-10 pr-10 py-2.5 rounded-full bg-cream border border-walnut-brown/20 text-xs text-walnut-brown placeholder-walnut-brown/45 focus:outline-none focus:border-moss-green focus:ring-1 focus:ring-moss-green transition-all"
                 />
                 <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-walnut-brown/50" />
@@ -180,7 +180,7 @@ export default function Header() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="font-heading text-xs font-bold text-walnut-brown truncate">{p.name}</p>
-                          <p className="font-body text-[10px] text-walnut-brown/60 truncate">{p.category}</p>
+                          <p className="font-body text-[10px] text-walnut-brown/60 truncate">{p.category} • 200 g</p>
                         </div>
                         <div className="text-right shrink-0">
                           <span className="font-heading text-xs font-bold text-moss-green">₹{p.price}</span>

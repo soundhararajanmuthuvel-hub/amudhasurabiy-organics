@@ -26,13 +26,14 @@ interface ClientProps {
 
 export default function ProductDetailClient({ product, relatedProducts }: ClientProps) {
   const router = useRouter();
-  const variants: ProductVariant[] = product.variants && product.variants.length > 0
-    ? product.variants
-    : [
-        { weight: product.weight || "200 g", price: product.price, originalPrice: product.originalPrice, sku: product.sku || `${product.id}-200g`, inStock: true },
-      ];
-
-  const [selectedVariant, setSelectedVariant] = useState<ProductVariant>(variants[0]);
+  // Strictly enforce 200 g pack size. 500 g and 1 kg packs are not available.
+  const selectedVariant: ProductVariant = {
+    weight: "200 g",
+    price: product.price,
+    originalPrice: product.originalPrice,
+    sku: product.sku || `BLV-${product.id.toUpperCase()}-200G`,
+    inStock: product.inStock !== false,
+  };
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [qty, setQty] = useState(1);
   const [activeTab, setActiveTab] = useState<string | null>("benefits");
@@ -143,12 +144,22 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
         name: product.name,
         price: selectedVariant.price,
         imageUrl: product.imageUrl,
-        weight: selectedVariant.weight,
+        weight: "200 g",
         sku: selectedVariant.sku,
       },
       1
     );
-    addToCart(bundleProduct, 1);
+    addToCart(
+      {
+        id: bundleProduct.id,
+        name: bundleProduct.name,
+        price: bundleProduct.price,
+        imageUrl: bundleProduct.imageUrl,
+        weight: "200 g",
+        sku: bundleProduct.sku || `BLV-${bundleProduct.id.toUpperCase()}-200G`,
+      },
+      1
+    );
     setBundleAdded(true);
   };
 
@@ -313,39 +324,24 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
                 </p>
               </div>
 
-              {/* Pack Size / Weight Display */}
+              {/* Pack Size / Weight Display — Strictly 200 g Standard Pack */}
               <div className="mb-6 p-4 rounded-2xl bg-white border border-[#5A3B28]/10 shadow-xs">
-                {variants.length > 1 ? (
-                  <>
-                    <span className="font-heading text-xs font-bold uppercase tracking-wider text-[#5A3B28]/70 block mb-2">
-                      Select Pack Size / Weight:
-                    </span>
-                    <div className="flex flex-wrap gap-2">
-                      {variants.map((v) => (
-                        <button
-                          key={v.weight}
-                          onClick={() => setSelectedVariant(v)}
-                          className={`px-4 py-2 rounded-xl text-xs font-heading font-semibold transition-all ${
-                            selectedVariant.weight === v.weight
-                              ? "bg-[#2E5A44] text-white shadow-xs scale-102"
-                              : "bg-[#FDFBF7] text-[#5A3B28] hover:bg-[#E8F0E3]"
-                          }`}
-                        >
-                          {v.weight} — ₹{v.price}
-                        </button>
-                      ))}
-                    </div>
-                  </>
-                ) : (
-                  <div className="flex items-center justify-between">
-                    <span className="font-heading text-xs font-bold uppercase tracking-wider text-[#5A3B28]/70">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="font-heading text-xs font-bold uppercase tracking-wider text-[#5A3B28]/70 block">
                       Pack Size:
                     </span>
-                    <span className="px-4 py-1.5 rounded-xl text-xs font-heading font-bold bg-[#2E5A44] text-white shadow-xs">
-                      {selectedVariant.weight || "200 g"} — ₹{selectedVariant.price}
+                    <span className="text-[11px] font-body text-[#5A3B28]/60">
+                      Standard Net Weight
                     </span>
                   </div>
-                )}
+                  <div className="flex items-center gap-2">
+                    <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-heading font-bold bg-[#2E5A44] text-white shadow-xs">
+                      <Check className="h-3.5 w-3.5" />
+                      <span>200 g — ₹{selectedVariant.price}</span>
+                    </span>
+                  </div>
+                </div>
               </div>
 
               {/* Pan-India Pincode Delivery Checker */}

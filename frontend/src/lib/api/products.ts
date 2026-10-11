@@ -125,11 +125,12 @@ export function mapBackendProduct(raw: Record<string, unknown>): Product {
     rating: Number(raw.rating || 4.9),
     reviewCount: Number(raw.reviewCount || 42),
     sku: actualSku,
-    weight: typeof raw.weight === "string" ? cleanProductText(raw.weight) : "200 g",
+    weight: "200 g",
     inStock: raw.inStock !== undefined ? Boolean(raw.inStock) : true,
+    // Strictly expose ONLY the 200 g pack size. 500 g and 1 kg packs are not available.
     variants: [
       {
-        weight: typeof raw.weight === "string" ? cleanProductText(raw.weight) : "200 g",
+        weight: "200 g",
         price: actualPrice,
         originalPrice: actualOriginalPrice,
         sku: actualSku,

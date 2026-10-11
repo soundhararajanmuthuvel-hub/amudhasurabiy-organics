@@ -155,6 +155,17 @@ export default function Checkout() {
       return;
     }
 
+    const hasUnavailableSize = cart.some((item) => {
+      const w = String(item.weight || "").toLowerCase().replace(/\s+/g, "");
+      const n = String(item.name || "").toLowerCase();
+      return w.includes("500") || w.includes("1kg") || w.includes("1000") || n.includes("500g") || n.includes("1kg");
+    });
+
+    if (hasUnavailableSize) {
+      alert("Only 200 g packs are currently available for purchase. Please review your cart.");
+      return;
+    }
+
     setIsProcessing(true);
     const isMock = process.env.NEXT_PUBLIC_USE_MOCK_API === "true";
 

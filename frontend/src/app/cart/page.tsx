@@ -171,7 +171,12 @@ export default function Cart() {
 
                     <div className="flex-grow text-center sm:text-left">
                       <h3 className="font-heading text-base font-bold text-walnut-brown">{item.name}</h3>
-                      <span className="font-body text-xs font-semibold text-moss-green mt-1 block">₹{item.price}</span>
+                      <div className="flex items-center justify-center sm:justify-start gap-2 mt-1">
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-heading font-semibold bg-[#E8F0E3] text-[#2E5A44]">
+                          Pack: 200 g
+                        </span>
+                        <span className="font-body text-xs font-semibold text-moss-green">₹{item.price}</span>
+                      </div>
                     </div>
 
                     <div className="flex items-center justify-between border border-walnut-brown/10 rounded-full px-3 py-1.5 w-28 bg-cream">

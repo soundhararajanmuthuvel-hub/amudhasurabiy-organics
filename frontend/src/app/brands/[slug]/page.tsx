@@ -203,12 +203,19 @@ export default async function BrandSlugPage({ params }: { params: Promise<{ slug
 
                   <div className="pt-4 border-t border-walnut-brown/10 flex items-center justify-between">
                     <div>
-                      <span className="font-heading text-lg font-bold text-walnut-brown">
-                        ₹{product.price}
-                      </span>
-                      <span className="font-body text-xs text-walnut-brown/40 line-through ml-2">
-                        ₹{product.originalPrice}
-                      </span>
+                      <div className="flex items-baseline gap-2">
+                        <span className="font-heading text-lg font-bold text-walnut-brown">
+                          ₹{product.price}
+                        </span>
+                        {product.originalPrice > product.price && (
+                          <span className="font-body text-xs text-walnut-brown/40 line-through">
+                            ₹{product.originalPrice}
+                          </span>
+                        )}
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-heading font-bold bg-[#E8F0E3] text-[#2E5A44] ml-1">
+                          200 g
+                        </span>
+                      </div>
                     </div>
                     <Link
                       href={`/product/${product.slug}/`}

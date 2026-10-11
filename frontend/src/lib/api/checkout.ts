@@ -6,6 +6,16 @@ const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK_API === "true";
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "";
 
 export async function guestCheckout(payload: GuestCheckoutPayload): Promise<GuestCheckoutResponse> {
+  const hasUnavailableSize = payload.items.some((item) => {
+    const n = String(item.name || "").toLowerCase();
+    const pid = String(item.productId || "").toLowerCase();
+    return n.includes("500g") || n.includes("500 g") || n.includes("1kg") || n.includes("1 kg") || pid.includes("500g") || pid.includes("1kg");
+  });
+
+  if (hasUnavailableSize) {
+    throw new Error("Only 200 g packs are currently available for purchase. 500 g and 1 kg packs are not available.");
+  }
+
   if (USE_MOCK) {
     const items = payload.items.map((item) => ({
       productId: item.productId,

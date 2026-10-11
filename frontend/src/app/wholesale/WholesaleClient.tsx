@@ -21,7 +21,7 @@ export default function WholesaleClient() {
     enquiryType: "wholesale" as "wholesale" | "distribution" | "white_label" | "cafe_bulk",
     productInterests: ["Blovit ABC Malt", "Blovit Beetroot Malt"],
     estimatedQuantity: "50 - 200 kg",
-    requiredPackSizes: ["200g Pouches", "500g Pouches"],
+    requiredPackSizes: ["200g Pouches"],
     additionalRequirements: "",
   });
 
@@ -36,14 +36,11 @@ export default function WholesaleClient() {
     "Blovit ABC Malt (Apple, Beetroot, Carrot)",
     "Blovit Beetroot Malt",
     "Blovit Nendran Banana Malt (Raw Kerala Banana)",
-    "Blovit Sprouted Ragi Malt",
     "Custom Malt / Health Drink Formulation",
   ];
 
   const packSizeOptions = [
-    "200g Sealed Pouches",
-    "500g Sealed Pouches",
-    "1kg Sealed Pouches",
+    "200g Sealed Pouches (Standard Retail Pack)",
     "10kg / 25kg Bulk Sacks for Food Service",
   ];
 

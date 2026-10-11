@@ -77,25 +77,45 @@ export const useCartStore = create<CartStore>((set, get) => ({
   checkoutMode: null,
 
   addToCart: (product, qty) => {
+    // Strictly validate pack size: 500 g and 1 kg packs are not available
+    const rawWeight = (product.weight || "").toLowerCase().replace(/\s+/g, "");
+    const rawName = (product.name || "").toLowerCase();
+    if (
+      rawWeight.includes("500") ||
+      rawWeight.includes("1kg") ||
+      rawWeight.includes("1000") ||
+      rawName.includes("500g") ||
+      rawName.includes("500 g") ||
+      rawName.includes("1kg") ||
+      rawName.includes("1 kg")
+    ) {
+      console.warn("[Cart] Rejected unavailable pack size:", product.weight || product.name);
+      return;
+    }
+
     const currentCart = get().cart;
-    const itemKey = product.weight ? `${product.id}-${product.weight}` : product.id;
-    const existing = currentCart.find((item) => item.productId === itemKey);
+    const cleanWeight = "200 g";
+    const itemKey = `${product.id}-200g`;
+    const cleanName = product.name.replace(/\s*\((200\s*g|500\s*g|1\s*kg)\)/gi, "").trim() + " (200 g)";
+    const existing = currentCart.find((item) => item.productId === itemKey || item.productId === product.id);
     let newCart;
     if (existing) {
       newCart = currentCart.map((item) =>
-        item.productId === itemKey ? { ...item, qty: item.qty + qty } : item
+        (item.productId === itemKey || item.productId === product.id)
+          ? { ...item, productId: itemKey, name: cleanName, weight: cleanWeight, qty: item.qty + qty }
+          : item
       );
     } else {
       newCart = [
         ...currentCart,
         {
           productId: itemKey,
-          name: product.weight ? `${product.name} (${product.weight})` : product.name,
+          name: cleanName,
           price: product.price,
           qty,
           imageUrl: product.imageUrl,
-          weight: product.weight || "200g",
-          sku: product.sku,
+          weight: cleanWeight,
+          sku: product.sku || `BLV-${product.id.toUpperCase()}-200G`,
         },
       ];
     }
@@ -233,8 +253,26 @@ export const useCartStore = create<CartStore>((set, get) => ({
 
       const customerObj = savedCustomer ? JSON.parse(savedCustomer) : null;
 
+      const rawCart: CartItem[] = savedCart ? JSON.parse(savedCart) : [];
+      // Sanitize cart: remove any legacy/unauthorized 500g or 1kg items
+      const validCart = rawCart
+        .filter((item) => {
+          const w = (item.weight || "").toLowerCase().replace(/\s+/g, "");
+          const n = (item.name || "").toLowerCase();
+          return !w.includes("500") && !w.includes("1kg") && !w.includes("1000") && !n.includes("500g") && !n.includes("1kg");
+        })
+        .map((item) => ({
+          ...item,
+          weight: "200 g",
+          name: item.name.replace(/\s*\((200\s*g|500\s*g|1\s*kg)\)/gi, "").trim() + " (200 g)",
+        }));
+
+      if (savedCart && validCart.length !== rawCart.length) {
+        window.localStorage.setItem("blovit_cart", JSON.stringify(validCart));
+      }
+
       set({
-        cart: savedCart ? JSON.parse(savedCart) : [],
+        cart: validCart,
         customer: customerObj,
         user: customerObj,
         token: savedToken || null,

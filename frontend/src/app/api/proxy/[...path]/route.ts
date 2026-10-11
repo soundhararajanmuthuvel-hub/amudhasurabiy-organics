@@ -61,7 +61,48 @@ async function handleProxy(
 
     if (request.method !== "GET" && request.method !== "HEAD" && request.method !== "OPTIONS") {
       const bodyText = await request.text();
-      if (bodyText) init.body = bodyText;
+      if (bodyText) {
+        init.body = bodyText;
+
+        // Server-Side Pack Size Enforcement:
+        // Reject unavailable 500 g and 1 kg variants submitted through API requests
+        try {
+          const parsed = JSON.parse(bodyText);
+          const candidateItems = Array.isArray(parsed?.items)
+            ? parsed.items
+            : (Array.isArray(parsed?.cart?.items) ? parsed.cart.items : []);
+
+          for (const item of candidateItems) {
+            const itemWeight = String(item?.weight || item?.variant || "").toLowerCase().replace(/\s+/g, "");
+            const itemName = String(item?.name || item?.title || "").toLowerCase();
+            const itemSku = String(item?.sku || "").toLowerCase();
+
+            if (
+              itemWeight.includes("500") ||
+              itemWeight.includes("1kg") ||
+              itemWeight.includes("1000") ||
+              itemName.includes("500g") ||
+              itemName.includes("500 g") ||
+              itemName.includes("1kg") ||
+              itemName.includes("1 kg") ||
+              itemSku.includes("500g") ||
+              itemSku.includes("1kg")
+            ) {
+              console.warn("[AO ERP Proxy] Blocked unavailable variant order submission:", item);
+              return NextResponse.json(
+                {
+                  success: false,
+                  error: "UNAVAILABLE_PACK_SIZE",
+                  message: "Only 200 g packs are currently available for purchase. 500 g and 1 kg packs are not available.",
+                },
+                { status: 400 }
+              );
+            }
+          }
+        } catch {
+          // Non-JSON or standard payload without items, pass through
+        }
+      }
     }
 
     const backendRes = await fetch(targetUrl, init);

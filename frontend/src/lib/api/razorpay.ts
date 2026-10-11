@@ -13,6 +13,21 @@ export async function createRazorpayOrder(
   items?: unknown[],
   shippingInfo?: Record<string, unknown>
 ): Promise<RazorpayOrder> {
+  if (Array.isArray(items)) {
+    const hasUnavailableSize = items.some((item: unknown) => {
+      if (!item || typeof item !== "object") return false;
+      const it = item as Record<string, unknown>;
+      const w = String(it.weight || "").toLowerCase().replace(/\s+/g, "");
+      const n = String(it.name || "").toLowerCase();
+      const sku = String(it.sku || "").toLowerCase();
+      return w.includes("500") || w.includes("1kg") || w.includes("1000") || n.includes("500g") || n.includes("1kg") || sku.includes("500g") || sku.includes("1kg");
+    });
+
+    if (hasUnavailableSize) {
+      throw new Error("Only 200 g packs are currently available for purchase. 500 g and 1 kg packs are not available.");
+    }
+  }
+
   if (USE_MOCK) {
     console.log("[Mock Razorpay API] Creating order for cartId:", cartId);
     return Promise.resolve({

@@ -52,6 +52,12 @@ export default function JsonLd<T extends object>({ type, data }: JsonLdProps<T>)
       "description": d.description,
       "sku": sku,
       "mpn": sku,
+      "weight": "200 g",
+      "netWeight": {
+        "@type": "QuantitativeValue",
+        "value": 200,
+        "unitCode": "GRM"
+      },
       "brand": {
         "@type": "Brand",
         "name": "Blovit",

@@ -46,19 +46,24 @@ export default function ProductCard({ product, onBuyNow }: ProductCardProps) {
           {cleanProductText(product.description)}
         </p>
 
-        <div className="flex items-baseline gap-2 pt-1">
-          <span className="font-heading text-sm font-bold text-moss-green">₹{product.price}</span>
-          {product.originalPrice > product.price && (
-            <span className="font-body text-[10px] text-walnut-brown/40 line-through">
-              ₹{product.originalPrice}
-            </span>
-          )}
+        <div className="flex items-baseline justify-between gap-2 pt-1">
+          <div className="flex items-baseline gap-2">
+            <span className="font-heading text-sm font-bold text-moss-green">₹{product.price}</span>
+            {product.originalPrice > product.price && (
+              <span className="font-body text-[10px] text-walnut-brown/40 line-through">
+                ₹{product.originalPrice}
+              </span>
+            )}
+          </div>
+          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-heading font-bold bg-[#E8F0E3] text-[#2E5A44]">
+            200 g
+          </span>
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-2 pt-2 border-t border-walnut-brown/10">
         <button
-          onClick={() => addToCart(product, 1)}
+          onClick={() => addToCart({ ...product, weight: "200 g" }, 1)}
           className="flex items-center justify-center gap-1 bg-cream-dark hover:bg-cream text-walnut-brown border border-walnut-brown/15 py-1.5 rounded-full font-heading text-[10px] font-bold uppercase transition-colors"
         >
           <ShoppingBag className="h-3 w-3 text-moss-green" />

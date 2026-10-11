@@ -23,13 +23,14 @@ export default function ProductCard({
   const router = useRouter();
   const { addToCart, toggleWishlist, wishlist } = useCartStore();
 
-  const variants = product.variants && product.variants.length > 0
-    ? product.variants
-    : [
-        { weight: product.weight || "200 g", price: product.price, originalPrice: product.originalPrice, sku: product.sku || `${product.id}-200g`, inStock: product.inStock !== false },
-      ];
-
-  const [selectedVariant, setSelectedVariant] = useState<ProductVariant>(variants[0]);
+  // Strictly enforce 200 g pack size. 500 g and 1 kg packs are not available.
+  const selectedVariant: ProductVariant = {
+    weight: "200 g",
+    price: product.price,
+    originalPrice: product.originalPrice,
+    sku: product.sku || `BLV-${product.id.toUpperCase()}-200G`,
+    inStock: product.inStock !== false,
+  };
   const [addedAnimation, setAddedAnimation] = useState(false);
 
   const isFavorite = wishlist.includes(product.id);
@@ -161,43 +162,19 @@ export default function ProductCard({
           {cleanedDescription}
         </p>
 
-        {/* 5. PACK-SIZE DISPLAY / SELECTOR */}
-        <div className="mb-2 sm:mb-3">
-          {variants.length > 1 ? (
-            <>
-              <span className="text-[9px] sm:text-[10px] font-heading font-bold uppercase tracking-wider text-[#5A3B28]/60 block mb-1">
-                Size:
-              </span>
-              <div className="flex flex-wrap gap-1">
-                {variants.map((v) => (
-                  <button
-                    key={v.weight}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setSelectedVariant(v);
-                    }}
-                    className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-heading font-semibold transition-all ${
-                      selectedVariant.weight === v.weight
-                        ? "bg-[#2E5A44] text-white shadow-xs scale-102"
-                        : "bg-[#FDFBF7] text-[#5A3B28]/80 hover:bg-[#F4EFEA] border border-[#5A3B28]/15"
-                    }`}
-                  >
-                    {v.weight}
-                  </button>
-                ))}
-              </div>
-            </>
-          ) : (
-            <div className="flex items-center gap-1.5">
-              <span className="text-[10px] sm:text-xs font-heading font-semibold text-[#5A3B28]/70">
-                Pack:
-              </span>
-              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-heading font-bold bg-[#E8F0E3] text-[#2E5A44] border border-[#B9CBB5]/40">
-                {selectedVariant.weight || "200 g"}
-              </span>
-            </div>
-          )}
+        {/* 5. PACK-SIZE DISPLAY — Strictly 200 g */}
+        <div className="mb-2 sm:mb-3 flex items-center justify-between">
+          <div className="flex items-center gap-1.5">
+            <span className="text-[10px] sm:text-xs font-heading font-semibold text-[#5A3B28]/70">
+              Pack:
+            </span>
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-heading font-bold bg-[#E8F0E3] text-[#2E5A44] border border-[#B9CBB5]/40">
+              200 g
+            </span>
+          </div>
+          <span className="text-[10px] font-body text-[#5A3B28]/50">
+            Net Wt. 200 g
+          </span>
         </div>
       </div>
 
