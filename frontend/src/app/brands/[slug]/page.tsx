@@ -6,6 +6,7 @@ import Image from "next/image";
 import { ArrowRight, ShieldCheck, Heart, Star, Award } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
 import { notFound } from "next/navigation";
+import { cleanProductText } from "@/lib/utils/cleanText";
 
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> }
@@ -184,7 +185,7 @@ export default async function BrandSlugPage({ params }: { params: Promise<{ slug
                       {product.name}
                     </h3>
                     <p className="font-body text-xs text-walnut-brown/70 leading-relaxed mb-4">
-                      {product.description}
+                      {cleanProductText(product.description)}
                     </p>
 
                     {/* Benefits tags */}

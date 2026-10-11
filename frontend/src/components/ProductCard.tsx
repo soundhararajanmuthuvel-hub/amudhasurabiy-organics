@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { Heart, ShoppingCart, Zap, Star, Check } from "lucide-react";
 import { Product, ProductVariant } from "@/lib/api/mockData";
 import { useCartStore } from "@/store/useCartStore";
+import { cleanProductText } from "@/lib/utils/cleanText";
 
 interface ProductCardProps {
   product: Product;
@@ -25,9 +26,7 @@ export default function ProductCard({
   const variants = product.variants && product.variants.length > 0
     ? product.variants
     : [
-        { weight: product.weight || "200g", price: product.price, originalPrice: product.originalPrice, sku: product.sku || `${product.id}-200g`, inStock: product.inStock !== false },
-        { weight: "500g", price: Math.round(product.price * 2.3), originalPrice: Math.round(product.originalPrice * 2.3), sku: `${product.id}-500g`, inStock: true },
-        { weight: "1kg", price: Math.round(product.price * 4.4), originalPrice: Math.round(product.originalPrice * 4.5), sku: `${product.id}-1kg`, inStock: true },
+        { weight: product.weight || "200 g", price: product.price, originalPrice: product.originalPrice, sku: product.sku || `${product.id}-200g`, inStock: product.inStock !== false },
       ];
 
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant>(variants[0]);
@@ -37,6 +36,8 @@ export default function ProductCard({
   const discountPercent = selectedVariant.originalPrice > selectedVariant.price
     ? Math.round(((selectedVariant.originalPrice - selectedVariant.price) / selectedVariant.originalPrice) * 100)
     : 0;
+
+  const cleanedDescription = cleanProductText(product.description);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -155,35 +156,48 @@ export default function ProductCard({
           </span>
         </div>
 
-        {/* Short Product Description (Hidden on compact mobile cards to keep height balanced) */}
-        <p className="font-body text-xs text-[#5A3B28]/70 leading-relaxed mb-2.5 line-clamp-2 hidden sm:block">
-          {product.description}
+        {/* Short Product Description (clean, plain-text, max 2-3 lines) */}
+        <p className="font-body text-xs text-[#5A3B28]/80 leading-relaxed mb-2.5 line-clamp-2 sm:line-clamp-3">
+          {cleanedDescription}
         </p>
 
-        {/* 5. PACK-SIZE SELECTORS */}
+        {/* 5. PACK-SIZE DISPLAY / SELECTOR */}
         <div className="mb-2 sm:mb-3">
-          <span className="text-[9px] sm:text-[10px] font-heading font-bold uppercase tracking-wider text-[#5A3B28]/60 block mb-1">
-            Size:
-          </span>
-          <div className="flex flex-wrap gap-1">
-            {variants.map((v) => (
-              <button
-                key={v.weight}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setSelectedVariant(v);
-                }}
-                className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-heading font-semibold transition-all ${
-                  selectedVariant.weight === v.weight
-                    ? "bg-[#2E5A44] text-white shadow-xs scale-102"
-                    : "bg-[#FDFBF7] text-[#5A3B28]/80 hover:bg-[#F4EFEA] border border-[#5A3B28]/15"
-                }`}
-              >
-                {v.weight}
-              </button>
-            ))}
-          </div>
+          {variants.length > 1 ? (
+            <>
+              <span className="text-[9px] sm:text-[10px] font-heading font-bold uppercase tracking-wider text-[#5A3B28]/60 block mb-1">
+                Size:
+              </span>
+              <div className="flex flex-wrap gap-1">
+                {variants.map((v) => (
+                  <button
+                    key={v.weight}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setSelectedVariant(v);
+                    }}
+                    className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-heading font-semibold transition-all ${
+                      selectedVariant.weight === v.weight
+                        ? "bg-[#2E5A44] text-white shadow-xs scale-102"
+                        : "bg-[#FDFBF7] text-[#5A3B28]/80 hover:bg-[#F4EFEA] border border-[#5A3B28]/15"
+                    }`}
+                  >
+                    {v.weight}
+                  </button>
+                ))}
+              </div>
+            </>
+          ) : (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] sm:text-xs font-heading font-semibold text-[#5A3B28]/70">
+                Pack:
+              </span>
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-heading font-bold bg-[#E8F0E3] text-[#2E5A44] border border-[#B9CBB5]/40">
+                {selectedVariant.weight || "200 g"}
+              </span>
+            </div>
+          )}
         </div>
       </div>
 

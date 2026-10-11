@@ -71,15 +71,15 @@ export default function Home() {
     {
       title: "Sprouted Finger Millet (Ragi)",
       origin: "Traditional Germination Method",
-      benefit: "Sprouting triples mineral absorption, providing natural calcium for bone density and sustained stamina.",
-      malt: "Blovit Sprouted Ragi Malt",
-      slug: "sprouted-ragi-malt",
+      benefit: "Traditional sprouted native grain providing wholesome nourishment and minerals.",
+      malt: "Present in Blovit Malt Blends",
+      slug: "abc-malt",
       icon: Leaf,
     },
     {
       title: "Pure Country Jaggery (Nattu Sakkarai)",
       origin: "Unbleached Native Cane Sugar",
-      benefit: "Micro-mineral-rich slow-burning sweetness. Zero refined white sugar spikes, artificial syrups, or fillers.",
+      benefit: "Traditional slow-burning sweetness. Zero refined white sugar, artificial syrups, or fillers.",
       malt: "Present in all Blovit Malts",
       slug: "abc-malt",
       icon: Flame,
@@ -98,13 +98,13 @@ export default function Home() {
       icon: Coffee,
     },
     {
-      title: "Flexible Pack Sizes",
-      desc: "Available in 200g trial pouches, 500g family packs, and 1kg value sizes to match your family routine.",
+      title: "Convenient 200 g Pack",
+      desc: "Available in convenient 200 g food-grade pouches, sealed to ensure freshness for everyday family use.",
       icon: Package,
     },
     {
       title: "Resealable Food-Grade Pouches",
-      desc: "Airtight multi-layer barrier packaging protects delicate phytonutrients and keeps out humidity naturally.",
+      desc: "Airtight multi-layer barrier packaging protects delicate natural ingredients and keeps out humidity.",
       icon: ShieldCheck,
     },
   ];
@@ -130,11 +130,11 @@ export default function Home() {
   const faqs = [
     {
       question: "What makes Blovit Malts different from commercial health drink powders?",
-      answer: "Unlike mass-market health drinks that often contain up to 50% refined sugar, maltodextrin fillers, and synthetic flavoring, Blovit malts by Amudhasurabiy Organics are made exclusively from real sun-dried farm produce, sprouted native grains, and unbleached country jaggery (nattu sakkarai). We never use chemical preservatives, artificial colors, or artificial thickeners."
+      answer: "Blovit malts by Amudhasurabiy Organics are made exclusively from real farm produce, sprouted native grains, and unbleached country jaggery (nattu sakkarai). We never use chemical preservatives, artificial colors, or artificial thickeners."
     },
     {
       question: "Which Blovit malt is best suited for children and toddlers?",
-      answer: "Blovit Nendran Banana Malt and Blovit ABC Malt are customer favorites for children. Nendran banana provides clean healthy calories and potassium for healthy weight gain and natural growth, while ABC Malt provides essential dietary iron and vitamins."
+      answer: "Blovit Nendran Banana Malt and Blovit ABC Malt are customer favorites for children. Nendran banana provides familiar, comforting taste, while ABC Malt provides apple, beetroot, and carrot goodness."
     },
     {
       question: "How do I prepare Blovit malt drinks?",
@@ -142,7 +142,7 @@ export default function Home() {
     },
     {
       question: "What pack sizes are available and what is the shelf life?",
-      answer: "Our products are available in 200g, 500g, and 1kg airtight resealable pouches. Store in a cool, dry place away from direct sunlight. Once opened, seal the pouch tightly or transfer to an airtight container. The shelf life is 9 months from the date of manufacture."
+      answer: "Our products are available in convenient 200 g airtight resealable pouches. Store in a cool, dry place away from direct sunlight. Once opened, seal the pouch tightly or transfer to an airtight container. The shelf life is 6 months from the date of manufacture."
     },
     {
       question: "Do you ship Pan-India and what are the delivery charges?",
@@ -274,10 +274,10 @@ export default function Home() {
                       <div className="mt-5 flex items-center justify-between">
                         <div>
                           <span className="font-heading text-[11px] font-bold text-[#2E5A44] uppercase tracking-wider block">
-                            Blovit Natural Malts
+                            Nature&apos;s goodness in every sip.
                           </span>
                           <h2 className="font-heading text-lg sm:text-xl font-bold text-[#5A3B28]">
-                            Blovit ABC Malt (200g)
+                            Blovit ABC Malt — 200 g
                           </h2>
                           <div className="flex items-baseline gap-2 mt-1">
                             <span className="font-heading text-lg font-bold text-[#5A3B28]">₹250</span>

@@ -6,6 +6,8 @@ import { Star, ShoppingBag, ArrowRight } from "lucide-react";
 import { Product } from "@/lib/api/mockData";
 import { useCartStore } from "@/store/useCartStore";
 
+import { cleanProductText } from "@/lib/utils/cleanText";
+
 interface ProductCardProps {
   product: Product;
   onBuyNow: (product: Product) => void;
@@ -41,7 +43,7 @@ export default function ProductCard({ product, onBuyNow }: ProductCardProps) {
         </h4>
 
         <p className="font-body text-[10px] text-walnut-brown/70 line-clamp-2">
-          {product.description}
+          {cleanProductText(product.description)}
         </p>
 
         <div className="flex items-baseline gap-2 pt-1">

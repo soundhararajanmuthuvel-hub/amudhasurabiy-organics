@@ -12,20 +12,20 @@ import { MOCK_PRODUCTS } from "@/lib/api/mockData";
 export default function CollectionsPage() {
   const collections = [
     {
-      title: "Malt Health Drinks",
-      desc: "Pure organic health drink powders crafted from fruits, vegetables, sprouted grains, and nuts.",
+      title: "Daily Fruit & Vegetable Malts",
+      desc: "Thoughtfully crafted malt drinks made from wholesome farm fruits, vegetables, sprouted grains, and traditional jaggery.",
       image: "/images/abc-malt.png",
       products: MOCK_PRODUCTS
     },
     {
-      title: "Iron & Hemoglobin Boosters",
-      desc: "Targeted natural formulations rich in organic iron and natural nitrates for managing anemia.",
+      title: "Beetroot & ABC Malts",
+      desc: "Colourful everyday malt blends featuring natural beetroots, crisp apples, and carrots for your family's morning routine.",
       image: "/images/beetroot-malt.png",
       products: MOCK_PRODUCTS.filter(p => p.id === "beetroot-malt" || p.id === "abc-malt")
     },
     {
-      title: "Kids Nutrition & Weight Gainers",
-      desc: "Wholesome, chemical-free nutrition mixes formulated for toddlers and growing children.",
+      title: "Nendran Banana & Everyday Blends",
+      desc: "Comforting natural malt drinks featuring sun-dried Kerala Nendran banana and wholesome regional ingredients.",
       image: "/images/nendran-banana-malt.png",
       products: MOCK_PRODUCTS.filter(p => p.id === "nendram-banana-malt" || p.id === "abc-malt")
     }

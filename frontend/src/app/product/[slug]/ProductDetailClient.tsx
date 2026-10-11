@@ -17,6 +17,7 @@ import { useCartStore } from "@/store/useCartStore";
 import { Product, ProductVariant, MOCK_RECIPES, MOCK_PRODUCTS } from "@/lib/api/mockData";
 import { calculateShipping, ShippingCalculation } from "@/lib/api/shipping";
 import { trackCustomerEvent } from "@/lib/api/events";
+import { cleanProductText } from "@/lib/utils/cleanText";
 
 interface ClientProps {
   product: Product;
@@ -28,9 +29,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
   const variants: ProductVariant[] = product.variants && product.variants.length > 0
     ? product.variants
     : [
-        { weight: product.weight || "200g", price: product.price, originalPrice: product.originalPrice, sku: product.sku || `${product.id}-200g`, inStock: true },
-        { weight: "500g", price: Math.round(product.price * 2.3), originalPrice: Math.round(product.originalPrice * 2.3), sku: `${product.id}-500g`, inStock: true },
-        { weight: "1kg", price: Math.round(product.price * 4.4), originalPrice: Math.round(product.originalPrice * 4.5), sku: `${product.id}-1kg`, inStock: true },
+        { weight: product.weight || "200 g", price: product.price, originalPrice: product.originalPrice, sku: product.sku || `${product.id}-200g`, inStock: true },
       ];
 
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant>(variants[0]);
@@ -302,26 +301,51 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
                 <span className="text-walnut-brown/50">({product.reviewCount || 42} ratings • 100% Genuine)</span>
               </div>
 
-              {/* Weight Variant Selector Chips */}
-              <div className="mb-6 p-4 rounded-2xl bg-white border border-walnut-brown/10 shadow-xs">
-                <span className="font-heading text-xs font-bold uppercase tracking-wider text-walnut-brown/70 block mb-2">
-                  Select Pack Size / Weight:
-                </span>
-                <div className="flex flex-wrap gap-2">
-                  {variants.map((v) => (
-                    <button
-                      key={v.weight}
-                      onClick={() => setSelectedVariant(v)}
-                      className={`px-4 py-2 rounded-xl text-xs font-heading font-semibold transition-all ${
-                        selectedVariant.weight === v.weight
-                          ? "bg-moss-green text-white shadow-xs scale-102"
-                          : "bg-cream text-walnut-brown hover:bg-cream-dark"
-                      }`}
-                    >
-                      {v.weight} — ₹{v.price}
-                    </button>
-                  ))}
-                </div>
+              {/* Short Tagline & Clean Description near Product Name and Price */}
+              <div className="mb-6 space-y-1.5 p-4 rounded-2xl bg-[#FDFBF7] border border-[#5A3B28]/10">
+                {product.tagline && (
+                  <p className="font-heading text-xs sm:text-sm font-semibold text-[#2E5A44] italic">
+                    &ldquo;{cleanProductText(product.tagline)}&rdquo;
+                  </p>
+                )}
+                <p className="font-body text-xs sm:text-sm text-[#5A3B28]/85 leading-relaxed">
+                  {cleanProductText(product.description)}
+                </p>
+              </div>
+
+              {/* Pack Size / Weight Display */}
+              <div className="mb-6 p-4 rounded-2xl bg-white border border-[#5A3B28]/10 shadow-xs">
+                {variants.length > 1 ? (
+                  <>
+                    <span className="font-heading text-xs font-bold uppercase tracking-wider text-[#5A3B28]/70 block mb-2">
+                      Select Pack Size / Weight:
+                    </span>
+                    <div className="flex flex-wrap gap-2">
+                      {variants.map((v) => (
+                        <button
+                          key={v.weight}
+                          onClick={() => setSelectedVariant(v)}
+                          className={`px-4 py-2 rounded-xl text-xs font-heading font-semibold transition-all ${
+                            selectedVariant.weight === v.weight
+                              ? "bg-[#2E5A44] text-white shadow-xs scale-102"
+                              : "bg-[#FDFBF7] text-[#5A3B28] hover:bg-[#E8F0E3]"
+                          }`}
+                        >
+                          {v.weight} — ₹{v.price}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex items-center justify-between">
+                    <span className="font-heading text-xs font-bold uppercase tracking-wider text-[#5A3B28]/70">
+                      Pack Size:
+                    </span>
+                    <span className="px-4 py-1.5 rounded-xl text-xs font-heading font-bold bg-[#2E5A44] text-white shadow-xs">
+                      {selectedVariant.weight || "200 g"} — ₹{selectedVariant.price}
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* Pan-India Pincode Delivery Checker */}
@@ -365,11 +389,6 @@ export default function ProductDetailClient({ product, relatedProducts }: Client
                   </div>
                 )}
               </div>
-
-              {/* Description */}
-              <p className="font-body text-xs sm:text-sm text-walnut-brown/85 leading-relaxed mb-6">
-                {product.description}
-              </p>
 
               {/* Quantity + Dual Conversion CTAs (Add to Cart + Buy Now) */}
               <div className="flex flex-col sm:flex-row gap-3 mb-8">

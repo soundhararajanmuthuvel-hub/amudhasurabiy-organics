@@ -12,6 +12,7 @@ export interface Product {
   slug: string;
   price: number;
   description: string;
+  tagline?: string;
   imageUrl: string;
   images?: string[];
   benefits: string[];
@@ -97,28 +98,30 @@ export const MOCK_PRODUCTS: Product[] = [
     name: "Blovit ABC Malt",
     slug: "abc-malt",
     sku: "BLV-ABC-200G",
-    weight: "200g",
+    weight: "200 g",
     inStock: true,
     price: 250,
     originalPrice: 299,
     category: "Natural Malts",
-    description: "Premium Apple, Beetroot, and Carrot health drink powder. An organic formulation crafted to improve hemoglobin levels, enhance natural skin radiance, and provide clean daily energy.",
+    tagline: "Nature's goodness in every sip.",
+    description: "A delicious blend of apple, beetroot and carrot in one convenient malt drink. Simply mix, sip and enjoy goodness in your everyday routine.",
     imageUrl: "/images/abc-malt.png",
     images: ["/images/abc-malt.png"],
     benefits: [
-      "Natural Immunity & Hemoglobin Booster",
-      "Enhances Skin Glow & Clears Toxins",
-      "Promotes Healthy Digestion & Gut Flora",
-      "Instant Source of Clean Daily Energy"
+      "Real Apple, Beetroot & Carrot Blend",
+      "Naturally Sweetened with Unbleached Jaggery",
+      "Zero Chemical Preservatives or Synthetic Additives",
+      "Convenient 2-Minute Warm Milk or Water Preparation"
     ],
     ingredients: [
-      "Dehydrated Organic Apple Powder",
-      "Dehydrated Farm Beetroot Powder",
-      "Dehydrated Carrot Powder",
+      "Apple Powder",
+      "Beetroot Powder",
+      "Carrot Powder",
       "Sprouted Finger Millet (Ragi)",
-      "Premium Almonds & Cashews",
-      "Green Cardamom Extract",
-      "Organic Palm Sugar (Nattu Sakkarai)"
+      "Almonds",
+      "Cashews",
+      "Cardamom",
+      "Unbleached Cane Jaggery (Nattu Sakkarai)"
     ],
     nutritionFacts: {
       "Energy": "388 kcal",
@@ -128,17 +131,15 @@ export const MOCK_PRODUCTS: Product[] = [
       "Iron": "11.5mg",
       "Vitamin C": "18.2mg"
     },
-    usageInstructions: "Mix 2 tablespoons (approx. 15g) of Blovit ABC Malt in a glass of hot milk or warm water. Stir thoroughly until fully dissolved. Serve hot or chilled.",
+    usageInstructions: "Mix 2 tablespoons (approx. 15g–20g) of Blovit ABC Malt in a cup (200ml) of warm milk or water. Stir thoroughly until fully dissolved. Serve warm or chilled.",
     isBestseller: true,
-    whoIsItFor: ["Children (3+ Yrs)", "Teenagers", "Working Adults", "Women", "Seniors"],
-    healthGoals: ["Increase Iron", "Kids Growth & Nutrition", "Daily Energy", "Family Wellness", "Natural Nutrition"],
-    certifications: ["FSSAI Licensed (22421543000120)", "100% Organic Ingredients", "No Added Chemicals", "ISO Quality Checked"],
+    whoIsItFor: ["Children", "Teenagers", "Working Adults", "Seniors"],
+    healthGoals: ["Daily Energy", "Family Wellness", "Natural Nutrition"],
+    certifications: ["FSSAI Licensed (22421543000120)"],
     rating: 4.9,
     reviewCount: 148,
     variants: [
-      { weight: "200g", price: 250, originalPrice: 299, sku: "BLV-ABC-200G", inStock: true },
-      { weight: "500g", price: 580, originalPrice: 699, sku: "BLV-ABC-500G", inStock: true },
-      { weight: "1kg", price: 1100, originalPrice: 1350, sku: "BLV-ABC-1KG", inStock: true }
+      { weight: "200 g", price: 250, originalPrice: 299, sku: "BLV-ABC-200G", inStock: true }
     ]
   },
   {
@@ -146,26 +147,28 @@ export const MOCK_PRODUCTS: Product[] = [
     name: "Blovit Beetroot Malt",
     slug: "beetroot-malt",
     sku: "BLV-BTR-200G",
-    weight: "200g",
+    weight: "200 g",
     inStock: true,
     price: 200,
     originalPrice: 249,
     category: "Natural Malts",
-    description: "Packed with the natural goodness of iron-rich beetroots, sprouted grains, and premium nuts. Specially designed to boost stamina, improve circulation, and manage anemia naturally.",
+    tagline: "Naturally vibrant. Delightfully simple.",
+    description: "Bring the goodness of beetroot to your daily drink with Blovit Beetroot Malt. An easy-to-prepare blend for a colourful, delicious everyday moment.",
     imageUrl: "/images/beetroot-malt.png",
     images: ["/images/beetroot-malt.png"],
     benefits: [
-      "Combats Anemia & Boosts Iron Counts",
-      "Improves Stamina & Physical Endurance",
-      "Supports Healthy Blood Pressure & Circulation",
-      "Rich in Antioxidants & Essential Minerals"
+      "Made with Farm-Fresh Beetroot",
+      "Naturally Sweetened with Country Jaggery",
+      "Zero Added Refined White Sugar",
+      "Simple & Comforting Everyday Malt Drink"
     ],
     ingredients: [
-      "Fresh Farm Beetroot Juice Extract",
+      "Beetroot Powder",
       "Sprouted Finger Millet (Ragi)",
-      "Premium Almonds & Cashews",
-      "Organic Cardamom",
-      "Raw Palm Jaggery Powder"
+      "Almonds",
+      "Cashews",
+      "Cardamom",
+      "Unbleached Cane Jaggery (Nattu Sakkarai)"
     ],
     nutritionFacts: {
       "Energy": "392 kcal",
@@ -175,17 +178,15 @@ export const MOCK_PRODUCTS: Product[] = [
       "Iron": "14.2mg",
       "Calcium": "120mg"
     },
-    usageInstructions: "Add 2 spoonfuls of Blovit Beetroot Malt into a tumbler of boiling milk or warm water. Stir briskly until smooth.",
+    usageInstructions: "Add 2 tablespoons of Blovit Beetroot Malt into 200ml of hot milk or warm water. Stir briskly until smooth.",
     isBestseller: false,
-    whoIsItFor: ["Teenagers", "Women & Mothers", "Active Athletes", "Seniors"],
-    healthGoals: ["Increase Iron", "Daily Energy", "Family Wellness", "Natural Nutrition"],
-    certifications: ["FSSAI Licensed (22421543000120)", "No Preservatives", "Lab Tested", "Made in Tamil Nadu"],
+    whoIsItFor: ["Children", "Adults", "Seniors"],
+    healthGoals: ["Daily Energy", "Family Wellness", "Natural Nutrition"],
+    certifications: ["FSSAI Licensed (22421543000120)"],
     rating: 4.85,
     reviewCount: 96,
     variants: [
-      { weight: "200g", price: 200, originalPrice: 249, sku: "BLV-BTR-200G", inStock: true },
-      { weight: "500g", price: 470, originalPrice: 599, sku: "BLV-BTR-500G", inStock: true },
-      { weight: "1kg", price: 890, originalPrice: 1150, sku: "BLV-BTR-1KG", inStock: true }
+      { weight: "200 g", price: 200, originalPrice: 249, sku: "BLV-BTR-200G", inStock: true }
     ]
   },
   {
@@ -193,26 +194,28 @@ export const MOCK_PRODUCTS: Product[] = [
     name: "Blovit Nendran Banana Malt",
     slug: "nendram-banana-malt",
     sku: "BLV-NEN-200G",
-    weight: "200g",
+    weight: "200 g",
     inStock: true,
     price: 260,
     originalPrice: 320,
     category: "Natural Malts",
-    description: "An authentic, highly nutritious health mix prepared from raw Kerala Nendran Bananas. Rich in potassium and fibers, it is an excellent natural weight gainer for growing toddlers and energy drink for all ages.",
+    tagline: "The comforting goodness of Nendran banana.",
+    description: "Enjoy the familiar taste of Nendran banana in a convenient malt drink. Easy to prepare and perfect for adding a little natural goodness to your day.",
     imageUrl: "/images/nendran-banana-malt.png",
     images: ["/images/nendran-banana-malt.png"],
     benefits: [
-      "Excellent Natural Weight Gainer for Kids",
-      "Supports Bone Development & Muscle Growth",
-      "High Potassium & Fibers for Digestive Ease",
-      "Instant Source of Clean, Healthy Calories"
+      "Wholesome Kerala Nendran Banana Flavour",
+      "Convenient & Quick Preparation",
+      "Naturally Sweetened with Cane Jaggery",
+      "Zero Chemical Preservatives or Artificial Flavours"
     ],
     ingredients: [
-      "Sun-Dried Raw Kerala Nendran Banana Powder",
-      "Sprouted Pearl Millet (Kambu)",
-      "Rich Almonds & Pistachios",
-      "Organic Palm Jaggery",
-      "Cardamom Extract"
+      "Sun-Dried Kerala Nendran Banana Powder",
+      "Sprouted Finger Millet (Ragi)",
+      "Almonds",
+      "Cashews",
+      "Cardamom",
+      "Unbleached Cane Jaggery (Nattu Sakkarai)"
     ],
     nutritionFacts: {
       "Energy": "412 kcal",
@@ -222,63 +225,15 @@ export const MOCK_PRODUCTS: Product[] = [
       "Potassium": "340mg",
       "Calcium": "98mg"
     },
-    usageInstructions: "Mix 2-3 teaspoons of Blovit Nendran Banana Malt with warm milk or boiling water. Stir well to avoid lumps.",
+    usageInstructions: "Mix 2 tablespoons of Blovit Nendran Banana Malt with 200ml of warm milk or boiling water. Stir well until smooth.",
     isBestseller: true,
-    whoIsItFor: ["Toddlers & Kids (1+ Yrs)", "Growing Children", "Sports Enthusiasts", "Underweight Adults"],
+    whoIsItFor: ["Toddlers & Growing Kids", "Adults", "Seniors"],
     healthGoals: ["Kids Growth & Nutrition", "Daily Energy", "Natural Nutrition"],
-    certifications: ["FSSAI Licensed (22421543000120)", "Zero Preservatives", "Handpicked Kerala Bananas"],
+    certifications: ["FSSAI Licensed (22421543000120)"],
     rating: 4.92,
     reviewCount: 162,
     variants: [
-      { weight: "200g", price: 260, originalPrice: 320, sku: "BLV-NEN-200G", inStock: true },
-      { weight: "500g", price: 610, originalPrice: 750, sku: "BLV-NEN-500G", inStock: true },
-      { weight: "1kg", price: 1150, originalPrice: 1450, sku: "BLV-NEN-1KG", inStock: true }
-    ]
-  },
-  {
-    id: "sprouted-ragi-malt",
-    name: "Blovit Sprouted Ragi Malt",
-    slug: "sprouted-ragi-malt",
-    sku: "BLV-RAG-200G",
-    weight: "200g",
-    inStock: true,
-    price: 220,
-    originalPrice: 269,
-    category: "Natural Malts",
-    description: "A powerhouse calcium and iron supplement made from 100% sprouted finger millet (Ragi). Sprouting unlocks maximum bioavailability of nutrients, making it ideal for bone development, anemia management, and sustained daily energy.",
-    imageUrl: "/images/sprouted-ragi-malt.png",
-    images: ["/images/sprouted-ragi-malt.png"],
-    benefits: [
-      "Maximum Calcium & Iron Bioavailability",
-      "Supports Strong Bones & Teeth",
-      "Natural Anemia & Fatigue Management",
-      "Gluten-Sensitive Friendly Grain"
-    ],
-    ingredients: [
-      "100% Sprouted Finger Millet (Ragi)",
-      "Premium Almonds",
-      "Raw Palm Jaggery (Nattu Sakkarai)",
-      "Green Cardamom"
-    ],
-    nutritionFacts: {
-      "Energy": "375 kcal",
-      "Carbohydrates": "78.2g",
-      "Protein": "7.4g",
-      "Fat": "1.5g",
-      "Calcium": "344mg",
-      "Iron": "3.9mg"
-    },
-    usageInstructions: "Stir 2 tablespoons of Blovit Sprouted Ragi Malt into warm milk or water. Mix until smooth. Best consumed as a breakfast drink.",
-    isBestseller: false,
-    whoIsItFor: ["Pregnant Women", "Lactating Mothers", "Children (2+ Yrs)", "Seniors", "Anemia Patients"],
-    healthGoals: ["Bone Health", "Increase Iron", "Daily Energy", "Family Wellness"],
-    certifications: ["FSSAI Licensed (22421543000120)", "100% Sprouted Grain", "No Refined Sugar", "Lab Tested"],
-    rating: 4.8,
-    reviewCount: 74,
-    variants: [
-      { weight: "200g", price: 220, originalPrice: 269, sku: "BLV-RAG-200G", inStock: true },
-      { weight: "500g", price: 520, originalPrice: 650, sku: "BLV-RAG-500G", inStock: true },
-      { weight: "1kg", price: 980, originalPrice: 1250, sku: "BLV-RAG-1KG", inStock: true }
+      { weight: "200 g", price: 260, originalPrice: 320, sku: "BLV-NEN-200G", inStock: true }
     ]
   }
 ];

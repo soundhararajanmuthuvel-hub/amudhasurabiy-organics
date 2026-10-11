@@ -19,18 +19,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  let title = `Blovit ${product.name} | Amudhasurabiy Organics (Amudhasurabi)`;
-  let description = `${product.description} Crafted by Amudhasurabiy Organics (also searched as Amudhasurabi, Amuthasurabi).`;
+  let title = `${product.name} — 200 g | Blovit Natural Malts`;
+  let description = `${product.description} Pack size: 200 g. Amudhasurabiy Organics, Kumbakonam.`;
 
   if (slug === "abc-malt") {
-    title = "Blovit ABC Malt | Amudhasurabiy Organics Apple Beetroot Carrot Malt";
-    description = "Blovit ABC Malt by Amudhasurabiy Organics (also searched as Amudhasurabi, Amuthasurabi) combines Apple, Beetroot, and Carrot for 100% natural daily family energy.";
+    title = "Blovit ABC Malt — 200 g | Amudhasurabiy Organics";
+    description = "A delicious blend of apple, beetroot and carrot in one convenient malt drink. Simply mix, sip and enjoy goodness in your everyday routine. 200 g pack.";
   } else if (slug === "beetroot-malt") {
-    title = "Blovit Beetroot Malt | Amudhasurabiy Organics";
-    description = "Blovit Beetroot Malt by Amudhasurabiy Organics (Amudhasurabi, Amuthasurabi) is rich in iron, fiber, and essential minerals.";
+    title = "Blovit Beetroot Malt — 200 g | Amudhasurabiy Organics";
+    description = "Bring the goodness of beetroot to your daily drink with Blovit Beetroot Malt. An easy-to-prepare blend for a colourful, delicious everyday moment. 200 g pack.";
   } else if (slug === "nendram-banana-malt" || slug === "nendran-malt" || slug === "banana-malt") {
-    title = "Blovit Nendram Banana Malt | Amudhasurabiy Organics";
-    description = "Blovit Nendram Banana Malt (Nendran Banana Malt) by Amudhasurabiy Organics (Amudhasurabi) brings traditional weight-gaining energy.";
+    title = "Blovit Nendran Banana Malt — 200 g | Amudhasurabiy Organics";
+    description = "Enjoy the familiar taste of Nendran banana in a convenient malt drink. Easy to prepare and perfect for adding a little natural goodness to your day. 200 g pack.";
   }
 
   return {
@@ -54,7 +54,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function ProductDetailPage({ params }: PageProps) {
-  const { slug } = await params;
+  const resolvedParams = await params;
+  const rawSlug = resolvedParams?.slug;
+  const slug = typeof rawSlug === "string" ? decodeURIComponent(rawSlug).replace(/\/$/, "") : "";
   const product = await getProductBySlug(slug);
   if (!product) {
     notFound();
