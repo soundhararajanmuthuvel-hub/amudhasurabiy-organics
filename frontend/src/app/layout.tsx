@@ -1,8 +1,20 @@
 import type { Metadata } from "next";
-import { Outfit, Plus_Jakarta_Sans, Inter } from "next/font/google";
+import { Outfit, Plus_Jakarta_Sans, Inter, Fraunces, Work_Sans } from "next/font/google";
 import AIChatWidgetWrapper from "@/components/ai/AIChatWidgetWrapper";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import "./globals.css";
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const workSans = Work_Sans({
+  subsets: ["latin"],
+  variable: "--font-work-sans",
+  display: "swap",
+});
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -69,7 +81,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${outfit.variable} ${plusJakartaSans.variable} ${inter.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${workSans.variable} ${outfit.variable} ${plusJakartaSans.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-body bg-cream text-charcoal pb-16 md:pb-0">
         {children}

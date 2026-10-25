@@ -292,7 +292,7 @@ export default function Header() {
 
               {/* Wishlist Link */}
               <Link
-                href="/my-account/"
+                href="/wishlist/"
                 className="relative p-2 text-walnut-brown transition-colors hover:text-moss-green rounded-full hover:bg-walnut-brown/5 hidden sm:flex"
                 aria-label="Wishlist"
               >

@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node --max-old-space-size=4096 ./node_modules/next/dist/bin/next build",
+    "build": "next build",
     "start": "next start",
-    "lint": "node --max-old-space-size=4096 ./node_modules/eslint/bin/eslint.js"
+    "lint": "eslint"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.101.4",

@@ -477,16 +477,16 @@ export default function Checkout() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
               <Link
-                href="/my-account/"
-                className="w-full bg-walnut-brown hover:bg-moss-green text-white py-3.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all shadow-md text-center"
+                href={`/account/orders/${orderCompleted.orderNumber}/`}
+                className="w-full bg-moss-green hover:bg-walnut-brown text-white py-3.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all shadow-md text-center"
               >
-                View My Orders
+                Track Live Timeline
               </Link>
               <Link
-                href="/shop/"
-                className="w-full bg-cream-dark hover:bg-walnut-brown hover:text-white text-walnut-brown py-3.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all shadow-xs text-center"
+                href={`/order-confirmation/?orderNumber=${orderCompleted.orderNumber}&total=${orderCompleted.total}&paymentMethod=${encodeURIComponent(orderCompleted.paymentMethod || "Pre-paid")}`}
+                className="w-full bg-cream-dark hover:bg-walnut-brown hover:text-white text-walnut-brown py-3.5 rounded-full font-heading text-xs font-bold uppercase tracking-wider transition-all shadow-xs text-center border border-walnut-brown/15"
               >
-                Continue Shopping
+                View Confirmation Page
               </Link>
             </div>
           </div>
@@ -512,10 +512,24 @@ export default function Checkout() {
 
       <main className="flex-grow bg-cream py-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-2 mb-8">
+          <div className="flex items-center gap-2 mb-4">
             <Link href="/cart/" className="flex items-center gap-1 font-heading text-xs font-bold text-walnut-brown/60 hover:text-moss-green uppercase tracking-wider">
               <ChevronLeft className="h-4 w-4" /> Back to Cart
             </Link>
+          </div>
+
+          <div className="mb-6 p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs font-body flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <span className="font-heading font-bold uppercase tracking-wider bg-amber-200/80 px-2.5 py-0.5 rounded-full text-[10px]">
+                Review-Ready Prototype
+              </span>
+              <span>
+                <strong>Simulated demo checkout</strong> — no real order is placed or charged. Free delivery above ₹499.
+              </span>
+            </div>
+            <span className="font-heading text-[10px] text-amber-700 hidden sm:inline">
+              AO Core ERP Mock Layer
+            </span>
           </div>
 
           <div className="flex items-center justify-between mb-8">

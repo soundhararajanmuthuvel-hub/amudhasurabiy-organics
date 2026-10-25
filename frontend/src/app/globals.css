@@ -25,8 +25,10 @@
   --color-error: #D32F2F;
   --color-charcoal: #1B1B1B;
   
-  --font-heading: var(--font-outfit), sans-serif;
-  --font-body: var(--font-plus-jakarta-sans), sans-serif;
+  --font-display: var(--font-display), "Fraunces", serif;
+  --font-heading: var(--font-display), var(--font-outfit), sans-serif;
+  --font-body: var(--font-work-sans), var(--font-plus-jakarta-sans), sans-serif;
+  --font-sans: var(--font-work-sans), sans-serif;
   
   --animate-ken-burns: kenburns 40s ease infinite alternate;
   --animate-fade-in-up: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;

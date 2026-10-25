@@ -239,6 +239,12 @@ export default function MyAccount() {
                     <p className="font-body text-xs text-walnut-brown/60 mt-1">
                       Customer Code: <strong className="text-walnut-brown">{customer.customerCode}</strong>
                     </p>
+                    <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-900 text-[11px] font-body">
+                      <span className="font-heading font-bold uppercase text-[9px] bg-amber-200/80 px-2 py-0.5 rounded-full">
+                        Demo Account
+                      </span>
+                      <span>Demo data — not saved to any production system. Ready for AO Core ERP integration.</span>
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
